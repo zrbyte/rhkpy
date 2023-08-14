@@ -94,7 +94,7 @@
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	A container for the xarray based structure of the RHK data.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
-	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">repetitions</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">alternate</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">datatype</span> <span class="o">=</span> <span class="s1">&#39;none&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">repetitions</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">alternate</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">datatype</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 
 		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">alternate</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
 			<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;alternate needs to be a bool variable: True or False. Default is True&quot;</span><span class="p">)</span>
@@ -112,7 +112,7 @@
 			<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;stmdatastruct not tested for RHK Rev version &lt; 6. Some things might not work as expected.&#39;</span><span class="p">)</span>
 
 		<span class="c1"># check type of data contained in the file, if no type is specified</span>
-		<span class="k">if</span> <span class="n">datatype</span> <span class="o">==</span> <span class="s1">&#39;none&#39;</span><span class="p">:</span>
+		<span class="k">if</span> <span class="n">datatype</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">datatype</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">spectype</span> <span class="o">=</span> <span class="n">_checkdatatype</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 		<span class="k">else</span><span class="p">:</span>
 			<span class="k">if</span> <span class="p">(</span><span class="n">datatype</span> <span class="o">!=</span> <span class="s1">&#39;map&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">datatype</span> <span class="o">!=</span> <span class="s1">&#39;line&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">datatype</span> <span class="o">!=</span> <span class="s1">&#39;spec&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">datatype</span> <span class="o">!=</span> <span class="s1">&#39;image&#39;</span><span class="p">):</span>
@@ -182,7 +182,7 @@
 	<span class="k">elif</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="p">[</span><span class="n">l</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;RHK_LineType&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">8</span><span class="p">:</span>
 		<span class="n">stmdata_object</span><span class="o">.</span><span class="n">spectype</span> <span class="o">=</span> <span class="s1">&#39;iz&#39;</span>
 	<span class="k">elif</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="p">[</span><span class="n">l</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;RHK_LineType&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-		<span class="n">stmdata_object</span><span class="o">.</span><span class="n">spectype</span> <span class="o">=</span> <span class="s1">&#39;none&#39;</span>
+		<span class="n">stmdata_object</span><span class="o">.</span><span class="n">spectype</span> <span class="o">=</span> <span class="kc">None</span>
 	
 	<span class="k">if</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="p">[</span><span class="n">l</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;RHK_PageType&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
 		<span class="n">stmdata_object</span><span class="o">.</span><span class="n">datatype</span> <span class="o">=</span> <span class="s1">&#39;image&#39;</span>
@@ -864,6 +864,10 @@
 	<span class="n">stmdata_object</span><span class="o">.</span><span class="n">spectra</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;LI frequency unit&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Hz&#39;</span>
 	<span class="n">stmdata_object</span><span class="o">.</span><span class="n">spectra</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;LI phase&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="o">.</span><span class="n">Current</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;RHK_Lockin0_PhaseOffset&#39;</span><span class="p">]</span>
 
+	<span class="c1"># store the data and spectrum type in the attributes</span>
+	<span class="n">stmdata_object</span><span class="o">.</span><span class="n">spectra</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;datatype&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">datatype</span>
+	<span class="n">stmdata_object</span><span class="o">.</span><span class="n">spectra</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;spectype&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spectype</span>
+
 	<span class="k">return</span> <span class="n">stmdata_object</span>
 
 
@@ -892,6 +896,11 @@
 	<span class="n">stmdata_object</span><span class="o">.</span><span class="n">spectra</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;LI frequency&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="o">.</span><span class="n">Current</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;RHK_CH1Drive_Frequency&#39;</span><span class="p">]</span>
 	<span class="n">stmdata_object</span><span class="o">.</span><span class="n">spectra</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;LI frequency unit&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Hz&#39;</span>
 	<span class="n">stmdata_object</span><span class="o">.</span><span class="n">spectra</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;LI phase&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="o">.</span><span class="n">Current</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;RHK_Lockin0_PhaseOffset&#39;</span><span class="p">]</span>
+
+	<span class="c1"># store the data and spectrum type in the attributes</span>
+	<span class="n">stmdata_object</span><span class="o">.</span><span class="n">spectra</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;datatype&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">datatype</span>
+	<span class="n">stmdata_object</span><span class="o">.</span><span class="n">spectra</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;spectype&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spectype</span>
+
 	<span class="k">return</span> <span class="n">stmdata_object</span>
 
 
@@ -922,6 +931,11 @@
 	<span class="n">stmdata_object</span><span class="o">.</span><span class="n">spectra</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;LI frequency&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="o">.</span><span class="n">Current</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;RHK_CH1Drive_Frequency&#39;</span><span class="p">]</span>
 	<span class="n">stmdata_object</span><span class="o">.</span><span class="n">spectra</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;LI frequency unit&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Hz&#39;</span>
 	<span class="n">stmdata_object</span><span class="o">.</span><span class="n">spectra</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;LI phase&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="o">.</span><span class="n">Current</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;RHK_Lockin0_PhaseOffset&#39;</span><span class="p">]</span>
+	
+	<span class="c1"># store the data and spectrum type in the attributes</span>
+	<span class="n">stmdata_object</span><span class="o">.</span><span class="n">spectra</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;datatype&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">datatype</span>
+	<span class="n">stmdata_object</span><span class="o">.</span><span class="n">spectra</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;spectype&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spectype</span>
+	
 	<span class="k">return</span> <span class="n">stmdata_object</span>
 
 
@@ -933,6 +947,12 @@
 	<span class="n">stmdata_object</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;measurement date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="o">.</span><span class="n">Topography_Forward</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;RHK_Date&#39;</span><span class="p">]</span>
 	<span class="n">stmdata_object</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;measurement time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="o">.</span><span class="n">Topography_Forward</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;RHK_Time&#39;</span><span class="p">]</span>
 	<span class="n">stmdata_object</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;scan angle&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="o">.</span><span class="n">Topography_Forward</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;RHK_Angle&#39;</span><span class="p">]</span>
+	
+	<span class="c1"># store the data and spectrum type in the attributes</span>
+	<span class="c1"># in the case for a map, the datatype value will not be &#39;image&#39;, but &#39;map&#39;</span>
+	<span class="n">stmdata_object</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;datatype&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">datatype</span>
+	<span class="n">stmdata_object</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;spectype&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spectype</span>
+
 	<span class="k">return</span> <span class="n">stmdata_object</span>
 
 

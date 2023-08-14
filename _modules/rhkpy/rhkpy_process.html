@@ -93,8 +93,28 @@
 			<span class="p">)</span>
 		<span class="p">)</span> <span class="c1"># can&#39;t set default colormap with this</span></div>
 
-<div class="viewcode-block" id="coord_to_absolute"><a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_process.coord_to_absolute">[docs]</a><span class="k">def</span> <span class="nf">coord_to_absolute</span><span class="p">(</span><span class="n">stmdata_object</span><span class="p">):</span>
-	<span class="k">pass</span></div>
+<div class="viewcode-block" id="coord_to_absolute"><a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_process.coord_to_absolute">[docs]</a><span class="k">def</span> <span class="nf">coord_to_absolute</span><span class="p">(</span><span class="n">xrobj</span><span class="p">):</span>
+	<span class="c1"># the xrobj passed to the function should always be and image</span>
+	<span class="c1"># if not hasattr(xrobj, &#39;image&#39;):</span>
+	<span class="c1"># 	print(&#39;Wrong xarray type. The data needs to be an `image`, not `spectra`&#39;)</span>
+	<span class="c1"># 	return</span>
+	
+	<span class="c1"># TODO here we will need to loop trough the dataarrays in xrobj</span>
+	<span class="c1"># for now let&#39;s just take the forward topo</span>
+	<span class="n">imagedata</span> <span class="o">=</span> <span class="n">xrobj</span><span class="o">.</span><span class="n">data</span>
+
+	<span class="n">rotated</span> <span class="o">=</span> <span class="n">ndimage</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span>
+		<span class="n">imagedata</span><span class="p">,</span>
+		<span class="mi">30</span><span class="p">,</span>
+		<span class="n">reshape</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+		<span class="n">mode</span> <span class="o">=</span> <span class="s1">&#39;constant&#39;</span><span class="p">,</span>
+		<span class="n">cval</span> <span class="o">=</span> <span class="mi">0</span>
+		<span class="p">)</span>
+	
+	<span class="c1"># relcoord_xrobj = xrobj.copy()</span>
+	<span class="c1"># relcoord_xrobj.data = rotated</span>
+
+	<span class="k">return</span> <span class="n">rotated</span></div>
 
 <div class="viewcode-block" id="plot_spec_position"><a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_process.plot_spec_position">[docs]</a><span class="k">def</span> <span class="nf">plot_spec_position</span><span class="p">(</span><span class="n">stmdata_object</span><span class="p">,</span> <span class="n">repetitions</span><span class="p">,</span> <span class="n">zscandir</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 	
