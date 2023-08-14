@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>rhkpy package &mdash; rhkpy 2023.08.10 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="rhkpy" href="modules.html" />
+    <link rel="prev" title="Introduction" href="intro.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            rhkpy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html#installation">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html#examples">Examples</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">rhkpy package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-rhkpy.rhkpy_loader">rhkpy.rhkpy_loader module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#rhkpy.rhkpy_loader.load_rhksm4"><code class="docutils literal notranslate"><span class="pre">load_rhksm4()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rhkpy.rhkpy_loader.load_spym"><code class="docutils literal notranslate"><span class="pre">load_spym()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rhkpy.rhkpy_loader.rhkdata"><code class="docutils literal notranslate"><span class="pre">rhkdata</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#rhkpy.rhkpy_loader.rhkdata.print_info"><code class="docutils literal notranslate"><span class="pre">rhkdata.print_info()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rhkpy.rhkpy_loader.rhkdata.specpos"><code class="docutils literal notranslate"><span class="pre">rhkdata.specpos()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-rhkpy.rhkpy_process">rhkpy.rhkpy_process module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#rhkpy.rhkpy_process.bgsubtract"><code class="docutils literal notranslate"><span class="pre">bgsubtract()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rhkpy.rhkpy_process.coord_to_absolute"><code class="docutils literal notranslate"><span class="pre">coord_to_absolute()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rhkpy.rhkpy_process.gaussian"><code class="docutils literal notranslate"><span class="pre">gaussian()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rhkpy.rhkpy_process.gaussian2"><code class="docutils literal notranslate"><span class="pre">gaussian2()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rhkpy.rhkpy_process.lorentz"><code class="docutils literal notranslate"><span class="pre">lorentz()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rhkpy.rhkpy_process.peakfit"><code class="docutils literal notranslate"><span class="pre">peakfit()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rhkpy.rhkpy_process.plot_spec_position"><code class="docutils literal notranslate"><span class="pre">plot_spec_position()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rhkpy.rhkpy_process.polynomial_fit"><code class="docutils literal notranslate"><span class="pre">polynomial_fit()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-rhkpy">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">rhkpy</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">rhkpy package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-rhkpy.rhkpy_loader">rhkpy.rhkpy_loader module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#rhkpy.rhkpy_loader.load_rhksm4"><code class="docutils literal notranslate"><span class="pre">load_rhksm4()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rhkpy.rhkpy_loader.load_spym"><code class="docutils literal notranslate"><span class="pre">load_spym()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rhkpy.rhkpy_loader.rhkdata"><code class="docutils literal notranslate"><span class="pre">rhkdata</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-rhkpy.rhkpy_process">rhkpy.rhkpy_process module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#rhkpy.rhkpy_process.bgsubtract"><code class="docutils literal notranslate"><span class="pre">bgsubtract()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rhkpy.rhkpy_process.coord_to_absolute"><code class="docutils literal notranslate"><span class="pre">coord_to_absolute()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rhkpy.rhkpy_process.gaussian"><code class="docutils literal notranslate"><span class="pre">gaussian()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rhkpy.rhkpy_process.gaussian2"><code class="docutils literal notranslate"><span class="pre">gaussian2()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rhkpy.rhkpy_process.lorentz"><code class="docutils literal notranslate"><span class="pre">lorentz()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rhkpy.rhkpy_process.peakfit"><code class="docutils literal notranslate"><span class="pre">peakfit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rhkpy.rhkpy_process.plot_spec_position"><code class="docutils literal notranslate"><span class="pre">plot_spec_position()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rhkpy.rhkpy_process.polynomial_fit"><code class="docutils literal notranslate"><span class="pre">polynomial_fit()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-rhkpy">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">rhkpy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">rhkpy package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/rhkpy.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="rhkpy-package">
+<h1>rhkpy package<a class="headerlink" href="#rhkpy-package" title="Permalink to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-rhkpy.rhkpy_loader">
+<span id="rhkpy-rhkpy-loader-module"></span><h2>rhkpy.rhkpy_loader module<a class="headerlink" href="#module-rhkpy.rhkpy_loader" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="rhkpy.rhkpy_loader.load_rhksm4">
+<span class="sig-prename descclassname"><span class="pre">rhkpy.rhkpy_loader.</span></span><span class="sig-name descname"><span class="pre">load_rhksm4</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rhkpy/rhkpy_loader.html#load_rhksm4"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rhkpy.rhkpy_loader.load_rhksm4" title="Permalink to this definition"></a></dt>
+<dd><p>Load the data from the .sm4 file using the old loader from spym</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rhkpy.rhkpy_loader.load_spym">
+<span class="sig-prename descclassname"><span class="pre">rhkpy.rhkpy_loader.</span></span><span class="sig-name descname"><span class="pre">load_spym</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rhkpy/rhkpy_loader.html#load_spym"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rhkpy.rhkpy_loader.load_spym" title="Permalink to this definition"></a></dt>
+<dd><p>Load the data from the .sm4 file using spym</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="rhkpy.rhkpy_loader.rhkdata">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rhkpy.rhkpy_loader.</span></span><span class="sig-name descname"><span class="pre">rhkdata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repetitions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alternate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datatype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'none'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rhkpy/rhkpy_loader.html#rhkdata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rhkpy.rhkpy_loader.rhkdata" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A container for the xarray based structure of the RHK data.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="rhkpy.rhkpy_loader.rhkdata.print_info">
+<span class="sig-name descname"><span class="pre">print_info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rhkpy/rhkpy_loader.html#rhkdata.print_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rhkpy.rhkpy_loader.rhkdata.print_info" title="Permalink to this definition"></a></dt>
+<dd><p>List the variables and functions of the <a class="reference internal" href="#rhkpy.rhkpy_loader.rhkdata" title="rhkpy.rhkpy_loader.rhkdata"><code class="xref py py-class docutils literal notranslate"><span class="pre">rhkdata</span></code></a> instance.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rhkpy.rhkpy_loader.rhkdata.specpos">
+<span class="sig-name descname"><span class="pre">specpos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repetitions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zscandir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rhkpy/rhkpy_loader.html#rhkdata.specpos"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rhkpy.rhkpy_loader.rhkdata.specpos" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-rhkpy.rhkpy_process">
+<span id="rhkpy-rhkpy-process-module"></span><h2>rhkpy.rhkpy_process module<a class="headerlink" href="#module-rhkpy.rhkpy_process" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="rhkpy.rhkpy_process.bgsubtract">
+<span class="sig-prename descclassname"><span class="pre">rhkpy.rhkpy_process.</span></span><span class="sig-name descname"><span class="pre">bgsubtract</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polyorder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">toplot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fitmask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prom</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclusion_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">peak_pos</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rhkpy/rhkpy_process.html#bgsubtract"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rhkpy.rhkpy_process.bgsubtract" title="Permalink to this definition"></a></dt>
+<dd><p>Takes the <code class="docutils literal notranslate"><span class="pre">x_data</span></code> and <code class="docutils literal notranslate"><span class="pre">y_data</span></code> and automatically finds peaks, using <code class="xref py py-mod docutils literal notranslate"><span class="pre">scipy.find_peaks</span></code>.
+These peaks are then used to define the areas of the background signal (<code class="docutils literal notranslate"><span class="pre">y_data</span></code>).
+In the areas with the peaks removed, the background is fitted by a polynomial of order given by the optional argument: <code class="docutils literal notranslate"><span class="pre">polyorder</span></code>.
+The fit is performed by <code class="xref py py-mod docutils literal notranslate"><span class="pre">scipy.optimize.curve_fit</span></code>.
+The function returns the <code class="docutils literal notranslate"><span class="pre">y_data</span></code> values with the background removed, the background polinomial values themselves and the coefficients of the background fit results, as used by <code class="xref py py-mod docutils literal notranslate"><span class="pre">numpy.polyval</span></code>.</p>
+<p>In cases, where the automatic peak find is not functioning as expected, one can pass the values in <code class="docutils literal notranslate"><span class="pre">x_data</span></code>, at which peaks appear.
+In this case, the <code class="docutils literal notranslate"><span class="pre">wmin</span></code> option determines the width of all peaks.</p>
+<p>If a <code class="docutils literal notranslate"><span class="pre">fitmask</span></code> is supplied for fitting, the fitmask is not calculated and only a polynomial fit is performed.
+This can decrease the runtime.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x_data</strong> (<code class="xref py py-mod docutils literal notranslate"><span class="pre">numpy</span></code> array) – variable of the data (typically bias voltage)</p></li>
+<li><p><strong>y_data</strong> (<code class="xref py py-mod docutils literal notranslate"><span class="pre">numpy</span></code> array) – data values (typically dI/dV)</p></li>
+<li><p><strong>polyorder</strong> (<em>int</em><em>, </em><em>optional</em>) – order of polynomial used to fit the background, defaults to 3</p></li>
+<li><p><strong>toplot</strong> (<em>bool</em><em>, </em><em>optional</em>) – if <cite>True</cite> a plot of: the fit, the background used and positions of the peaks is shown, defaults to False</p></li>
+<li><p><strong>fitmask</strong> (<code class="xref py py-mod docutils literal notranslate"><span class="pre">numpy</span></code> array) – Fitmask to be used for polynomial fitting.</p></li>
+<li><p><strong>hmin</strong> (<em>float</em><em>, </em><em>optional</em>) – minimum height of the peaks passed to <code class="xref py py-mod docutils literal notranslate"><span class="pre">scipy.signal.find_peaks</span></code>, defaults to 50</p></li>
+<li><p><strong>hmax</strong> (<em>float</em><em>, </em><em>optional</em>) – maximum height of the peaks passed to <code class="xref py py-mod docutils literal notranslate"><span class="pre">scipy.signal.find_peaks</span></code>, defaults to 10000</p></li>
+<li><p><strong>wmin</strong> (<em>float</em><em>, </em><em>optional</em>) – minimum width of the peaks, passed to <code class="xref py py-mod docutils literal notranslate"><span class="pre">scipy.signal.find_peaks</span></code>, defaults to 4</p></li>
+<li><p><strong>wmax</strong> (<em>float</em><em>, </em><em>optional</em>) – maximum width of the peaks passed to <code class="xref py py-mod docutils literal notranslate"><span class="pre">scipy.signal.find_peaks</span></code>, defaults to 60</p></li>
+<li><p><strong>prom</strong> (<em>float</em><em>, </em><em>optional</em>) – prominence of the peaks, passed to <code class="xref py py-mod docutils literal notranslate"><span class="pre">scipy.signal.find_peaks</span></code>, defaults to 10</p></li>
+<li><p><strong>exclusion_factor</strong> (<em>float</em><em>, </em><em>optional</em>) – this parameter multiplies the width of the peaks found by <code class="xref py py-mod docutils literal notranslate"><span class="pre">scipy.signal.find_peaks</span></code>, or specified by <code class="docutils literal notranslate"><span class="pre">wmin</span></code> if the peak positions are passed by hand, using <code class="docutils literal notranslate"><span class="pre">peak_pos</span></code>, defaults to 6</p></li>
+<li><p><strong>peak_pos</strong> (<em>list</em><em> of </em><em>floats</em><em>, </em><em>optional</em>) – list of the peak positions in <code class="docutils literal notranslate"><span class="pre">x_data</span></code> values used for exclusion, defaults to None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">y_data_nobg</span></code>, <code class="docutils literal notranslate"><span class="pre">bg_values</span></code>, <code class="docutils literal notranslate"><span class="pre">coeff</span></code>, <code class="docutils literal notranslate"><span class="pre">params_used_at_run</span></code>, <code class="docutils literal notranslate"><span class="pre">mask</span></code>, <code class="docutils literal notranslate"><span class="pre">covar</span></code></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple: (<code class="xref py py-mod docutils literal notranslate"><span class="pre">numpy</span></code> array, <code class="xref py py-mod docutils literal notranslate"><span class="pre">numpy</span></code> array, <code class="xref py py-mod docutils literal notranslate"><span class="pre">numpy</span></code> array, dictionary, <code class="xref py py-mod docutils literal notranslate"><span class="pre">numpy</span></code> array, <code class="xref py py-mod docutils literal notranslate"><span class="pre">numpy</span></code> array)</p>
+</dd>
+</dl>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">y_data_nobg</span></code>: data values, with the background subtracted,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bg_values</span></code>: the polynomial values of the fit, at the <code class="docutils literal notranslate"><span class="pre">x_data</span></code> positions,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">coeff</span></code>: coefficients of the polynomial fit, as used by: <code class="xref py py-mod docutils literal notranslate"><span class="pre">numpy.polyval</span></code>,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">params_used_at_run</span></code>: parameters used at runtime</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mask</span></code>: the calculated fitmask</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">covar</span></code>: covariance of the fit parameters</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Using the option: <code class="docutils literal notranslate"><span class="pre">peak_pos</span></code>, a <code class="docutils literal notranslate"><span class="pre">wmin*exclusion_factor/2</span></code> region (measured in datapoints) on both sides of the peaks is excluded from the background fit.
+If automatic peak finding is used, the exclusion area is calculated in a similar way, but the width of the individual peaks are used, as determined by <code class="xref py py-mod docutils literal notranslate"><span class="pre">scipy.signal.find_peaks</span></code>.</p>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rhkpy.rhkpy_process.coord_to_absolute">
+<span class="sig-prename descclassname"><span class="pre">rhkpy.rhkpy_process.</span></span><span class="sig-name descname"><span class="pre">coord_to_absolute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stmdata_object</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rhkpy/rhkpy_process.html#coord_to_absolute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rhkpy.rhkpy_process.coord_to_absolute" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rhkpy.rhkpy_process.gaussian">
+<span class="sig-prename descclassname"><span class="pre">rhkpy.rhkpy_process.</span></span><span class="sig-name descname"><span class="pre">gaussian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ampl</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rhkpy/rhkpy_process.html#gaussian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rhkpy.rhkpy_process.gaussian" title="Permalink to this definition"></a></dt>
+<dd><p>Gaussian function. Width and amplitude parameters have the same meaning as for <a class="reference internal" href="#rhkpy.rhkpy_process.lorentz" title="rhkpy.rhkpy_process.lorentz"><code class="xref py py-func docutils literal notranslate"><span class="pre">lorentz()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (float, <code class="xref py py-mod docutils literal notranslate"><span class="pre">numpy</span></code> array, etc.) – values for the x coordinate</p></li>
+<li><p><strong>x0</strong> (<em>float</em>) – shift along the <cite>x</cite> corrdinate</p></li>
+<li><p><strong>ampl</strong> (<em>float</em>) – amplitude of the peak</p></li>
+<li><p><strong>width</strong> (<em>float</em>) – FWHM of the peak</p></li>
+<li><p><strong>offset</strong> (<em>float</em>) – offset along the function value</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>values of a Gaussian function</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float, <code class="xref py py-mod docutils literal notranslate"><span class="pre">numpy</span></code> array, etc.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rhkpy.rhkpy_process.gaussian2">
+<span class="sig-prename descclassname"><span class="pre">rhkpy.rhkpy_process.</span></span><span class="sig-name descname"><span class="pre">gaussian2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x01</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ampl1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x02</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ampl2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rhkpy/rhkpy_process.html#gaussian2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rhkpy.rhkpy_process.gaussian2" title="Permalink to this definition"></a></dt>
+<dd><p>Double Gaussian function</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (float, <code class="xref py py-mod docutils literal notranslate"><span class="pre">numpy</span></code> array, etc.) – values for the x coordinate</p></li>
+<li><p><strong>x01</strong> (<em>float</em><em>, </em><em>optional</em>) – position of the peak, defaults to -5</p></li>
+<li><p><strong>ampl1</strong> (<em>float</em><em>, </em><em>optional</em>) – amplitude of the peak, defaults to 1</p></li>
+<li><p><strong>width1</strong> (<em>float</em><em>, </em><em>optional</em>) – width of the peak, defaults to 10</p></li>
+<li><p><strong>x02</strong> (<em>float</em><em>, </em><em>optional</em>) – position of the peak, defaults to 5</p></li>
+<li><p><strong>ampl2</strong> (<em>float</em><em>, </em><em>optional</em>) – amplitude of the peak, defaults to 1</p></li>
+<li><p><strong>width2</strong> (<em>float</em><em>, </em><em>optional</em>) – width of the peak, defaults to 10</p></li>
+<li><p><strong>offset</strong> (<em>float</em><em>, </em><em>optional</em>) – offset, defaults to 0</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>values of a double Gaussian function</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float, <code class="xref py py-mod docutils literal notranslate"><span class="pre">numpy</span></code> array, etc.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rhkpy.rhkpy_process.lorentz">
+<span class="sig-prename descclassname"><span class="pre">rhkpy.rhkpy_process.</span></span><span class="sig-name descname"><span class="pre">lorentz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ampl</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rhkpy/rhkpy_process.html#lorentz"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rhkpy.rhkpy_process.lorentz" title="Permalink to this definition"></a></dt>
+<dd><p>Single Lorentz function</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (float, <code class="xref py py-mod docutils literal notranslate"><span class="pre">numpy</span></code> array, etc.) – values for the x coordinate</p></li>
+<li><p><strong>x0</strong> (<em>float</em>) – <cite>x</cite> corrdinate</p></li>
+<li><p><strong>ampl</strong> (<em>float</em>) – amplitude of the peak</p></li>
+<li><p><strong>width</strong> (<em>float</em>) – FWHM of the peak</p></li>
+<li><p><strong>offset</strong> (<em>float</em>) – offset along the function value</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>values of a single Lorentz function</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float, <code class="xref py py-mod docutils literal notranslate"><span class="pre">numpy</span></code> array, etc.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The area of the peak can be given by:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">area</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">amplitude</span> <span class="o">*</span> <span class="n">width</span> <span class="o">/</span> <span class="mi">2</span>
+</pre></div>
+</div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rhkpy.rhkpy_process.peakfit">
+<span class="sig-prename descclassname"><span class="pre">rhkpy.rhkpy_process.</span></span><span class="sig-name descname"><span class="pre">peakfit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xrobj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">func=&lt;function</span> <span class="pre">gaussian&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fitresult=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stval=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">toplot=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos_x=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos_y=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rhkpy/rhkpy_process.html#peakfit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rhkpy.rhkpy_process.peakfit" title="Permalink to this definition"></a></dt>
+<dd><p>Fitting a function to peaks in the data contained in <code class="docutils literal notranslate"><span class="pre">xrobj</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xrobj</strong> (<code class="xref py py-mod docutils literal notranslate"><span class="pre">xarray</span></code>) – <code class="xref py py-mod docutils literal notranslate"><span class="pre">xarray</span></code> DataArray, of a single spectrum or a map.</p></li>
+<li><p><strong>func</strong> (<em>function</em><em>, </em><em>optional</em>) – function to be used for fitting, defaults to gaussian</p></li>
+<li><p><strong>fitresult</strong> (<code class="xref py py-mod docutils literal notranslate"><span class="pre">xarray</span></code> Dataset, optional) – an <code class="xref py py-mod docutils literal notranslate"><span class="pre">xarray</span></code> Dataset of a previous fit calculation, with matching dimensions. If this is passed to <a class="reference internal" href="#rhkpy.rhkpy_process.peakfit" title="rhkpy.rhkpy_process.peakfit"><code class="xref py py-func docutils literal notranslate"><span class="pre">peakfit()</span></code></a>, the fit calculation in skipped and the passed Dataset is used.</p></li>
+<li><p><strong>stval</strong> (dictionary of <code class="docutils literal notranslate"><span class="pre">func</span></code> parameters, optional) – starting values for the fit parameters of <code class="docutils literal notranslate"><span class="pre">func</span></code>. You are free to specify only some of the values, the rest will be filled by defaults. Defaults are given in the starting values for keyword arguments in <code class="docutils literal notranslate"><span class="pre">func</span></code>.</p></li>
+<li><p><strong>bounds</strong> (dictionary of <code class="docutils literal notranslate"><span class="pre">func</span></code> parameters, with tuples containing lower and upper bounds, optional) – bounds for the fit parameters, used by <code class="xref py py-mod docutils literal notranslate"><span class="pre">xarray.curvefit</span></code>. Simlar dictionary, like <code class="docutils literal notranslate"><span class="pre">stval</span></code>, but the values area a list, with lower and upper components. Defaults to None</p></li>
+<li><p><strong>toplot</strong> (<em>boolean</em><em>, </em><em>optional</em>) – plot the fit result, defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code></p></li>
+<li><p><strong>pos_x</strong> (<cite>int</cite> or <cite>float</cite>, optional) – pos_x parameter of an <code class="xref py py-mod docutils literal notranslate"><span class="pre">xarray</span></code> map to be used in conjunction with <code class="docutils literal notranslate"><span class="pre">toplot</span> <span class="pre">=</span> <span class="pre">True</span></code></p></li>
+<li><p><strong>pos_y</strong> (<cite>int</cite> or <cite>float</cite>, optional) – pos_y parameter of an <code class="xref py py-mod docutils literal notranslate"><span class="pre">xarray</span></code> map to be used in conjunction with <code class="docutils literal notranslate"><span class="pre">toplot</span> <span class="pre">=</span> <span class="pre">True</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>fitted parameters of <code class="docutils literal notranslate"><span class="pre">func</span></code> and covariances in a Dataset</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">xarray</span></code> Dataset</p>
+</dd>
+<dt class="field-even">Example<span class="colon">:</span></dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">rhkpy</span>
+
+<span class="c1"># example coming soon</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">toplot</span></code> = <cite>True</cite> to tweak the starting values. If <code class="docutils literal notranslate"><span class="pre">toplot</span></code> = <cite>True</cite>, in case of a map, if no <code class="docutils literal notranslate"><span class="pre">pos_x</span></code> and <code class="docutils literal notranslate"><span class="pre">pos_y</span></code> are specified, the middle of the map is used for plotting.</p></li>
+<li><p>Passing a <code class="docutils literal notranslate"><span class="pre">bounds</span></code> dictionary to <a class="reference internal" href="#rhkpy.rhkpy_process.peakfit" title="rhkpy.rhkpy_process.peakfit"><code class="xref py py-func docutils literal notranslate"><span class="pre">peakfit()</span></code></a> seems to increase the fitting time significantly. This might be an issue with <code class="xref py py-mod docutils literal notranslate"><span class="pre">xarray.DataArray.curvefit</span></code>.</p></li>
+<li><p>By passing a previous fit result, using the optional parameter <code class="docutils literal notranslate"><span class="pre">fitresult</span></code>, we can just plot the fit result at multiple regions of the map.</p></li>
+</ul>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>It is good practice, to crop the data to the vicinity of the peak you want to fit to.</p>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rhkpy.rhkpy_process.plot_spec_position">
+<span class="sig-prename descclassname"><span class="pre">rhkpy.rhkpy_process.</span></span><span class="sig-name descname"><span class="pre">plot_spec_position</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stmdata_object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repetitions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zscandir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rhkpy/rhkpy_process.html#plot_spec_position"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rhkpy.rhkpy_process.plot_spec_position" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rhkpy.rhkpy_process.polynomial_fit">
+<span class="sig-prename descclassname"><span class="pre">rhkpy.rhkpy_process.</span></span><span class="sig-name descname"><span class="pre">polynomial_fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rhkpy/rhkpy_process.html#polynomial_fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rhkpy.rhkpy_process.polynomial_fit" title="Permalink to this definition"></a></dt>
+<dd><p>Polinomial fit to <cite>x_data</cite>, <cite>y_data</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>order</strong> (<em>int</em>) – order of the polinomial to be fit</p></li>
+<li><p><strong>x_data</strong> (<code class="xref py py-mod docutils literal notranslate"><span class="pre">numpy</span></code> array) – x coordinate of the data</p></li>
+<li><p><strong>y_data</strong> (<code class="xref py py-mod docutils literal notranslate"><span class="pre">numpy</span></code> array) – y coordinate of the data</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>coefficients of the polinomial <code class="docutils literal notranslate"><span class="pre">coeff</span></code>, as used by <code class="xref py py-mod docutils literal notranslate"><span class="pre">numpy.polyval</span></code>, covariance matrix <code class="docutils literal notranslate"><span class="pre">covar</span></code>, as returned by <code class="xref py py-mod docutils literal notranslate"><span class="pre">scipy.optimize.curve_fit</span></code></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple: (<code class="xref py py-mod docutils literal notranslate"><span class="pre">numpy</span></code> array, <code class="xref py py-mod docutils literal notranslate"><span class="pre">numpy</span></code> array)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-rhkpy">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-rhkpy" title="Permalink to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="intro.html" class="btn btn-neutral float-left" title="Introduction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="modules.html" class="btn btn-neutral float-right" title="rhkpy" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Peter Nemes-Incze.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

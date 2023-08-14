@@ -1,0 +1,30 @@
+spym.io package
+===============
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   spym.io.omicronscala
+   spym.io.rhksm4
+
+Submodules
+----------
+
+spym.io.load module
+-------------------
+
+.. automodule:: spym.io.load
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: spym.io
+   :members:
+   :undoc-members:
+   :show-inheritance:

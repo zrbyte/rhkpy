@@ -1,0 +1,10 @@
+spym.plotting package
+=====================
+
+Module contents
+---------------
+
+.. automodule:: spym.plotting
+   :members:
+   :undoc-members:
+   :show-inheritance:

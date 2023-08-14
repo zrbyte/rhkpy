@@ -1,0 +1,10 @@
+spym.io.omicronscala package
+============================
+
+Module contents
+---------------
+
+.. automodule:: spym.io.omicronscala
+   :members:
+   :undoc-members:
+   :show-inheritance:

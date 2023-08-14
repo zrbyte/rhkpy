@@ -1,0 +1,10 @@
+spym.io.rhksm4 package
+======================
+
+Module contents
+---------------
+
+.. automodule:: spym.io.rhksm4
+   :members:
+   :undoc-members:
+   :show-inheritance:
