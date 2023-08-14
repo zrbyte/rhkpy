@@ -61,6 +61,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-rhkpy.rhkpy_process">rhkpy.rhkpy_process module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#rhkpy.rhkpy_process.bgsubtract"><code class="docutils literal notranslate"><span class="pre">bgsubtract()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rhkpy.rhkpy_process.conf_hvplot_defaults"><code class="docutils literal notranslate"><span class="pre">conf_hvplot_defaults()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#rhkpy.rhkpy_process.coord_to_absolute"><code class="docutils literal notranslate"><span class="pre">coord_to_absolute()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#rhkpy.rhkpy_process.gaussian"><code class="docutils literal notranslate"><span class="pre">gaussian()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#rhkpy.rhkpy_process.gaussian2"><code class="docutils literal notranslate"><span class="pre">gaussian2()</span></code></a></li>
@@ -84,6 +85,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#module-rhkpy.rhkpy_process">rhkpy.rhkpy_process module</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#rhkpy.rhkpy_process.bgsubtract"><code class="docutils literal notranslate"><span class="pre">bgsubtract()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rhkpy.rhkpy_process.conf_hvplot_defaults"><code class="docutils literal notranslate"><span class="pre">conf_hvplot_defaults()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#rhkpy.rhkpy_process.coord_to_absolute"><code class="docutils literal notranslate"><span class="pre">coord_to_absolute()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#rhkpy.rhkpy_process.gaussian"><code class="docutils literal notranslate"><span class="pre">gaussian()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#rhkpy.rhkpy_process.gaussian2"><code class="docutils literal notranslate"><span class="pre">gaussian2()</span></code></a></li>
@@ -213,6 +215,12 @@ This can decrease the runtime.</p>
 <p>Using the option: <code class="docutils literal notranslate"><span class="pre">peak_pos</span></code>, a <code class="docutils literal notranslate"><span class="pre">wmin*exclusion_factor/2</span></code> region (measured in datapoints) on both sides of the peaks is excluded from the background fit.
 If automatic peak finding is used, the exclusion area is calculated in a similar way, but the width of the individual peaks are used, as determined by <code class="xref py py-mod docutils literal notranslate"><span class="pre">scipy.signal.find_peaks</span></code>.</p>
 </div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rhkpy.rhkpy_process.conf_hvplot_defaults">
+<span class="sig-prename descclassname"><span class="pre">rhkpy.rhkpy_process.</span></span><span class="sig-name descname"><span class="pre">conf_hvplot_defaults</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rhkpy/rhkpy_process.html#conf_hvplot_defaults"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rhkpy.rhkpy_process.conf_hvplot_defaults" title="Permalink to this definition"></a></dt>
+<dd><p>Set up some default values for the plotting parameters, when using <cite>hvplot</cite>.</p>
 </dd></dl>
 
 <dl class="py function">
