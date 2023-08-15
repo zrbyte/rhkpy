@@ -175,31 +175,37 @@
 	<span class="n">reps</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">reps</span> <span class="o">/</span> <span class="p">(</span><span class="n">stmdata_object</span><span class="o">.</span><span class="n">alternate</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
 	<span class="k">return</span> <span class="n">reps</span>
 
-
 <span class="k">def</span> <span class="nf">_checkdatatype</span><span class="p">(</span><span class="n">stmdata_object</span><span class="p">):</span>
-	<span class="c1"># Look at the metadata and structure of spectra coordinates to determine the type of file being worked with</span>
+	<span class="c1"># check if the list of keys in the spym data contain &#39;Current&#39;</span>
+	<span class="c1"># If yes, it is not a pure topo image</span>
 	<span class="n">l</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-	<span class="k">if</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="p">[</span><span class="n">l</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;RHK_LineType&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">7</span><span class="p">:</span>
-		<span class="n">stmdata_object</span><span class="o">.</span><span class="n">spectype</span> <span class="o">=</span> <span class="s1">&#39;iv&#39;</span>
-	<span class="k">elif</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="p">[</span><span class="n">l</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;RHK_LineType&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">8</span><span class="p">:</span>
-		<span class="n">stmdata_object</span><span class="o">.</span><span class="n">spectype</span> <span class="o">=</span> <span class="s1">&#39;iz&#39;</span>
-	<span class="k">elif</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="p">[</span><span class="n">l</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;RHK_LineType&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+	<span class="k">if</span> <span class="s1">&#39;Current&#39;</span> <span class="ow">in</span> <span class="n">l</span><span class="p">:</span>
+		<span class="c1"># it&#39;s a single spec, line spec or map</span>
+		<span class="k">if</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="p">[</span><span class="s1">&#39;Current&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;RHK_PageType&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">38</span><span class="p">:</span>
+			<span class="n">stmdata_object</span><span class="o">.</span><span class="n">datatype</span> <span class="o">=</span> <span class="s1">&#39;spec&#39;</span>
+			<span class="c1"># determine if it&#39;s Iz or dI/dV</span>
+			<span class="k">if</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="p">[</span><span class="s1">&#39;Current&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;RHK_LineType&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">7</span><span class="p">:</span>
+				<span class="n">stmdata_object</span><span class="o">.</span><span class="n">spectype</span> <span class="o">=</span> <span class="s1">&#39;iv&#39;</span>
+			<span class="k">elif</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="p">[</span><span class="s1">&#39;Current&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;RHK_LineType&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">8</span><span class="p">:</span>
+				<span class="n">stmdata_object</span><span class="o">.</span><span class="n">spectype</span> <span class="o">=</span> <span class="s1">&#39;iz&#39;</span>
+		<span class="k">elif</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="p">[</span><span class="s1">&#39;Current&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;RHK_PageType&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">16</span><span class="p">:</span>
+			<span class="c1"># this can be either a line spectrum or a map</span>
+			<span class="c1"># decide based on the aspect ratio of the spectroscopy tip positions</span>
+			<span class="n">xcoo</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="p">[</span><span class="s1">&#39;Current&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;RHK_SpecDrift_Xcoord&#39;</span><span class="p">])</span>
+			<span class="n">ycoo</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="p">[</span><span class="s1">&#39;Current&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;RHK_SpecDrift_Ycoord&#39;</span><span class="p">])</span>
+			<span class="k">if</span> <span class="n">_aspect_ratio</span><span class="p">(</span><span class="n">xcoo</span><span class="p">,</span> <span class="n">ycoo</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">:</span>
+				<span class="n">stmdata_object</span><span class="o">.</span><span class="n">datatype</span> <span class="o">=</span> <span class="s1">&#39;line&#39;</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="n">stmdata_object</span><span class="o">.</span><span class="n">datatype</span> <span class="o">=</span> <span class="s1">&#39;map&#39;</span>
+			<span class="c1"># determine if it&#39;s Iz or dI/dV</span>
+			<span class="k">if</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="p">[</span><span class="s1">&#39;Current&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;RHK_LineType&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">7</span><span class="p">:</span>
+				<span class="n">stmdata_object</span><span class="o">.</span><span class="n">spectype</span> <span class="o">=</span> <span class="s1">&#39;iv&#39;</span>
+			<span class="k">elif</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="p">[</span><span class="s1">&#39;Current&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;RHK_LineType&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">8</span><span class="p">:</span>
+				<span class="n">stmdata_object</span><span class="o">.</span><span class="n">spectype</span> <span class="o">=</span> <span class="s1">&#39;iz&#39;</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="n">stmdata_object</span><span class="o">.</span><span class="n">datatype</span> <span class="o">=</span> <span class="s1">&#39;image&#39;</span>
 		<span class="n">stmdata_object</span><span class="o">.</span><span class="n">spectype</span> <span class="o">=</span> <span class="kc">None</span>
 	
-	<span class="k">if</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="p">[</span><span class="n">l</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;RHK_PageType&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-		<span class="n">stmdata_object</span><span class="o">.</span><span class="n">datatype</span> <span class="o">=</span> <span class="s1">&#39;image&#39;</span>
-	<span class="k">elif</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="p">[</span><span class="n">l</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;RHK_PageType&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">38</span><span class="p">:</span>
-		<span class="n">stmdata_object</span><span class="o">.</span><span class="n">datatype</span> <span class="o">=</span> <span class="s1">&#39;spec&#39;</span>
-	<span class="k">elif</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="p">[</span><span class="n">l</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;RHK_PageType&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">16</span><span class="p">:</span>
-		<span class="c1"># this can be either a line spectrum or a map</span>
-		<span class="c1"># decide based on the aspect ratio of the spectroscopy tip positions</span>
-		<span class="n">xcoo</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="p">[</span><span class="n">l</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;RHK_SpecDrift_Xcoord&#39;</span><span class="p">])</span>
-		<span class="n">ycoo</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="p">[</span><span class="n">l</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;RHK_SpecDrift_Ycoord&#39;</span><span class="p">])</span>
-		<span class="k">if</span> <span class="n">_aspect_ratio</span><span class="p">(</span><span class="n">xcoo</span><span class="p">,</span> <span class="n">ycoo</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">:</span>
-			<span class="n">stmdata_object</span><span class="o">.</span><span class="n">datatype</span> <span class="o">=</span> <span class="s1">&#39;line&#39;</span>
-		<span class="k">else</span><span class="p">:</span>
-			<span class="n">stmdata_object</span><span class="o">.</span><span class="n">datatype</span> <span class="o">=</span> <span class="s1">&#39;map&#39;</span>
-
 	<span class="k">return</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">datatype</span><span class="p">,</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spectype</span>
 
 
@@ -213,12 +219,14 @@
     <span class="n">aspect</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">eigvals</span><span class="p">)</span> <span class="o">/</span> <span class="nb">min</span><span class="p">(</span><span class="n">eigvals</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">aspect</span>
 
+
 <span class="k">def</span> <span class="nf">_get_filename</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
 	<span class="c1"># If the string ends with a slash or backslash, remove it first</span>
     <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;/</span><span class="se">\\</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="c1"># Then, match any character other than backslash or slash until the end of the string</span>
     <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;[^/</span><span class="se">\\</span><span class="s1">]+$&#39;</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="k">if</span> <span class="n">match</span> <span class="k">else</span> <span class="kc">None</span>
+
 
 <span class="k">def</span> <span class="nf">_load_specmap</span><span class="p">(</span><span class="n">stmdata_object</span><span class="p">):</span>
 	<span class="c1"># total number of spectra in one postion of the tip</span>
