@@ -95,28 +95,45 @@
 
 <div class="viewcode-block" id="coord_to_absolute"><a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_process.coord_to_absolute">[docs]</a><span class="k">def</span> <span class="nf">coord_to_absolute</span><span class="p">(</span><span class="n">xrobj</span><span class="p">):</span>
 	<span class="c1"># the xrobj passed to the function should always be and image</span>
-	<span class="c1"># if not hasattr(xrobj, &#39;image&#39;):</span>
-	<span class="c1"># 	print(&#39;Wrong xarray type. The data needs to be an `image`, not `spectra`&#39;)</span>
-	<span class="c1"># 	return</span>
+	<span class="k">if</span> <span class="s1">&#39;topography&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">xrobj</span><span class="o">.</span><span class="n">data_vars</span><span class="p">:</span>
+		<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Wrong xarray type. The data needs to be an `image`, not `spectra`&#39;</span><span class="p">)</span>
+		<span class="k">return</span>
 	
-	<span class="c1"># TODO here we will need to loop trough the dataarrays in xrobj</span>
-	<span class="c1"># for now let&#39;s just take the forward topo</span>
-	<span class="n">imagedata</span> <span class="o">=</span> <span class="n">xrobj</span><span class="o">.</span><span class="n">data</span>
+	<span class="c1"># Iterating through the DAtaArrays in the Dataset</span>
+	<span class="n">dataarrays</span> <span class="o">=</span> <span class="p">[]</span>
+	<span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">xrobj</span><span class="o">.</span><span class="n">data_vars</span><span class="p">:</span>
+		<span class="n">dataarrays</span> <span class="o">+=</span> <span class="p">[</span><span class="n">d</span><span class="p">]</span>
 
-	<span class="n">rotated</span> <span class="o">=</span> <span class="n">ndimage</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span>
-		<span class="n">imagedata</span><span class="p">,</span>
-		<span class="mi">30</span><span class="p">,</span>
-		<span class="n">reshape</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+	<span class="c1"># Let&#39;s just transform the topography</span>
+	<span class="n">datafw</span> <span class="o">=</span> <span class="n">xrobj</span><span class="p">[</span><span class="n">dataarrays</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">scandir</span> <span class="o">=</span> <span class="s1">&#39;forward&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">data</span>
+	<span class="n">databw</span> <span class="o">=</span> <span class="n">xrobj</span><span class="p">[</span><span class="n">dataarrays</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">scandir</span> <span class="o">=</span> <span class="s1">&#39;backward&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">data</span>
+
+	<span class="c1"># rotate the data by the scan angle</span>
+	<span class="n">rotatedfw</span> <span class="o">=</span> <span class="n">ndimage</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span>
+		<span class="n">datafw</span><span class="p">,</span>
+		<span class="n">xrobj</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;scan angle&#39;</span><span class="p">],</span>
+		<span class="n">reshape</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="c1"># expand</span>
 		<span class="n">mode</span> <span class="o">=</span> <span class="s1">&#39;constant&#39;</span><span class="p">,</span>
-		<span class="n">cval</span> <span class="o">=</span> <span class="mi">0</span>
+		<span class="n">cval</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># fill with zeros, the expanded part</span>
 		<span class="p">)</span>
 	
-	<span class="c1"># relcoord_xrobj = xrobj.copy()</span>
-	<span class="c1"># relcoord_xrobj.data = rotated</span>
+	<span class="c1"># Create new coordinates for the rotated data</span>
+	<span class="c1"># Get the sizes of the x and y coordinates</span>
+	<span class="n">xlen</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">xrobj</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">xrobj</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+	<span class="n">ylen</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">xrobj</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">xrobj</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
 
-	<span class="k">return</span> <span class="n">rotated</span></div>
+	<span class="c1"># the diagonal is then</span>
+	<span class="n">diag</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">xlen</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">ylen</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+	<span class="c1"># get the angle between the diagonal and the base of the image (y coo). 45 deg for a square</span>
+	<span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="n">xlen</span><span class="o">/</span><span class="n">ylen</span><span class="p">)</span></div>
+	<span class="c1"># get the projection of the diagonal onto the y coordinate. This gives you the new &quot;bounding box size&quot; of the rotated image</span>
+	<span class="c1"># newylen = diag * np.cos(theta - )</span>
+	<span class="c1"># make a new instance of the object, where we will change the coordinates</span>
 
-<div class="viewcode-block" id="plot_spec_position"><a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_process.plot_spec_position">[docs]</a><span class="k">def</span> <span class="nf">plot_spec_position</span><span class="p">(</span><span class="n">stmdata_object</span><span class="p">,</span> <span class="n">repetitions</span><span class="p">,</span> <span class="n">zscandir</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+	<span class="c1"># return relcoord_xrobj</span>
+
+
+<div class="viewcode-block" id="plot_specpos"><a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_process.plot_specpos">[docs]</a><span class="k">def</span> <span class="nf">plot_specpos</span><span class="p">(</span><span class="n">stmdata_object</span><span class="p">,</span> <span class="n">repetitions</span><span class="p">,</span> <span class="n">zscandir</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 	
 	<span class="c1"># specpos_plot = stmdata_object.spectra.isel(repetitions=repetitions, zscandir=zscandir).sel(z = z, method=&#39;nearest&#39;).hvplot(data_aspect=1, cmap=&#39;magma&#39;)</span>
 	<span class="c1"># return specpos_plot</span>
@@ -133,9 +150,9 @@
 	<span class="n">rotated_topo</span> <span class="o">=</span> <span class="n">ndimage</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span>
 		<span class="n">stmdata_object</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">scandir</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)[</span><span class="s1">&#39;topography&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
 		<span class="n">scanangle</span><span class="p">,</span>
-		<span class="n">reshape</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-		<span class="n">mode</span><span class="o">=</span><span class="s1">&#39;constant&#39;</span><span class="p">,</span>
-		<span class="n">cval</span><span class="o">=-</span><span class="mf">0.1</span>
+		<span class="n">reshape</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+		<span class="n">mode</span> <span class="o">=</span> <span class="s1">&#39;constant&#39;</span><span class="p">,</span>
+		<span class="n">cval</span> <span class="o">=</span> <span class="mi">0</span>
 		<span class="p">)</span>
 
 	<span class="n">pl</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">rotated_topo</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="n">ext</span><span class="p">)</span>

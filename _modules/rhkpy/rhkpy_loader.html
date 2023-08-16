@@ -93,8 +93,42 @@
 <div class="viewcode-block" id="rhkdata"><a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_loader.rhkdata">[docs]</a><span class="k">class</span> <span class="nc">rhkdata</span><span class="p">:</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	A container for the xarray based structure of the RHK data.</span>
+
+<span class="sd">	:param filename: filename of the &quot;sm4&quot; file to be loaded</span>
+<span class="sd">	:type filename: str</span>
+<span class="sd">	:param repetitions: The number of repeated aquisitions of spectra in tip position, defaults to 0</span>
+<span class="sd">	:type repetitions: int, optional</span>
+<span class="sd">	:param alternate: `True` if the bias is swept forward and backward, `False` if not, defaults to True</span>
+<span class="sd">	:type alternate: bool, optional</span>
+<span class="sd">	:param datatype: datatype, defaults to None</span>
+<span class="sd">	:type datatype: str, optional</span>
+<span class="sd">	:param spectype: spectrum type, defaults to None</span>
+<span class="sd">	:type spectype: str, optional</span>
+
+<span class="sd">	Some variables of the :class:`rhkdata` class:</span>
+
+<span class="sd">	:var filename: (type str) filename of the &quot;sm4&quot; file</span>
+<span class="sd">	:var image: (type :py:mod:`xarray` Dataset) Dataset containing the image data</span>
+<span class="sd">	:var spectra: (type :py:mod:`xarray` Dataset) Dataset containing the spectroscopy data</span>
+<span class="sd">	:var spymdata: (type :py:mod:`spym` instance) Dataset, as loaded by the :py:mod:`spym` module</span>
+
+<span class="sd">	All the variables can be listed by calling: :class:`rhkdata.print_info`.</span>
+
+<span class="sd">	.. note::</span>
+<span class="sd">		Optional parameters are not needed, they are just present for debugging purposes. Their values are inferred from the sm4 file.</span>
+<span class="sd">	</span>
+<span class="sd">	:Example:</span>
+<span class="sd">		</span>
+<span class="sd">		.. code-block:: python</span>
+
+<span class="sd">			import rhkpy</span>
+
+<span class="sd">			# example coming soon</span>
+
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">repetitions</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">alternate</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">datatype</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">spectype</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Initialize the :class:`rhkdata` instance</span>
+<span class="sd">		&quot;&quot;&quot;</span>		
 
 		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">alternate</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
 			<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;alternate needs to be a bool variable: True or False. Default is True&quot;</span><span class="p">)</span>
@@ -151,18 +185,27 @@
 			<span class="bp">self</span> <span class="o">=</span> <span class="n">_load_image</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
 <div class="viewcode-block" id="rhkdata.print_info"><a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_loader.rhkdata.print_info">[docs]</a>	<span class="k">def</span> <span class="nf">print_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">		</span><span class="sd">&quot;&quot;&quot;List the variables and functions of the :class:`rhkdata` instance.</span>
-<span class="sd">		&quot;&quot;&quot;</span>		
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;List the variables of the :class:`rhkdata` instance.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
 		<span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">:</span>
 			<span class="nb">print</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+		<span class="k">if</span> <span class="s1">&#39;image&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">:</span>
+			<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">image:&#39;</span><span class="p">)</span>
+			<span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">data_vars</span><span class="p">:</span>
+				<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+		<span class="k">if</span> <span class="s1">&#39;spectra&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">:</span>
+			<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">spectra:&#39;</span><span class="p">)</span>
+			<span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">spectra</span><span class="o">.</span><span class="n">data_vars</span><span class="p">:</span>
+				<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
 		<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">spymdata:&#39;</span><span class="p">)</span>
 		<span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">spymdata</span><span class="p">:</span>
 			<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="rhkdata.specpos"><a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_loader.rhkdata.specpos">[docs]</a>	<span class="k">def</span> <span class="nf">specpos</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">repetitions</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">zscandir</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>		
+<div class="viewcode-block" id="rhkdata.plot_specpos"><a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_loader.rhkdata.plot_specpos">[docs]</a>	<span class="k">def</span> <span class="nf">plot_specpos</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">repetitions</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">zscandir</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>		
 		<span class="c1"># plot the positions of spectra on a topography image</span>
-		<span class="k">return</span> <span class="n">plot_spec_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">repetitions</span><span class="o">=</span><span class="n">repetitions</span><span class="p">,</span> <span class="n">zscandir</span><span class="o">=</span><span class="n">zscandir</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="p">)</span></div></div>
+		<span class="k">return</span> <span class="n">plot_specpos</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">repetitions</span> <span class="o">=</span> <span class="n">repetitions</span><span class="p">,</span> <span class="n">zscandir</span> <span class="o">=</span> <span class="n">zscandir</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">z</span><span class="p">)</span></div></div>
 
+<span class="c1">### internal functions -----------------------------------------------------------</span>
 
 <span class="k">def</span> <span class="nf">_checkrepetitions</span><span class="p">(</span><span class="n">stmdata_object</span><span class="p">):</span>
 	<span class="n">coordlist</span> <span class="o">=</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="o">.</span><span class="n">Current</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;RHK_SpecDrift_Xcoord&#39;</span><span class="p">]</span>
@@ -795,6 +838,15 @@
 	<span class="n">liafw</span> <span class="o">=</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="o">.</span><span class="n">LIA_Current_Forward</span>
 	<span class="n">liabw</span> <span class="o">=</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="o">.</span><span class="n">LIA_Current_Backward</span>
 
+	<span class="c1"># The image data also needs to be flipped along the slow scan direction,</span>
+	<span class="c1"># so that it shows up as the RHK Rev software would display it, when plotting with xarrat.plot().</span>
+	<span class="n">topofw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flipud</span><span class="p">(</span><span class="n">topofw</span><span class="p">)</span>
+	<span class="n">topobw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flipud</span><span class="p">(</span><span class="n">topobw</span><span class="p">)</span>
+	<span class="n">currfw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flipud</span><span class="p">(</span><span class="n">currfw</span><span class="p">)</span>
+	<span class="n">currbw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flipud</span><span class="p">(</span><span class="n">currbw</span><span class="p">)</span>
+	<span class="n">liafw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flipud</span><span class="p">(</span><span class="n">liafw</span><span class="p">)</span>
+	<span class="n">liabw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flipud</span><span class="p">(</span><span class="n">liabw</span><span class="p">)</span>
+
 	<span class="c1"># coordinates</span>
 	<span class="c1"># absolute values should be found by adding the X Y offsets</span>
 	<span class="n">xoff</span> <span class="o">=</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="o">.</span><span class="n">Topography_Forward</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;RHK_Xoffset&#39;</span><span class="p">]</span>
@@ -843,6 +895,8 @@
 	<span class="n">xrimage</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;nm&#39;</span>
 	<span class="n">xrimage</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;long units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;nanometer&#39;</span>
 	<span class="n">xrimage</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;long units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;nanometer&#39;</span>
+	<span class="n">xrimage</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;note&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;slow scan direction&#39;</span>
+	<span class="n">xrimage</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;note&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;fast scan direction&#39;</span>
 
 	<span class="n">stmdata_object</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">xrimage</span>
 	<span class="k">return</span> <span class="n">stmdata_object</span>

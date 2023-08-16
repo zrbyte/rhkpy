@@ -53,8 +53,8 @@
 <li class="toctree-l3"><a class="reference internal" href="#rhkpy.rhkpy_loader.load_rhksm4"><code class="docutils literal notranslate"><span class="pre">load_rhksm4()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#rhkpy.rhkpy_loader.load_spym"><code class="docutils literal notranslate"><span class="pre">load_spym()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#rhkpy.rhkpy_loader.rhkdata"><code class="docutils literal notranslate"><span class="pre">rhkdata</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#rhkpy.rhkpy_loader.rhkdata.plot_specpos"><code class="docutils literal notranslate"><span class="pre">rhkdata.plot_specpos()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#rhkpy.rhkpy_loader.rhkdata.print_info"><code class="docutils literal notranslate"><span class="pre">rhkdata.print_info()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#rhkpy.rhkpy_loader.rhkdata.specpos"><code class="docutils literal notranslate"><span class="pre">rhkdata.specpos()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -67,7 +67,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#rhkpy.rhkpy_process.gaussian2"><code class="docutils literal notranslate"><span class="pre">gaussian2()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#rhkpy.rhkpy_process.lorentz"><code class="docutils literal notranslate"><span class="pre">lorentz()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#rhkpy.rhkpy_process.peakfit"><code class="docutils literal notranslate"><span class="pre">peakfit()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#rhkpy.rhkpy_process.plot_spec_position"><code class="docutils literal notranslate"><span class="pre">plot_spec_position()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rhkpy.rhkpy_process.plot_specpos"><code class="docutils literal notranslate"><span class="pre">plot_specpos()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#rhkpy.rhkpy_process.polynomial_fit"><code class="docutils literal notranslate"><span class="pre">polynomial_fit()</span></code></a></li>
 </ul>
 </li>
@@ -91,7 +91,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#rhkpy.rhkpy_process.gaussian2"><code class="docutils literal notranslate"><span class="pre">gaussian2()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#rhkpy.rhkpy_process.lorentz"><code class="docutils literal notranslate"><span class="pre">lorentz()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#rhkpy.rhkpy_process.peakfit"><code class="docutils literal notranslate"><span class="pre">peakfit()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#rhkpy.rhkpy_process.plot_spec_position"><code class="docutils literal notranslate"><span class="pre">plot_spec_position()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rhkpy.rhkpy_process.plot_specpos"><code class="docutils literal notranslate"><span class="pre">plot_specpos()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#rhkpy.rhkpy_process.polynomial_fit"><code class="docutils literal notranslate"><span class="pre">polynomial_fit()</span></code></a></li>
 </ul>
 </li>
@@ -150,16 +150,52 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rhkpy.rhkpy_loader.</span></span><span class="sig-name descname"><span class="pre">rhkdata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repetitions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alternate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datatype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spectype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rhkpy/rhkpy_loader.html#rhkdata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rhkpy.rhkpy_loader.rhkdata" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A container for the xarray based structure of the RHK data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<em>str</em>) – filename of the “sm4” file to be loaded</p></li>
+<li><p><strong>repetitions</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of repeated aquisitions of spectra in tip position, defaults to 0</p></li>
+<li><p><strong>alternate</strong> (<em>bool</em><em>, </em><em>optional</em>) – <cite>True</cite> if the bias is swept forward and backward, <cite>False</cite> if not, defaults to True</p></li>
+<li><p><strong>datatype</strong> (<em>str</em><em>, </em><em>optional</em>) – datatype, defaults to None</p></li>
+<li><p><strong>spectype</strong> (<em>str</em><em>, </em><em>optional</em>) – spectrum type, defaults to None</p></li>
+</ul>
+</dd>
+</dl>
+<p>Some variables of the <a class="reference internal" href="#rhkpy.rhkpy_loader.rhkdata" title="rhkpy.rhkpy_loader.rhkdata"><code class="xref py py-class docutils literal notranslate"><span class="pre">rhkdata</span></code></a> class:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> – (type str) filename of the “sm4” file</p></li>
+<li><p><strong>image</strong> – (type <code class="xref py py-mod docutils literal notranslate"><span class="pre">xarray</span></code> Dataset) Dataset containing the image data</p></li>
+<li><p><strong>spectra</strong> – (type <code class="xref py py-mod docutils literal notranslate"><span class="pre">xarray</span></code> Dataset) Dataset containing the spectroscopy data</p></li>
+<li><p><strong>spymdata</strong> – (type <a class="reference internal" href="spym.html#module-spym" title="spym"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spym</span></code></a> instance) Dataset, as loaded by the <a class="reference internal" href="spym.html#module-spym" title="spym"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spym</span></code></a> module</p></li>
+</ul>
+</dd>
+</dl>
+<p>All the variables can be listed by calling: <a class="reference internal" href="#rhkpy.rhkpy_loader.rhkdata.print_info" title="rhkpy.rhkpy_loader.rhkdata.print_info"><code class="xref py py-class docutils literal notranslate"><span class="pre">rhkdata.print_info</span></code></a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Optional parameters are not needed, they are just present for debugging purposes. Their values are inferred from the sm4 file.</p>
+</div>
+<dl class="field-list">
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">rhkpy</span>
+
+<span class="c1"># example coming soon</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="rhkpy.rhkpy_loader.rhkdata.plot_specpos">
+<span class="sig-name descname"><span class="pre">plot_specpos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repetitions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zscandir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rhkpy/rhkpy_loader.html#rhkdata.plot_specpos"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rhkpy.rhkpy_loader.rhkdata.plot_specpos" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="rhkpy.rhkpy_loader.rhkdata.print_info">
 <span class="sig-name descname"><span class="pre">print_info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rhkpy/rhkpy_loader.html#rhkdata.print_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rhkpy.rhkpy_loader.rhkdata.print_info" title="Permalink to this definition"></a></dt>
-<dd><p>List the variables and functions of the <a class="reference internal" href="#rhkpy.rhkpy_loader.rhkdata" title="rhkpy.rhkpy_loader.rhkdata"><code class="xref py py-class docutils literal notranslate"><span class="pre">rhkdata</span></code></a> instance.</p>
+<dd><p>List the variables of the <a class="reference internal" href="#rhkpy.rhkpy_loader.rhkdata" title="rhkpy.rhkpy_loader.rhkdata"><code class="xref py py-class docutils literal notranslate"><span class="pre">rhkdata</span></code></a> instance.</p>
 </dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="rhkpy.rhkpy_loader.rhkdata.specpos">
-<span class="sig-name descname"><span class="pre">specpos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repetitions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zscandir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rhkpy/rhkpy_loader.html#rhkdata.specpos"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rhkpy.rhkpy_loader.rhkdata.specpos" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
 
 </dd></dl>
 
@@ -353,8 +389,8 @@ If automatic peak finding is used, the exclusion area is calculated in a similar
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="rhkpy.rhkpy_process.plot_spec_position">
-<span class="sig-prename descclassname"><span class="pre">rhkpy.rhkpy_process.</span></span><span class="sig-name descname"><span class="pre">plot_spec_position</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stmdata_object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repetitions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zscandir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rhkpy/rhkpy_process.html#plot_spec_position"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rhkpy.rhkpy_process.plot_spec_position" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="rhkpy.rhkpy_process.plot_specpos">
+<span class="sig-prename descclassname"><span class="pre">rhkpy.rhkpy_process.</span></span><span class="sig-name descname"><span class="pre">plot_specpos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stmdata_object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repetitions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zscandir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rhkpy/rhkpy_process.html#plot_specpos"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rhkpy.rhkpy_process.plot_specpos" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
