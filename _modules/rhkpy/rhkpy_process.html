@@ -94,46 +94,134 @@
 		<span class="p">)</span> <span class="c1"># can&#39;t set default colormap with this</span></div>
 
 <div class="viewcode-block" id="coord_to_absolute"><a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_process.coord_to_absolute">[docs]</a><span class="k">def</span> <span class="nf">coord_to_absolute</span><span class="p">(</span><span class="n">xrobj</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Return a new :py:mod:`xarray` instance, with the coordinates updated to reflect the abolute tip position. This includes X, Y offset and rotation.</span>
+
+<span class="sd">	:param xrobj: :py:mod:`xarray` variable of an :class:`rhkdata` object.</span>
+<span class="sd">	:type xrobj: :py:mod:`xarray` Dataset</span>
+<span class="sd">	</span>
+<span class="sd">	:return: :py:mod:`xarray` instance, with teh coordinates shifted to absolute tip positions</span>
+<span class="sd">	:rtype: :py:mod:`xarray` Dataset</span>
+<span class="sd">	&quot;&quot;&quot;</span>	
 	<span class="c1"># the xrobj passed to the function should always be and image</span>
 	<span class="k">if</span> <span class="s1">&#39;topography&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">xrobj</span><span class="o">.</span><span class="n">data_vars</span><span class="p">:</span>
 		<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Wrong xarray type. The data needs to be an `image`, not `spectra`&#39;</span><span class="p">)</span>
 		<span class="k">return</span>
 	
-	<span class="c1"># Iterating through the DAtaArrays in the Dataset</span>
-	<span class="n">dataarrays</span> <span class="o">=</span> <span class="p">[]</span>
-	<span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">xrobj</span><span class="o">.</span><span class="n">data_vars</span><span class="p">:</span>
-		<span class="n">dataarrays</span> <span class="o">+=</span> <span class="p">[</span><span class="n">d</span><span class="p">]</span>
+	<span class="c1"># get scan angle</span>
+	<span class="n">scangle</span> <span class="o">=</span> <span class="n">xrobj</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;scan angle&#39;</span><span class="p">]</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">180</span> <span class="c1"># in radians</span>
 
-	<span class="c1"># Let&#39;s just transform the topography</span>
-	<span class="n">datafw</span> <span class="o">=</span> <span class="n">xrobj</span><span class="p">[</span><span class="n">dataarrays</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">scandir</span> <span class="o">=</span> <span class="s1">&#39;forward&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">data</span>
-	<span class="n">databw</span> <span class="o">=</span> <span class="n">xrobj</span><span class="p">[</span><span class="n">dataarrays</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">scandir</span> <span class="o">=</span> <span class="s1">&#39;backward&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">data</span>
+	<span class="c1"># Get the numpy data</span>
+	<span class="n">datatopofw</span> <span class="o">=</span> <span class="n">xrobj</span><span class="p">[</span><span class="s1">&#39;topography&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">scandir</span> <span class="o">=</span> <span class="s1">&#39;forward&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">data</span>
+	<span class="n">datatopobw</span> <span class="o">=</span> <span class="n">xrobj</span><span class="p">[</span><span class="s1">&#39;topography&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">scandir</span> <span class="o">=</span> <span class="s1">&#39;backward&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">data</span>
+	<span class="n">datacurrentfw</span> <span class="o">=</span> <span class="n">xrobj</span><span class="p">[</span><span class="s1">&#39;current&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">scandir</span> <span class="o">=</span> <span class="s1">&#39;forward&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">data</span>
+	<span class="n">datacurrentbw</span> <span class="o">=</span> <span class="n">xrobj</span><span class="p">[</span><span class="s1">&#39;current&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">scandir</span> <span class="o">=</span> <span class="s1">&#39;backward&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">data</span>
+	<span class="n">dataliafw</span> <span class="o">=</span> <span class="n">xrobj</span><span class="p">[</span><span class="s1">&#39;lia&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">scandir</span> <span class="o">=</span> <span class="s1">&#39;forward&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">data</span>
+	<span class="n">dataliabw</span> <span class="o">=</span> <span class="n">xrobj</span><span class="p">[</span><span class="s1">&#39;lia&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">scandir</span> <span class="o">=</span> <span class="s1">&#39;backward&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">data</span>
 
-	<span class="c1"># rotate the data by the scan angle</span>
-	<span class="n">rotatedfw</span> <span class="o">=</span> <span class="n">ndimage</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span>
-		<span class="n">datafw</span><span class="p">,</span>
-		<span class="n">xrobj</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;scan angle&#39;</span><span class="p">],</span>
+	<span class="c1"># rotate the data by the scan angle. Need to have negative degrees, because ndimage rotates clockwise</span>
+	<span class="n">rotatedtopofw</span> <span class="o">=</span> <span class="n">ndimage</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span>
+		<span class="n">datatopofw</span><span class="p">,</span>
+		<span class="o">-</span><span class="n">scangle</span><span class="o">*</span><span class="mi">180</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="c1"># needs to be in degrees</span>
 		<span class="n">reshape</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="c1"># expand</span>
 		<span class="n">mode</span> <span class="o">=</span> <span class="s1">&#39;constant&#39;</span><span class="p">,</span>
-		<span class="n">cval</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># fill with zeros, the expanded part</span>
+		<span class="n">cval</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
 		<span class="p">)</span>
-	
+	<span class="n">rotatedtopobw</span> <span class="o">=</span> <span class="n">ndimage</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span>
+		<span class="n">datatopobw</span><span class="p">,</span>
+		<span class="o">-</span><span class="n">scangle</span><span class="o">*</span><span class="mi">180</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="c1"># needs to be in degrees</span>
+		<span class="n">reshape</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="c1"># expand</span>
+		<span class="n">mode</span> <span class="o">=</span> <span class="s1">&#39;constant&#39;</span><span class="p">,</span>
+		<span class="n">cval</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+		<span class="p">)</span>
+	<span class="n">rotatedcurrentfw</span> <span class="o">=</span> <span class="n">ndimage</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span>
+		<span class="n">datacurrentfw</span><span class="p">,</span>
+		<span class="o">-</span><span class="n">scangle</span><span class="o">*</span><span class="mi">180</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="c1"># needs to be in degrees</span>
+		<span class="n">reshape</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="c1"># expand</span>
+		<span class="n">mode</span> <span class="o">=</span> <span class="s1">&#39;constant&#39;</span><span class="p">,</span>
+		<span class="n">cval</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+		<span class="p">)</span>
+	<span class="n">rotatedcurrentbw</span> <span class="o">=</span> <span class="n">ndimage</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span>
+		<span class="n">datacurrentbw</span><span class="p">,</span>
+		<span class="o">-</span><span class="n">scangle</span><span class="o">*</span><span class="mi">180</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="c1"># needs to be in degrees</span>
+		<span class="n">reshape</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="c1"># expand</span>
+		<span class="n">mode</span> <span class="o">=</span> <span class="s1">&#39;constant&#39;</span><span class="p">,</span>
+		<span class="n">cval</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+		<span class="p">)</span>
+	<span class="n">rotatedliafw</span> <span class="o">=</span> <span class="n">ndimage</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span>
+		<span class="n">dataliafw</span><span class="p">,</span>
+		<span class="o">-</span><span class="n">scangle</span><span class="o">*</span><span class="mi">180</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="c1"># needs to be in degrees</span>
+		<span class="n">reshape</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="c1"># expand</span>
+		<span class="n">mode</span> <span class="o">=</span> <span class="s1">&#39;constant&#39;</span><span class="p">,</span>
+		<span class="n">cval</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+		<span class="p">)</span>
+	<span class="n">rotatedliabw</span> <span class="o">=</span> <span class="n">ndimage</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span>
+		<span class="n">dataliabw</span><span class="p">,</span>
+		<span class="o">-</span><span class="n">scangle</span><span class="o">*</span><span class="mi">180</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="c1"># needs to be in degrees</span>
+		<span class="n">reshape</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="c1"># expand</span>
+		<span class="n">mode</span> <span class="o">=</span> <span class="s1">&#39;constant&#39;</span><span class="p">,</span>
+		<span class="n">cval</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+		<span class="p">)</span>
+
 	<span class="c1"># Create new coordinates for the rotated data</span>
+	<span class="c1"># size of a pixel in nm</span>
+	<span class="n">pixelsizex</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">xrobj</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">xrobj</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+	<span class="n">pixelsizey</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">xrobj</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">xrobj</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+	
 	<span class="c1"># Get the sizes of the x and y coordinates</span>
-	<span class="n">xlen</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">xrobj</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">xrobj</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
-	<span class="n">ylen</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">xrobj</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">xrobj</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+	<span class="n">xlen</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">xrobj</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">xrobj</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="n">pixelsizex</span> <span class="c1"># need to add half pixel size twice (on both sides)</span>
+	<span class="n">ylen</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">xrobj</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">xrobj</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="n">pixelsizey</span>
+	
+	<span class="c1"># This gives you the new &quot;bounding box size&quot; of the rotated image</span>
+	<span class="c1"># newxlen = np.abs(xlen * np.sin(scangle)) + np.abs(ylen * np.sin(np.pi/2 - scangle))</span>
+	<span class="c1"># newylen = np.abs(xlen * np.cos(scangle)) + np.abs(ylen * np.cos(np.pi/2 - scangle))</span>
+	<span class="n">newxlen</span> <span class="o">=</span> <span class="n">rotatedtopofw</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">pixelsizex</span>
+	<span class="n">newylen</span> <span class="o">=</span> <span class="n">rotatedtopofw</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">pixelsizey</span>
 
-	<span class="c1"># the diagonal is then</span>
+	<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;newlengths:&#39;</span><span class="p">,</span> <span class="n">newxlen</span><span class="p">,</span> <span class="n">newylen</span><span class="p">)</span>
+
+	<span class="c1"># new coordinate length</span>
+	<span class="c1"># placing the zero in the middle of the image</span>
+	<span class="n">newxx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">newxlen</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">newxlen</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">num</span> <span class="o">=</span> <span class="n">rotatedtopofw</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+	<span class="n">newyy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">newylen</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">newylen</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">num</span> <span class="o">=</span> <span class="n">rotatedtopofw</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+	<span class="c1"># new pixel size due to rotation</span>
+	<span class="n">newpixelsizex</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">newxx</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">newxx</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+	<span class="n">newpixelsizey</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">newyy</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">newyy</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+	<span class="c1"># correction to the offet of the image</span>
+	<span class="c1"># need to include correction to rotation, and a rotated shift</span>
 	<span class="n">diag</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">xlen</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">ylen</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-	<span class="c1"># get the angle between the diagonal and the base of the image (y coo). 45 deg for a square</span>
-	<span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="n">xlen</span><span class="o">/</span><span class="n">ylen</span><span class="p">)</span></div>
-	<span class="c1"># get the projection of the diagonal onto the y coordinate. This gives you the new &quot;bounding box size&quot; of the rotated image</span>
-	<span class="c1"># newylen = diag * np.cos(theta - )</span>
+	<span class="n">offx</span> <span class="o">=</span> <span class="n">diag</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">scangle</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">scangle</span><span class="o">/</span><span class="mi">2</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">4</span><span class="p">)</span> <span class="o">+</span> <span class="n">diag</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">4</span> <span class="o">+</span> <span class="n">scangle</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span> <span class="o">-</span> <span class="n">pixelsizex</span>
+	<span class="n">offy</span> <span class="o">=</span> <span class="n">diag</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">scangle</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">scangle</span><span class="o">/</span><span class="mi">2</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">4</span><span class="p">)</span> <span class="o">+</span> <span class="n">diag</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">4</span> <span class="o">+</span> <span class="n">scangle</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span> <span class="o">-</span> <span class="n">pixelsizey</span>
+	<span class="nb">print</span><span class="p">(</span><span class="n">offx</span><span class="p">,</span> <span class="n">offy</span><span class="p">)</span>
+
 	<span class="c1"># make a new instance of the object, where we will change the coordinates</span>
+	<span class="n">xrobj_abscoord</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span>
+		<span class="n">data_vars</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+			<span class="n">topography</span> <span class="o">=</span> <span class="p">([</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;scandir&#39;</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">rotatedtopofw</span><span class="p">,</span> <span class="n">rotatedtopobw</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)),</span>
+			<span class="n">current</span> <span class="o">=</span> <span class="p">([</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;scandir&#39;</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">rotatedcurrentfw</span><span class="p">,</span> <span class="n">rotatedcurrentbw</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)),</span>
+			<span class="n">lia</span> <span class="o">=</span> <span class="p">([</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;scandir&#39;</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">rotatedliafw</span><span class="p">,</span> <span class="n">rotatedliabw</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">))</span>
+			<span class="p">),</span>
+		<span class="n">coords</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+			<span class="n">x</span> <span class="o">=</span> <span class="n">newxx</span> <span class="o">+</span> <span class="n">xrobj</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;xoffset&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">offx</span><span class="p">,</span>
+			<span class="n">y</span> <span class="o">=</span> <span class="n">newyy</span> <span class="o">+</span> <span class="n">xrobj</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;yoffset&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">offy</span><span class="p">,</span>
+			<span class="n">scandir</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s1">&#39;forward&#39;</span><span class="p">,</span> <span class="s1">&#39;backward&#39;</span><span class="p">])</span>
+			<span class="p">)</span>
+		<span class="p">)</span>
+	<span class="c1"># copy attributes from original dataset and modify them accordingly</span>
+	<span class="n">xrobj_abscoord</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="n">xrobj</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+	<span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">xrobj</span><span class="o">.</span><span class="n">coords</span><span class="p">:</span>
+		<span class="n">xrobj_abscoord</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="n">xrobj</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+	<span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">xrobj</span><span class="o">.</span><span class="n">data_vars</span><span class="p">:</span>
+		<span class="n">xrobj_abscoord</span><span class="p">[</span><span class="n">d</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="n">xrobj</span><span class="p">[</span><span class="n">d</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+	<span class="c1"># append a note to the coordinate x, y attributes</span>
+	<span class="n">xrobj_abscoord</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;comment&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;absolute coordinates&#39;</span>
+	<span class="n">xrobj_abscoord</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;note&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="s1">&#39;absolute coordinates</span><span class="se">\n</span><span class="s1">&#39;</span>
+	<span class="n">xrobj_abscoord</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;note&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="s1">&#39;absolute coordinates</span><span class="se">\n</span><span class="s1">&#39;</span>
 
-	<span class="c1"># return relcoord_xrobj</span>
+	<span class="k">return</span> <span class="n">xrobj_abscoord</span></div>
 
 
-<div class="viewcode-block" id="plot_specpos"><a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_process.plot_specpos">[docs]</a><span class="k">def</span> <span class="nf">plot_specpos</span><span class="p">(</span><span class="n">stmdata_object</span><span class="p">,</span> <span class="n">repetitions</span><span class="p">,</span> <span class="n">zscandir</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="plot_specpos"><a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_process.plot_specpos">[docs]</a><span class="k">def</span> <span class="nf">plot_specpos</span><span class="p">(</span><span class="n">stmdata_object</span><span class="p">):</span>
 	
 	<span class="c1"># specpos_plot = stmdata_object.spectra.isel(repetitions=repetitions, zscandir=zscandir).sel(z = z, method=&#39;nearest&#39;).hvplot(data_aspect=1, cmap=&#39;magma&#39;)</span>
 	<span class="c1"># return specpos_plot</span>

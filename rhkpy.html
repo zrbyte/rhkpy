@@ -188,7 +188,7 @@
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="rhkpy.rhkpy_loader.rhkdata.plot_specpos">
-<span class="sig-name descname"><span class="pre">plot_specpos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repetitions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zscandir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rhkpy/rhkpy_loader.html#rhkdata.plot_specpos"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rhkpy.rhkpy_loader.rhkdata.plot_specpos" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">plot_specpos</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rhkpy/rhkpy_loader.html#rhkdata.plot_specpos"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rhkpy.rhkpy_loader.rhkdata.plot_specpos" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -262,7 +262,19 @@ If automatic peak finding is used, the exclusion area is calculated in a similar
 <dl class="py function">
 <dt class="sig sig-object py" id="rhkpy.rhkpy_process.coord_to_absolute">
 <span class="sig-prename descclassname"><span class="pre">rhkpy.rhkpy_process.</span></span><span class="sig-name descname"><span class="pre">coord_to_absolute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xrobj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rhkpy/rhkpy_process.html#coord_to_absolute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rhkpy.rhkpy_process.coord_to_absolute" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Return a new <code class="xref py py-mod docutils literal notranslate"><span class="pre">xarray</span></code> instance, with the coordinates updated to reflect the abolute tip position. This includes X, Y offset and rotation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>xrobj</strong> (<code class="xref py py-mod docutils literal notranslate"><span class="pre">xarray</span></code> Dataset) – <code class="xref py py-mod docutils literal notranslate"><span class="pre">xarray</span></code> variable of an <code class="xref py py-class docutils literal notranslate"><span class="pre">rhkdata</span></code> object.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">xarray</span></code> instance, with teh coordinates shifted to absolute tip positions</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">xarray</span></code> Dataset</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="rhkpy.rhkpy_process.gaussian">
@@ -390,7 +402,7 @@ If automatic peak finding is used, the exclusion area is calculated in a similar
 
 <dl class="py function">
 <dt class="sig sig-object py" id="rhkpy.rhkpy_process.plot_specpos">
-<span class="sig-prename descclassname"><span class="pre">rhkpy.rhkpy_process.</span></span><span class="sig-name descname"><span class="pre">plot_specpos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stmdata_object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repetitions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zscandir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rhkpy/rhkpy_process.html#plot_specpos"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rhkpy.rhkpy_process.plot_specpos" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">rhkpy.rhkpy_process.</span></span><span class="sig-name descname"><span class="pre">plot_specpos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stmdata_object</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rhkpy/rhkpy_process.html#plot_specpos"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rhkpy.rhkpy_process.plot_specpos" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
