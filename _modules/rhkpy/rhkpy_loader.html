@@ -92,9 +92,9 @@
 
 <div class="viewcode-block" id="rhkdata"><a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_loader.rhkdata">[docs]</a><span class="k">class</span> <span class="nc">rhkdata</span><span class="p">:</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">	A container for the xarray based structure of the RHK data.</span>
+<span class="sd">	A container for the xarray based structure of the RHK data. Loads the RHK &quot;sm4&quot; file from the path at: ``filename``.</span>
 
-<span class="sd">	:param filename: filename of the &quot;sm4&quot; file to be loaded</span>
+<span class="sd">	:param filename: path and filename of the &quot;sm4&quot; file to be loaded</span>
 <span class="sd">	:type filename: str</span>
 <span class="sd">	:param repetitions: The number of repeated aquisitions of spectra in tip position, defaults to 0</span>
 <span class="sd">	:type repetitions: int, optional</span>
@@ -325,7 +325,10 @@
 
 <span class="k">def</span> <span class="nf">_load_image</span><span class="p">(</span><span class="n">stmdata_object</span><span class="p">):</span>
 	<span class="c1"># load the image data</span>
-	<span class="n">stmdata_object</span> <span class="o">=</span> <span class="n">_xr_image</span><span class="p">(</span><span class="n">stmdata_object</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">datatype</span> <span class="o">==</span> <span class="s1">&#39;image&#39;</span> <span class="ow">or</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">datatype</span> <span class="o">==</span> <span class="s1">&#39;map&#39;</span><span class="p">:</span>
+		<span class="n">stmdata_object</span> <span class="o">=</span> <span class="n">_xr_image</span><span class="p">(</span><span class="n">stmdata_object</span><span class="p">)</span>
+	<span class="k">elif</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">datatype</span> <span class="o">==</span> <span class="s1">&#39;line&#39;</span><span class="p">:</span>
+		<span class="n">stmdata_object</span> <span class="o">=</span> <span class="n">_xr_image_line</span><span class="p">(</span><span class="n">stmdata_object</span><span class="p">)</span>
 	<span class="c1"># add metadata</span>
 	<span class="n">stmdata_object</span> <span class="o">=</span> <span class="n">_add_image_metadata</span><span class="p">(</span><span class="n">stmdata_object</span><span class="p">)</span>
 	<span class="k">return</span> <span class="n">stmdata_object</span>
@@ -480,9 +483,7 @@
 	<span class="n">currentfw</span> <span class="o">=</span> <span class="n">tempcurr</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span>
 	<span class="n">currentbw</span> <span class="o">=</span> <span class="n">tempcurr</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span>
 
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">	Coordinates of the spectroscopy map</span>
-<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="c1"># Coordinates of the spectroscopy map</span>
 	<span class="c1"># &#39;RHK_SpecDrift_Xcoord&#39; are the coordinates of the spectra.</span>
 	<span class="c1"># This contains the coordinates in the order that the spectra are in. </span>
 	<span class="n">xcoo</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="o">.</span><span class="n">LIA_Current</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;RHK_SpecDrift_Xcoord&#39;</span><span class="p">])</span>
@@ -557,7 +558,7 @@
 	<span class="c1"># Here we only need the first x and y components</span>
 	<span class="n">xcoo</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="o">.</span><span class="n">LIA_Current</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;RHK_SpecDrift_Xcoord&#39;</span><span class="p">])</span>
 	<span class="n">ycoo</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="o">.</span><span class="n">LIA_Current</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;RHK_SpecDrift_Ycoord&#39;</span><span class="p">])</span>
-	<span class="c1"># reshaping the coordinates similarly to the spectra. Need only every second coordinate</span>
+	<span class="c1"># reshaping the coordinates similarly to the spectra.</span>
 	<span class="n">tempx</span> <span class="o">=</span> <span class="n">xcoo</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 	<span class="n">tempy</span> <span class="o">=</span> <span class="n">ycoo</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
@@ -567,7 +568,9 @@
 	<span class="n">xrspec</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span>
 		<span class="n">data_vars</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
 			<span class="n">lia</span> <span class="o">=</span> <span class="p">([</span><span class="s1">&#39;bias&#39;</span><span class="p">,</span> <span class="s1">&#39;repetitions&#39;</span><span class="p">,</span> <span class="s1">&#39;biasscandir&#39;</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">liafw</span><span class="p">,</span> <span class="n">liabw</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">12</span><span class="p">),</span>
-			<span class="n">current</span> <span class="o">=</span> <span class="p">([</span><span class="s1">&#39;bias&#39;</span><span class="p">,</span> <span class="s1">&#39;repetitions&#39;</span><span class="p">,</span> <span class="s1">&#39;biasscandir&#39;</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">currentfw</span><span class="p">,</span> <span class="n">currentbw</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">12</span><span class="p">)</span>
+			<span class="n">current</span> <span class="o">=</span> <span class="p">([</span><span class="s1">&#39;bias&#39;</span><span class="p">,</span> <span class="s1">&#39;repetitions&#39;</span><span class="p">,</span> <span class="s1">&#39;biasscandir&#39;</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">currentfw</span><span class="p">,</span> <span class="n">currentbw</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">12</span><span class="p">),</span>
+			<span class="n">x</span> <span class="o">=</span> <span class="n">tempx</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">9</span><span class="p">,</span>
+			<span class="n">y</span> <span class="o">=</span> <span class="n">tempy</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">9</span>
 			<span class="p">),</span>
 		<span class="n">coords</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
 			<span class="n">bias</span> <span class="o">=</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s1">&#39;LIA_Current_x&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
@@ -582,6 +585,10 @@
 	<span class="n">xrspec</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;speccoord_x units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;nm&#39;</span>
 	<span class="n">xrspec</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;speccoord_y units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;nm&#39;</span>
 
+	<span class="n">xrspec</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;nm&#39;</span>
+	<span class="n">xrspec</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;nm&#39;</span>
+	<span class="n">xrspec</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;long units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;nanometer&#39;</span>
+	<span class="n">xrspec</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;long units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;nanometer&#39;</span>
 	<span class="n">xrspec</span><span class="p">[</span><span class="s1">&#39;lia&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;pA&#39;</span>
 	<span class="n">xrspec</span><span class="p">[</span><span class="s1">&#39;lia&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;long units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;picoampere&#39;</span>
 	<span class="n">xrspec</span><span class="p">[</span><span class="s1">&#39;current&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;pA&#39;</span>
@@ -782,7 +789,7 @@
 	<span class="c1"># Here we only need the first x and y components</span>
 	<span class="n">xcoo</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="o">.</span><span class="n">Current</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;RHK_SpecDrift_Xcoord&#39;</span><span class="p">])</span>
 	<span class="n">ycoo</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="o">.</span><span class="n">Current</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;RHK_SpecDrift_Ycoord&#39;</span><span class="p">])</span>
-	<span class="c1"># reshaping the coordinates similarly to the spectra. Need only every second coordinate</span>
+	<span class="c1"># reshaping the coordinates similarly to the spectra.</span>
 	<span class="n">tempx</span> <span class="o">=</span> <span class="n">xcoo</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 	<span class="n">tempy</span> <span class="o">=</span> <span class="n">ycoo</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
@@ -793,7 +800,9 @@
 	<span class="c1"># also adding specific attributes</span>
 	<span class="n">xrspec</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span>
 		<span class="n">data_vars</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-			<span class="n">current</span> <span class="o">=</span> <span class="p">([</span><span class="s1">&#39;z&#39;</span><span class="p">,</span> <span class="s1">&#39;repetitions&#39;</span><span class="p">,</span> <span class="s1">&#39;zscandir&#39;</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">currentfw</span><span class="p">,</span> <span class="n">currentbw</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">12</span><span class="p">)</span>
+			<span class="n">current</span> <span class="o">=</span> <span class="p">([</span><span class="s1">&#39;z&#39;</span><span class="p">,</span> <span class="s1">&#39;repetitions&#39;</span><span class="p">,</span> <span class="s1">&#39;zscandir&#39;</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">currentfw</span><span class="p">,</span> <span class="n">currentbw</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">12</span><span class="p">),</span>
+			<span class="n">x</span> <span class="o">=</span> <span class="n">tempx</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">9</span><span class="p">,</span>
+			<span class="n">y</span> <span class="o">=</span> <span class="n">tempy</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">9</span>
 			<span class="p">),</span>
 		<span class="n">coords</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
 			<span class="n">z</span> <span class="o">=</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s1">&#39;Current_x&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">9</span><span class="p">,</span>
@@ -803,6 +812,10 @@
 		<span class="n">attrs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">filename</span> <span class="o">=</span> <span class="n">_get_filename</span><span class="p">(</span><span class="n">stmdata_object</span><span class="o">.</span><span class="n">filename</span><span class="p">))</span>
 	<span class="p">)</span>
 
+	<span class="n">xrspec</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;nm&#39;</span>
+	<span class="n">xrspec</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;nm&#39;</span>
+	<span class="n">xrspec</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;long units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;nanometer&#39;</span>
+	<span class="n">xrspec</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;long units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;nanometer&#39;</span>
 	<span class="n">xrspec</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;speccoord_x&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tempx</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">9</span>
 	<span class="n">xrspec</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;speccoord_y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tempy</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">9</span>
 	<span class="n">xrspec</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;speccoord_x units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;nm&#39;</span>
@@ -894,8 +907,85 @@
 	<span class="n">xrimage</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;nm&#39;</span>
 	<span class="n">xrimage</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;long units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;nanometer&#39;</span>
 	<span class="n">xrimage</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;long units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;nanometer&#39;</span>
-	<span class="n">xrimage</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;note&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;slow scan direction</span><span class="se">\n</span><span class="s1">&#39;</span>
-	<span class="n">xrimage</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;note&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;fast scan direction</span><span class="se">\n</span><span class="s1">&#39;</span>
+	<span class="n">xrimage</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;note&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;fast scan direction</span><span class="se">\n</span><span class="s1">&#39;</span>
+	<span class="n">xrimage</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;note&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;slow scan direction</span><span class="se">\n</span><span class="s1">&#39;</span>
+
+	<span class="n">stmdata_object</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">xrimage</span>
+	<span class="k">return</span> <span class="n">stmdata_object</span>
+
+
+<span class="k">def</span> <span class="nf">_xr_image_line</span><span class="p">(</span><span class="n">stmdata_object</span><span class="p">):</span>
+	<span class="c1"># topography</span>
+	<span class="n">topofw</span> <span class="o">=</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="o">.</span><span class="n">Topography_Forward</span>
+	<span class="n">topobw</span> <span class="o">=</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="o">.</span><span class="n">Topography_Backward</span>
+	
+	<span class="c1"># current</span>
+	<span class="n">currfw</span> <span class="o">=</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="o">.</span><span class="n">Current_Forward</span>
+	<span class="n">currbw</span> <span class="o">=</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="o">.</span><span class="n">Current_Backward</span>
+	<span class="c1"># lia</span>
+	<span class="n">liafw</span> <span class="o">=</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="o">.</span><span class="n">LIA_Current_Forward</span>
+	<span class="n">liabw</span> <span class="o">=</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="o">.</span><span class="n">LIA_Current_Backward</span>
+
+	<span class="c1"># The image data also needs to be flipped along the slow scan direction,</span>
+	<span class="c1"># so that it shows up as the RHK Rev software would display it, when plotting with xarray.plot().</span>
+	<span class="c1"># this behaviour is because xarray.plot, uses by default pcolormesh() to plot.</span>
+	<span class="c1"># pcolormesh() flips the data along the slow scan direction. imshow() plots it the way it looks in RHK Rev and Gwyddion.</span>
+	<span class="n">topofw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flipud</span><span class="p">(</span><span class="n">topofw</span><span class="p">)</span>
+	<span class="n">topobw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flipud</span><span class="p">(</span><span class="n">topobw</span><span class="p">)</span>
+	<span class="n">currfw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flipud</span><span class="p">(</span><span class="n">currfw</span><span class="p">)</span>
+	<span class="n">currbw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flipud</span><span class="p">(</span><span class="n">currbw</span><span class="p">)</span>
+	<span class="n">liafw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flipud</span><span class="p">(</span><span class="n">liafw</span><span class="p">)</span>
+	<span class="n">liabw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flipud</span><span class="p">(</span><span class="n">liabw</span><span class="p">)</span>
+
+	<span class="c1"># coordinates</span>
+	<span class="c1"># absolute values should be found by adding the X Y offsets</span>
+	<span class="n">xoff</span> <span class="o">=</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="o">.</span><span class="n">Topography_Forward</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;RHK_Xoffset&#39;</span><span class="p">]</span>
+	<span class="n">yoff</span> <span class="o">=</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="o">.</span><span class="n">Topography_Forward</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;RHK_Yoffset&#39;</span><span class="p">]</span>
+
+	<span class="c1"># these are the relative coordinates (from 0 to size of the image)</span>
+	<span class="n">xx</span> <span class="o">=</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="o">.</span><span class="n">Topography_Forward_x</span><span class="o">.</span><span class="n">data</span>
+	<span class="n">yy</span> <span class="o">=</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="o">.</span><span class="n">Topography_Forward_y</span><span class="o">.</span><span class="n">data</span>
+
+	<span class="c1"># calculate the relative coordinates, including rotation</span>
+	<span class="c1"># the offset refers to the corner of the image, so we need to account for that</span>
+	<span class="n">xlength</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">xx</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">xx</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+	<span class="n">ylength</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">yy</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">yy</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+	<span class="n">xoff</span> <span class="o">-=</span> <span class="n">xlength</span><span class="o">/</span><span class="mi">2</span>
+	<span class="n">yoff</span> <span class="o">-=</span> <span class="n">ylength</span><span class="o">/</span><span class="mi">2</span>
+
+	<span class="c1"># create xarray Dataset of the image data</span>
+	<span class="n">xrimage</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span>
+		<span class="n">data_vars</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+			<span class="n">topography</span> <span class="o">=</span> <span class="p">([</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;reps&#39;</span><span class="p">,</span> <span class="s1">&#39;scandir&#39;</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">topofw</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">topobw</span><span class="o">.</span><span class="n">data</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">9</span><span class="p">),</span>
+			<span class="n">current</span> <span class="o">=</span> <span class="p">([</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;reps&#39;</span><span class="p">,</span> <span class="s1">&#39;scandir&#39;</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">currfw</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">currbw</span><span class="o">.</span><span class="n">data</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">12</span><span class="p">),</span>
+			<span class="n">lia</span> <span class="o">=</span> <span class="p">([</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;reps&#39;</span><span class="p">,</span> <span class="s1">&#39;scandir&#39;</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">liafw</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">liabw</span><span class="o">.</span><span class="n">data</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">12</span><span class="p">)</span>
+			<span class="p">),</span>
+		<span class="n">coords</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+			<span class="n">x</span> <span class="o">=</span> <span class="n">xx</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">9</span><span class="p">,</span>
+			<span class="n">reps</span> <span class="o">=</span> <span class="n">yy</span><span class="p">,</span>
+			<span class="n">scandir</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s1">&#39;forward&#39;</span><span class="p">,</span> <span class="s1">&#39;backward&#39;</span><span class="p">])</span>
+			<span class="p">),</span>
+		<span class="n">attrs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+			<span class="n">filename</span> <span class="o">=</span> <span class="n">_get_filename</span><span class="p">(</span><span class="n">stmdata_object</span><span class="o">.</span><span class="n">filename</span><span class="p">),</span>
+			<span class="n">xoffset</span> <span class="o">=</span> <span class="n">xoff</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">9</span><span class="p">,</span>
+			<span class="n">yoffset</span> <span class="o">=</span> <span class="n">yoff</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">9</span><span class="p">,</span>
+			<span class="n">xoffset_units</span> <span class="o">=</span> <span class="s1">&#39;nm&#39;</span><span class="p">,</span>
+			<span class="n">yoffset_units</span> <span class="o">=</span> <span class="s1">&#39;nm&#39;</span>
+			<span class="p">)</span>
+		<span class="p">)</span>
+
+	<span class="n">xrimage</span><span class="p">[</span><span class="s1">&#39;topography&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;nm&#39;</span>
+	<span class="n">xrimage</span><span class="p">[</span><span class="s1">&#39;topography&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;long units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;nanometer&#39;</span>
+	<span class="n">xrimage</span><span class="p">[</span><span class="s1">&#39;lia&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;pA&#39;</span>
+	<span class="n">xrimage</span><span class="p">[</span><span class="s1">&#39;lia&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;long units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;picoampere&#39;</span>
+	<span class="n">xrimage</span><span class="p">[</span><span class="s1">&#39;current&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;pA&#39;</span>
+	<span class="n">xrimage</span><span class="p">[</span><span class="s1">&#39;current&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;long units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;picoampere&#39;</span>
+	<span class="n">xrimage</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s1">&#39;reps&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+	<span class="n">xrimage</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;nm&#39;</span>
+	<span class="n">xrimage</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;long units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;nanometer&#39;</span>
+	<span class="n">xrimage</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s1">&#39;reps&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;note&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;repetitions of the topography line</span><span class="se">\n</span><span class="s1">&#39;</span>
+	<span class="n">xrimage</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;note&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;fast scan direction</span><span class="se">\n</span><span class="s1">&#39;</span>
 
 	<span class="n">stmdata_object</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">xrimage</span>
 	<span class="k">return</span> <span class="n">stmdata_object</span>
