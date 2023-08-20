@@ -94,12 +94,13 @@
 		<span class="p">)</span> <span class="c1"># can&#39;t set default colormap with this</span></div>
 
 <div class="viewcode-block" id="coord_to_absolute"><a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_process.coord_to_absolute">[docs]</a><span class="k">def</span> <span class="nf">coord_to_absolute</span><span class="p">(</span><span class="n">xrobj</span><span class="p">):</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;Return a new :py:mod:`xarray` instance, with the coordinates updated to reflect the abolute tip position. This includes X, Y offset and rotation.</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Takes as input the :class:`rhkdata.image` variable of an :class:`rhkdata` instance.</span>
+<span class="sd">	Returns a new :py:mod:`xarray` instance, with the coordinates updated to reflect the abolute tip position. This includes X, Y offset and rotation.</span>
 
-<span class="sd">	:param xrobj: :py:mod:`xarray` variable of an :class:`rhkdata` object.</span>
+<span class="sd">	:param xrobj: :py:mod:`xarray` image variable of an :class:`rhkdata` object</span>
 <span class="sd">	:type xrobj: :py:mod:`xarray` Dataset</span>
 <span class="sd">	</span>
-<span class="sd">	:return: :py:mod:`xarray` instance, with teh coordinates shifted to absolute tip positions</span>
+<span class="sd">	:return: :py:mod:`xarray` :class:`rhkdata.image` instance, with the same data and metadata as the input and the coordinates shifted to absolute tip positions.</span>
 <span class="sd">	:rtype: :py:mod:`xarray` Dataset</span>
 <span class="sd">	&quot;&quot;&quot;</span>	
 	<span class="c1"># the xrobj passed to the function should always be and image</span>

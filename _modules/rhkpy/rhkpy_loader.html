@@ -76,7 +76,7 @@
 <span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">pl</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
-<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">re</span><span class="o">,</span> <span class="nn">copy</span>
 
 <span class="c1"># import load from spym</span>
 <span class="kn">from</span> <span class="nn">spym.io</span> <span class="kn">import</span> <span class="n">load</span>
@@ -203,7 +203,27 @@
 
 <div class="viewcode-block" id="rhkdata.plot_specpos"><a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_loader.rhkdata.plot_specpos">[docs]</a>	<span class="k">def</span> <span class="nf">plot_specpos</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>		
 		<span class="c1"># plot the positions of spectra on a topography image</span>
-		<span class="k">return</span> <span class="n">plot_specpos</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div>
+		<span class="k">return</span> <span class="n">plot_specpos</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="rhkdata.coord_to_absolute"><a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_loader.rhkdata.coord_to_absolute">[docs]</a>	<span class="k">def</span> <span class="nf">coord_to_absolute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Returns a new :class:`rhkdata` instance, with the coordinates updated to reflect the abolute tip position. This includes X, Y offset and rotation.</span>
+
+<span class="sd">		:return: :class:`rhkdata` instance, with the same data and metadata, but the :class:`rhkdata.image`, :py:mod:`xarray` variable coordinates shifted to absolute tip positions.</span>
+<span class="sd">		:rtype: :class:`rhkdata` instance</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="c1"># check if &#39;image&#39; is present</span>
+		<span class="k">if</span> <span class="s1">&#39;image&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">:</span>
+			<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;This `rhkdata` instance does not contain an image&#39;</span><span class="p">)</span>
+			<span class="k">return</span>
+		
+		<span class="c1"># copy the current instance</span>
+		<span class="n">rhkdataobj_new</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+		<span class="c1"># update the coordinates</span>
+		<span class="n">rhkdataobj_new</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">coord_to_absolute</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="p">)</span>
+
+		<span class="k">return</span> <span class="n">rhkdataobj_new</span></div></div>
+
 
 <span class="c1">### internal functions -----------------------------------------------------------</span>
 

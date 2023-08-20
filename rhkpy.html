@@ -53,6 +53,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#rhkpy.rhkpy_loader.load_rhksm4"><code class="docutils literal notranslate"><span class="pre">load_rhksm4()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#rhkpy.rhkpy_loader.load_spym"><code class="docutils literal notranslate"><span class="pre">load_spym()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#rhkpy.rhkpy_loader.rhkdata"><code class="docutils literal notranslate"><span class="pre">rhkdata</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#rhkpy.rhkpy_loader.rhkdata.coord_to_absolute"><code class="docutils literal notranslate"><span class="pre">rhkdata.coord_to_absolute()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#rhkpy.rhkpy_loader.rhkdata.plot_specpos"><code class="docutils literal notranslate"><span class="pre">rhkdata.plot_specpos()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#rhkpy.rhkpy_loader.rhkdata.print_info"><code class="docutils literal notranslate"><span class="pre">rhkdata.print_info()</span></code></a></li>
 </ul>
@@ -187,6 +188,20 @@
 </dd>
 </dl>
 <dl class="py method">
+<dt class="sig sig-object py" id="rhkpy.rhkpy_loader.rhkdata.coord_to_absolute">
+<span class="sig-name descname"><span class="pre">coord_to_absolute</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rhkpy/rhkpy_loader.html#rhkdata.coord_to_absolute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rhkpy.rhkpy_loader.rhkdata.coord_to_absolute" title="Permalink to this definition"></a></dt>
+<dd><p>Returns a new <a class="reference internal" href="#rhkpy.rhkpy_loader.rhkdata" title="rhkpy.rhkpy_loader.rhkdata"><code class="xref py py-class docutils literal notranslate"><span class="pre">rhkdata</span></code></a> instance, with the coordinates updated to reflect the abolute tip position. This includes X, Y offset and rotation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#rhkpy.rhkpy_loader.rhkdata" title="rhkpy.rhkpy_loader.rhkdata"><code class="xref py py-class docutils literal notranslate"><span class="pre">rhkdata</span></code></a> instance, with the same data and metadata, but the <code class="xref py py-class docutils literal notranslate"><span class="pre">rhkdata.image</span></code>, <code class="xref py py-mod docutils literal notranslate"><span class="pre">xarray</span></code> variable coordinates shifted to absolute tip positions.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#rhkpy.rhkpy_loader.rhkdata" title="rhkpy.rhkpy_loader.rhkdata"><code class="xref py py-class docutils literal notranslate"><span class="pre">rhkdata</span></code></a> instance</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="rhkpy.rhkpy_loader.rhkdata.plot_specpos">
 <span class="sig-name descname"><span class="pre">plot_specpos</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rhkpy/rhkpy_loader.html#rhkdata.plot_specpos"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rhkpy.rhkpy_loader.rhkdata.plot_specpos" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
@@ -262,13 +277,14 @@ If automatic peak finding is used, the exclusion area is calculated in a similar
 <dl class="py function">
 <dt class="sig sig-object py" id="rhkpy.rhkpy_process.coord_to_absolute">
 <span class="sig-prename descclassname"><span class="pre">rhkpy.rhkpy_process.</span></span><span class="sig-name descname"><span class="pre">coord_to_absolute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xrobj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rhkpy/rhkpy_process.html#coord_to_absolute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rhkpy.rhkpy_process.coord_to_absolute" title="Permalink to this definition"></a></dt>
-<dd><p>Return a new <code class="xref py py-mod docutils literal notranslate"><span class="pre">xarray</span></code> instance, with the coordinates updated to reflect the abolute tip position. This includes X, Y offset and rotation.</p>
+<dd><p>Takes as input the <code class="xref py py-class docutils literal notranslate"><span class="pre">rhkdata.image</span></code> variable of an <code class="xref py py-class docutils literal notranslate"><span class="pre">rhkdata</span></code> instance.
+Returns a new <code class="xref py py-mod docutils literal notranslate"><span class="pre">xarray</span></code> instance, with the coordinates updated to reflect the abolute tip position. This includes X, Y offset and rotation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>xrobj</strong> (<code class="xref py py-mod docutils literal notranslate"><span class="pre">xarray</span></code> Dataset) – <code class="xref py py-mod docutils literal notranslate"><span class="pre">xarray</span></code> variable of an <code class="xref py py-class docutils literal notranslate"><span class="pre">rhkdata</span></code> object.</p>
+<dd class="field-odd"><p><strong>xrobj</strong> (<code class="xref py py-mod docutils literal notranslate"><span class="pre">xarray</span></code> Dataset) – <code class="xref py py-mod docutils literal notranslate"><span class="pre">xarray</span></code> image variable of an <code class="xref py py-class docutils literal notranslate"><span class="pre">rhkdata</span></code> object</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">xarray</span></code> instance, with teh coordinates shifted to absolute tip positions</p>
+<dd class="field-even"><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">xarray</span></code> <code class="xref py py-class docutils literal notranslate"><span class="pre">rhkdata.image</span></code> instance, with the same data and metadata as the input and the coordinates shifted to absolute tip positions.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">xarray</span></code> Dataset</p>
