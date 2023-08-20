@@ -123,10 +123,44 @@
 
 <span class="sd">			import rhkpy</span>
 
-<span class="sd">			# example coming soon</span>
+<span class="sd">			# Load dI/dV spectra, measured along a line</span>
+<span class="sd">			filename = &#39;line_9K_ABC6_2020_11_01_12_12_27_213.sm4&#39;</span>
+<span class="sd">			linespec = rhkpy.rhkdata(filename)</span>
+
+<span class="sd">			# display the contents of the spectroscopy `xarray` instance</span>
+<span class="sd">			linespec.spectra</span>
+<span class="sd">			xarray.Dataset</span>
+<span class="sd">			Dimensions:</span>
+<span class="sd">			bias: 501dist: 64repetitions: 1biasscandir: 2</span>
+<span class="sd">			Coordinates: (4)</span>
+<span class="sd">			Data variables:</span>
+<span class="sd">			lia</span>
+<span class="sd">			(bias, dist, repetitions, biasscandir)</span>
+<span class="sd">			float64</span>
+<span class="sd">			3.585 3.779 3.353 ... 5.278 5.185</span>
+<span class="sd">			current</span>
+<span class="sd">			(bias, dist, repetitions, biasscandir)</span>
+<span class="sd">			float64</span>
+<span class="sd">			99.49 111.2 94.62 ... -133.3 -132.7</span>
+<span class="sd">			x</span>
+<span class="sd">			(dist)</span>
+<span class="sd">			float64</span>
+<span class="sd">			-37.48 -36.97 ... -5.384 -4.866</span>
+<span class="sd">			y</span>
+<span class="sd">			(dist)</span>
+<span class="sd">			float64</span>
+<span class="sd">			-173.5 -173.6 ... -179.9 -180.0</span>
+<span class="sd">			Indexes: (4)</span>
+<span class="sd">			Attributes: (15)</span>
+
+<span class="sd">			# select the dI/dV signal (lia) and average the forward and backward bias sweeps and repetitions</span>
+<span class="sd">			linespec_avg = linespec.spectra.lia.mean(dim = [&#39;biasscandir&#39;, &#39;repetitions&#39;])</span>
+
+<span class="sd">			# plot the dI/dV values along the remaining coordinates: bias, dist</span>
+<span class="sd">			linespec_avg.plot()</span>
 
 <span class="sd">	&quot;&quot;&quot;</span>
-	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">repetitions</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">alternate</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">datatype</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">spectype</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">repetitions</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">alternate</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Initialize the :class:`rhkdata` instance</span>
 <span class="sd">		&quot;&quot;&quot;</span>		
 
@@ -134,6 +168,8 @@
 			<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;alternate needs to be a bool variable: True or False. Default is True&quot;</span><span class="p">)</span>
 
 		<span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">datatype</span> <span class="o">=</span> <span class="kc">None</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">spectype</span> <span class="o">=</span> <span class="kc">None</span>
 
 		<span class="c1"># Boolean value, True if alternate scan directions is turned on</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">alternate</span> <span class="o">=</span> <span class="n">alternate</span>
@@ -146,16 +182,8 @@
 		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">spymdata</span><span class="p">[</span><span class="n">l</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;RHK_MinorVer&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">6</span><span class="p">:</span>
 			<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;stmdatastruct not tested for RHK Rev version &lt; 6. Some things might not work as expected.&#39;</span><span class="p">)</span>
 
-		<span class="c1"># check type of data and spectra contained in the file, if no type is specified</span>
-		<span class="k">if</span> <span class="n">datatype</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">datatype</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">spectype</span> <span class="o">=</span> <span class="n">_checkdatatype</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-		<span class="k">else</span><span class="p">:</span>
-			<span class="k">if</span> <span class="p">(</span><span class="n">datatype</span> <span class="o">!=</span> <span class="s1">&#39;map&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">datatype</span> <span class="o">!=</span> <span class="s1">&#39;line&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">datatype</span> <span class="o">!=</span> <span class="s1">&#39;spec&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">datatype</span> <span class="o">!=</span> <span class="s1">&#39;image&#39;</span><span class="p">):</span>
-				<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;datatype must be either: map, line, spec or image&#39;</span><span class="p">)</span>
-				<span class="k">return</span>
-			<span class="k">else</span><span class="p">:</span>
-				<span class="bp">self</span><span class="o">.</span><span class="n">datatype</span> <span class="o">=</span> <span class="n">datatype</span>
-				<span class="bp">self</span><span class="o">.</span><span class="n">spectype</span> <span class="o">=</span> <span class="n">spectype</span>
+		<span class="c1"># check type of data and spectra contained in the file</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">datatype</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">spectype</span> <span class="o">=</span> <span class="n">_checkdatatype</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
 		<span class="c1"># number of spectra at a tip position</span>
 		<span class="c1"># default value is 0, if this is changed, the code will use the given value, othewise it will try to infer the number of repetitions from the number of identical tip positions</span>
@@ -210,6 +238,14 @@
 
 <span class="sd">		:return: :class:`rhkdata` instance, with the same data and metadata, but the :class:`rhkdata.image`, :py:mod:`xarray` variable coordinates shifted to absolute tip positions.</span>
 <span class="sd">		:rtype: :class:`rhkdata` instance</span>
+
+<span class="sd">		:Example:</span>
+<span class="sd">		</span>
+<span class="sd">		.. code-block:: python</span>
+
+<span class="sd">			import rhkpy</span>
+
+<span class="sd">			# example coming soon</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="c1"># check if &#39;image&#39; is present</span>
 		<span class="k">if</span> <span class="s1">&#39;image&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">:</span>
