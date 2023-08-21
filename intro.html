@@ -44,7 +44,10 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#known-issues">Known issues</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="#installation">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#examples">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rhkpy.html">rhkpy package</a></li>
@@ -79,6 +82,13 @@
 <h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading"></a></h1>
 <p>A python package for processing Scanning Tunneling Microscopy (STM) data from RHK, based on the <a class="reference external" href="https://github.com/rescipy-project/spym">spym project</a>.
 Source is available from <a class="reference external" href="https://github.com/zrbyte/rhkpy/">GitHub</a>.</p>
+<section id="known-issues">
+<h2>Known issues<a class="headerlink" href="#known-issues" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>For line spectra, topography (and probably all the other data) is loaded in the incorrect order. <cite>coord_to_absolute()</cite> doesn’t work for the image part of line spectra.</p></li>
+<li><p>For the older version (<cite>RHK_MinorVer = 5</cite>) of the RHK software, the I(z) spectra seem to have the wrong <cite>RHK_LineTypeName</cite> field value. They show up as dI/dV spectra.</p></li>
+</ul>
+</section>
 </section>
 <section id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this heading"></a></h1>

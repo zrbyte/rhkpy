@@ -77,13 +77,10 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
 <span class="kn">import</span> <span class="nn">re</span><span class="o">,</span> <span class="nn">copy</span>
-
 <span class="c1"># import load from spym</span>
 <span class="kn">from</span> <span class="nn">spym.io</span> <span class="kn">import</span> <span class="n">load</span>
-
 <span class="c1">## Using the old loader</span>
 <span class="kn">from</span> <span class="nn">spym.io</span> <span class="kn">import</span> <span class="n">rhksm4</span>
-
 <span class="c1">## flatten and plane fitting</span>
 <span class="kn">from</span> <span class="nn">spym.process.level</span> <span class="kn">import</span> <span class="n">align</span>
 <span class="kn">from</span> <span class="nn">spym.process.level</span> <span class="kn">import</span> <span class="n">plane</span>
@@ -100,11 +97,9 @@
 <span class="sd">	:type repetitions: int, optional</span>
 <span class="sd">	:param alternate: `True` if the bias is swept forward and backward, `False` if not, defaults to True</span>
 <span class="sd">	:type alternate: bool, optional</span>
-<span class="sd">	:param datatype: datatype, defaults to None</span>
-<span class="sd">	:type datatype: str, optional</span>
-<span class="sd">	:param spectype: spectrum type, defaults to None</span>
-<span class="sd">	:type spectype: str, optional</span>
-
+<span class="sd">	:param loadraw: Set to `True` if you want the raw topography data, defaults to False</span>
+<span class="sd">	:type loadraw: bool, optional</span>
+<span class="sd">	</span>
 <span class="sd">	Some variables of the :class:`rhkdata` class:</span>
 
 <span class="sd">	:var filename: (type str) filename of the &quot;sm4&quot; file</span>
@@ -115,7 +110,7 @@
 <span class="sd">	All the variables can be listed by calling: :class:`rhkdata.print_info`.</span>
 
 <span class="sd">	.. note::</span>
-<span class="sd">		Optional parameters are not needed, they are just present for debugging purposes. Their values are inferred from the sm4 file.</span>
+<span class="sd">		If you want to skip the &quot;flatten&quot; filter of the topography images, use: `loadraw = True`.</span>
 <span class="sd">	</span>
 <span class="sd">	:Example:</span>
 <span class="sd">		</span>
@@ -124,43 +119,47 @@
 <span class="sd">			import rhkpy</span>
 
 <span class="sd">			# Load dI/dV spectra, measured along a line</span>
-<span class="sd">			filename = &#39;line_9K_ABC6_2020_11_01_12_12_27_213.sm4&#39;</span>
+<span class="sd">			filename = &#39;linespectra.sm4&#39;</span>
 <span class="sd">			linespec = rhkpy.rhkdata(filename)</span>
 
 <span class="sd">			# display the contents of the spectroscopy `xarray` instance</span>
 <span class="sd">			linespec.spectra</span>
-<span class="sd">			xarray.Dataset</span>
-<span class="sd">			Dimensions:</span>
-<span class="sd">			bias: 501dist: 64repetitions: 1biasscandir: 2</span>
-<span class="sd">			Coordinates: (4)</span>
+<span class="sd">			&lt;xarray.Dataset&gt;</span>
+<span class="sd">			Dimensions:      (bias: 501, dist: 64, repetitions: 1, biasscandir: 2)</span>
+<span class="sd">			Coordinates:</span>
+<span class="sd">			* bias         (bias) float64 0.5 0.498 0.496 0.494 ... -0.496 -0.498 -0.5</span>
+<span class="sd">			* dist         (dist) float64 0.0 0.5279 1.056 1.584 ... 32.2 32.73 33.26</span>
+<span class="sd">			* repetitions  (repetitions) int32 0</span>
+<span class="sd">			* biasscandir  (biasscandir) &lt;U5 &#39;left&#39; &#39;right&#39;</span>
 <span class="sd">			Data variables:</span>
-<span class="sd">			lia</span>
-<span class="sd">			(bias, dist, repetitions, biasscandir)</span>
-<span class="sd">			float64</span>
-<span class="sd">			3.585 3.779 3.353 ... 5.278 5.185</span>
-<span class="sd">			current</span>
-<span class="sd">			(bias, dist, repetitions, biasscandir)</span>
-<span class="sd">			float64</span>
-<span class="sd">			99.49 111.2 94.62 ... -133.3 -132.7</span>
-<span class="sd">			x</span>
-<span class="sd">			(dist)</span>
-<span class="sd">			float64</span>
-<span class="sd">			-37.48 -36.97 ... -5.384 -4.866</span>
-<span class="sd">			y</span>
-<span class="sd">			(dist)</span>
-<span class="sd">			float64</span>
-<span class="sd">			-173.5 -173.6 ... -179.9 -180.0</span>
-<span class="sd">			Indexes: (4)</span>
-<span class="sd">			Attributes: (15)</span>
+<span class="sd">				lia          (bias, dist, repetitions, biasscandir) float64 3.585 ... 5.185</span>
+<span class="sd">				current      (bias, dist, repetitions, biasscandir) float64 99.49 ... -132.7</span>
+<span class="sd">				x            (dist) float64 -37.48 -36.97 -36.45 ... -5.902 -5.384 -4.866</span>
+<span class="sd">				y            (dist) float64 -173.5 -173.6 -173.7 ... -179.7 -179.9 -180.0</span>
+<span class="sd">			Attributes: (12/15)</span>
+<span class="sd">				filename:           line_9K_ABC6_2020_11_01_12_12_27_213.sm4</span>
+<span class="sd">				bias:               0.49999988</span>
+<span class="sd">				bias units:         V</span>
+<span class="sd">				setpoint:           99.99999439624929</span>
+<span class="sd">				setpoint units:     pA</span>
+<span class="sd">				measurement date:   11/01/20</span>
+<span class="sd">				...                 ...</span>
+<span class="sd">				LI amplitude unit:  mV</span>
+<span class="sd">				LI frequency:       1300.0</span>
+<span class="sd">				LI frequency unit:  Hz</span>
+<span class="sd">				LI phase:           -102.9999998</span>
+<span class="sd">				datatype:           line</span>
+<span class="sd">				spectype:           iv</span>
 
-<span class="sd">			# select the dI/dV signal (lia) and average the forward and backward bias sweeps and repetitions</span>
+<span class="sd">			# select the dI/dV signal (lia) and average the</span>
+<span class="sd">			# forward and backward bias sweeps and repetitions</span>
 <span class="sd">			linespec_avg = linespec.spectra.lia.mean(dim = [&#39;biasscandir&#39;, &#39;repetitions&#39;])</span>
 
 <span class="sd">			# plot the dI/dV values along the remaining coordinates: bias, dist</span>
 <span class="sd">			linespec_avg.plot()</span>
 
 <span class="sd">	&quot;&quot;&quot;</span>
-	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">repetitions</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">alternate</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">repetitions</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">alternate</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">loadraw</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Initialize the :class:`rhkdata` instance</span>
 <span class="sd">		&quot;&quot;&quot;</span>		
 
@@ -168,6 +167,7 @@
 			<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;alternate needs to be a bool variable: True or False. Default is True&quot;</span><span class="p">)</span>
 
 		<span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">loadraw</span> <span class="o">=</span> <span class="n">loadraw</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">datatype</span> <span class="o">=</span> <span class="kc">None</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">spectype</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -245,7 +245,29 @@
 
 <span class="sd">			import rhkpy</span>
 
-<span class="sd">			# example coming soon</span>
+<span class="sd">			m = rhkpy.rhkdata(&#39;didv map.sm4&#39;)</span>
+
+<span class="sd">			# Take the `rhkdata` instance (image or map): `m`,</span>
+<span class="sd">			# and convert the image coordinates to absolute values</span>
+<span class="sd">			m_abs = m.coord_to_absolute()</span>
+
+<span class="sd">			# coordinates of the instance `m`</span>
+<span class="sd">			# We can see it runs from 0 to 100 nm</span>
+<span class="sd">			print(m.image.x.min().data, m.image.x.max().data)</span>
+<span class="sd">			0.0 100.0</span>
+
+<span class="sd">			# check the same corrdinate for the new `m_abs`</span>
+<span class="sd">			print(m_abs.image.x.min().data, m_abs.image.x.max().data)</span>
+<span class="sd">			-877.0008892433623 -741.0633876547834</span>
+
+<span class="sd">			# we can see it&#39;s now shows the exact tip position</span>
+<span class="sd">			# the image is also rotated, as the &quot;scan angle&quot; attribute shows</span>
+<span class="sd">			m_abs.image.attrs[&#39;scan angle&#39;]</span>
+<span class="sd">			30.0</span>
+<span class="sd">			</span>
+<span class="sd">			# plot the rotated and offset image</span>
+<span class="sd">			m_abs.image.topography.sel(scandir = &#39;forward&#39;).plot()</span>
+
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="c1"># check if &#39;image&#39; is present</span>
 		<span class="k">if</span> <span class="s1">&#39;image&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">:</span>
@@ -258,7 +280,27 @@
 		<span class="c1"># update the coordinates</span>
 		<span class="n">rhkdataobj_new</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">coord_to_absolute</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="p">)</span>
 
-		<span class="k">return</span> <span class="n">rhkdataobj_new</span></div></div>
+		<span class="k">return</span> <span class="n">rhkdataobj_new</span></div>
+
+
+<div class="viewcode-block" id="rhkdata.polyflatten"><a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_loader.rhkdata.polyflatten">[docs]</a>	<span class="k">def</span> <span class="nf">polyflatten</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Uses :func:`~rhkpy.rhkpy_process.polyflatten` to flatten the selected datafield in the :class:`rhkdata` instance.</span>
+<span class="sd">		All keywords accepted by :func:`~rhkpy.rhkpy_process.polyflatten` can be passed.</span>
+
+<span class="sd">		:return: :class:`rhdata` instance, with the selected ``field_type`` flattened. Default ``field_type`` = &#39;topography&#39;.</span>
+<span class="sd">		:rtype: :class:`rhdata` instance</span>
+<span class="sd">		&quot;&quot;&quot;</span>	
+
+		<span class="c1"># check if &#39;image&#39; is present</span>
+		<span class="k">if</span> <span class="s1">&#39;image&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">:</span>
+			<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;This `rhkdata` instance does not contain an image&#39;</span><span class="p">)</span>
+			<span class="k">return</span>
+		<span class="c1"># make a copy of the instance</span>
+		<span class="n">flattened_rhkdataobj</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+		<span class="c1"># apply flatten to the copy</span>
+		<span class="n">flattened_rhkdataobj</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">polyflatten</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+		<span class="k">return</span> <span class="n">flattened_rhkdataobj</span></div></div>
 
 
 <span class="c1">### internal functions -----------------------------------------------------------</span>
@@ -387,6 +429,10 @@
 		<span class="n">stmdata_object</span> <span class="o">=</span> <span class="n">_xr_image_line</span><span class="p">(</span><span class="n">stmdata_object</span><span class="p">)</span>
 	<span class="c1"># add metadata</span>
 	<span class="n">stmdata_object</span> <span class="o">=</span> <span class="n">_add_image_metadata</span><span class="p">(</span><span class="n">stmdata_object</span><span class="p">)</span>
+
+	<span class="c1"># make a polynomial background subtraction to the topography data (flatten)</span>
+	<span class="k">if</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">loadraw</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+		<span class="n">stmdata_object</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">polyflatten</span><span class="p">(</span><span class="n">stmdata_object</span><span class="o">.</span><span class="n">image</span><span class="p">,</span> <span class="n">polyorder</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
 	<span class="k">return</span> <span class="n">stmdata_object</span>
 
 
@@ -892,10 +938,10 @@
 	
 	<span class="c1"># Load image data</span>
 	<span class="c1"># use spym to align (flatten the data) and planefit</span>
-	<span class="n">topofw</span><span class="p">,</span> <span class="n">bg</span> <span class="o">=</span> <span class="n">align</span><span class="p">(</span><span class="n">topofw</span><span class="p">,</span> <span class="n">baseline</span><span class="o">=</span><span class="s1">&#39;median&#39;</span><span class="p">)</span>
-	<span class="n">topobw</span><span class="p">,</span> <span class="n">bg</span> <span class="o">=</span> <span class="n">align</span><span class="p">(</span><span class="n">topobw</span><span class="p">,</span> <span class="n">baseline</span><span class="o">=</span><span class="s1">&#39;median&#39;</span><span class="p">)</span>
-	<span class="n">topofw</span><span class="p">,</span> <span class="n">bg</span> <span class="o">=</span> <span class="n">plane</span><span class="p">(</span><span class="n">topofw</span><span class="p">)</span>
-	<span class="n">topobw</span><span class="p">,</span> <span class="n">bg</span> <span class="o">=</span> <span class="n">plane</span><span class="p">(</span><span class="n">topobw</span><span class="p">)</span>
+	<span class="c1"># topofw, bg = align(topofw, baseline=&#39;median&#39;)</span>
+	<span class="c1"># topobw, bg = align(topobw, baseline=&#39;median&#39;)</span>
+	<span class="c1"># topofw, bg = plane(topofw)</span>
+	<span class="c1"># topobw, bg = plane(topobw)</span>
 
 	<span class="c1"># current</span>
 	<span class="n">currfw</span> <span class="o">=</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="o">.</span><span class="n">Current_Forward</span>
@@ -986,12 +1032,12 @@
 	<span class="c1"># so that it shows up as the RHK Rev software would display it, when plotting with xarray.plot().</span>
 	<span class="c1"># this behaviour is because xarray.plot, uses by default pcolormesh() to plot.</span>
 	<span class="c1"># pcolormesh() flips the data along the slow scan direction. imshow() plots it the way it looks in RHK Rev and Gwyddion.</span>
-	<span class="n">topofw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flipud</span><span class="p">(</span><span class="n">topofw</span><span class="p">)</span>
-	<span class="n">topobw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flipud</span><span class="p">(</span><span class="n">topobw</span><span class="p">)</span>
-	<span class="n">currfw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flipud</span><span class="p">(</span><span class="n">currfw</span><span class="p">)</span>
-	<span class="n">currbw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flipud</span><span class="p">(</span><span class="n">currbw</span><span class="p">)</span>
-	<span class="n">liafw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flipud</span><span class="p">(</span><span class="n">liafw</span><span class="p">)</span>
-	<span class="n">liabw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flipud</span><span class="p">(</span><span class="n">liabw</span><span class="p">)</span>
+	<span class="c1"># topofw = np.flipud(topofw)</span>
+	<span class="c1"># topobw = np.flipud(topobw)</span>
+	<span class="c1"># currfw = np.flipud(currfw)</span>
+	<span class="c1"># currbw = np.flipud(currbw)</span>
+	<span class="c1"># liafw = np.flipud(liafw)</span>
+	<span class="c1"># liabw = np.flipud(liabw)</span>
 
 	<span class="c1"># coordinates</span>
 	<span class="c1"># absolute values should be found by adding the X Y offsets</span>
@@ -1013,13 +1059,13 @@
 	<span class="c1"># create xarray Dataset of the image data</span>
 	<span class="n">xrimage</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span>
 		<span class="n">data_vars</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-			<span class="n">topography</span> <span class="o">=</span> <span class="p">([</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;reps&#39;</span><span class="p">,</span> <span class="s1">&#39;scandir&#39;</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">topofw</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">topobw</span><span class="o">.</span><span class="n">data</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">9</span><span class="p">),</span>
-			<span class="n">current</span> <span class="o">=</span> <span class="p">([</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;reps&#39;</span><span class="p">,</span> <span class="s1">&#39;scandir&#39;</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">currfw</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">currbw</span><span class="o">.</span><span class="n">data</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">12</span><span class="p">),</span>
-			<span class="n">lia</span> <span class="o">=</span> <span class="p">([</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;reps&#39;</span><span class="p">,</span> <span class="s1">&#39;scandir&#39;</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">liafw</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">liabw</span><span class="o">.</span><span class="n">data</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">12</span><span class="p">)</span>
+			<span class="n">topography</span> <span class="o">=</span> <span class="p">([</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;scandir&#39;</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">topofw</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">topobw</span><span class="o">.</span><span class="n">data</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">9</span><span class="p">),</span>
+			<span class="n">current</span> <span class="o">=</span> <span class="p">([</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;scandir&#39;</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">currfw</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">currbw</span><span class="o">.</span><span class="n">data</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">12</span><span class="p">),</span>
+			<span class="n">lia</span> <span class="o">=</span> <span class="p">([</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;scandir&#39;</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">liafw</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">liabw</span><span class="o">.</span><span class="n">data</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">12</span><span class="p">)</span>
 			<span class="p">),</span>
 		<span class="n">coords</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-			<span class="n">x</span> <span class="o">=</span> <span class="n">xx</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">9</span><span class="p">,</span>
-			<span class="n">reps</span> <span class="o">=</span> <span class="n">yy</span><span class="p">,</span>
+			<span class="n">y</span> <span class="o">=</span> <span class="n">xx</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">9</span><span class="p">,</span>
+			<span class="n">x</span> <span class="o">=</span> <span class="n">yy</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">9</span><span class="p">,</span>
 			<span class="n">scandir</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s1">&#39;forward&#39;</span><span class="p">,</span> <span class="s1">&#39;backward&#39;</span><span class="p">])</span>
 			<span class="p">),</span>
 		<span class="n">attrs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
@@ -1036,12 +1082,13 @@
 	<span class="n">xrimage</span><span class="p">[</span><span class="s1">&#39;lia&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;pA&#39;</span>
 	<span class="n">xrimage</span><span class="p">[</span><span class="s1">&#39;lia&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;long units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;picoampere&#39;</span>
 	<span class="n">xrimage</span><span class="p">[</span><span class="s1">&#39;current&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;pA&#39;</span>
-	<span class="n">xrimage</span><span class="p">[</span><span class="s1">&#39;current&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;long units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;picoampere&#39;</span>
-	<span class="n">xrimage</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s1">&#39;reps&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+	<span class="n">xrimage</span><span class="p">[</span><span class="s1">&#39;current&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;long units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;picoampere&#39;</span>	
 	<span class="n">xrimage</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;nm&#39;</span>
 	<span class="n">xrimage</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;long units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;nanometer&#39;</span>
-	<span class="n">xrimage</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s1">&#39;reps&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;note&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;repetitions of the topography line</span><span class="se">\n</span><span class="s1">&#39;</span>
 	<span class="n">xrimage</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;note&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;fast scan direction</span><span class="se">\n</span><span class="s1">&#39;</span>
+	<span class="n">xrimage</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+	<span class="n">xrimage</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;note&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;repetitions of the topography line</span><span class="se">\n</span><span class="s1">&#39;</span>
+	
 
 	<span class="n">stmdata_object</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">xrimage</span>
 	<span class="k">return</span> <span class="n">stmdata_object</span>
