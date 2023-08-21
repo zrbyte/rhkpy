@@ -307,6 +307,13 @@
 
 	
 <div class="viewcode-block" id="rhkdata.qplot"><a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_loader.rhkdata.qplot">[docs]</a>	<span class="k">def</span> <span class="nf">qplot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Quick plot of the :class:`rhkdata` instance</span>
+
+<span class="sd">		:param width: set size of plot, defaults to None</span>
+<span class="sd">		:type width: float, optional</span>
+<span class="sd">		:return: :py:mod:`holoviews` plot</span>
+<span class="sd">		:rtype: :py:mod:`holoviews`</span>
+<span class="sd">		&quot;&quot;&quot;</span>		
 		<span class="c1"># suppress warnings</span>
 		<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">,</span> <span class="n">category</span> <span class="o">=</span> <span class="ne">UserWarning</span><span class="p">,</span> <span class="n">module</span> <span class="o">=</span> <span class="s1">&#39;holoviews.plotting.bokeh.plot&#39;</span><span class="p">)</span>
 		
