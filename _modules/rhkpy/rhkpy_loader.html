@@ -338,28 +338,28 @@
 					<span class="n">groupby</span> <span class="o">=</span> <span class="s1">&#39;z&#39;</span><span class="p">,</span>
 					<span class="n">cmap</span> <span class="o">=</span> <span class="s1">&#39;viridis&#39;</span>
 				<span class="p">)</span>
-				<span class="c1"># plot the topography</span>
-				<span class="n">topoplot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">topography</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">hvplot</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="s1">&#39;fire&#39;</span><span class="p">)</span>
+			<span class="c1"># plot the topography</span>
+			<span class="n">topoplot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">topography</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">hvplot</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="s1">&#39;fire&#39;</span><span class="p">)</span>
 
-				<span class="c1">## adjust options</span>
-				<span class="n">topoplot</span><span class="o">.</span><span class="n">opts</span><span class="p">(</span><span class="n">frame_width</span> <span class="o">=</span> <span class="n">width</span><span class="p">)</span>
-				<span class="n">specplot</span><span class="o">.</span><span class="n">opts</span><span class="p">(</span><span class="n">frame_width</span> <span class="o">=</span> <span class="n">width</span><span class="p">)</span>
+			<span class="c1">## adjust options</span>
+			<span class="n">topoplot</span><span class="o">.</span><span class="n">opts</span><span class="p">(</span><span class="n">frame_width</span> <span class="o">=</span> <span class="n">width</span><span class="p">)</span>
+			<span class="n">specplot</span><span class="o">.</span><span class="n">opts</span><span class="p">(</span><span class="n">frame_width</span> <span class="o">=</span> <span class="n">width</span><span class="p">)</span>
 
-				<span class="c1"># separate the plots and the widget into panels, so I can place the widget</span>
-				<span class="n">topo_static</span> <span class="o">=</span> <span class="n">pn</span><span class="o">.</span><span class="n">panel</span><span class="p">(</span><span class="n">topoplot</span><span class="p">)</span>
-				<span class="n">spec_dynamic</span> <span class="o">=</span> <span class="n">pn</span><span class="o">.</span><span class="n">panel</span><span class="p">(</span><span class="n">specplot</span><span class="p">)</span>
+			<span class="c1"># separate the plots and the widget into panels, so I can place the widget</span>
+			<span class="n">topo_static</span> <span class="o">=</span> <span class="n">pn</span><span class="o">.</span><span class="n">panel</span><span class="p">(</span><span class="n">topoplot</span><span class="p">)</span>
+			<span class="n">spec_dynamic</span> <span class="o">=</span> <span class="n">pn</span><span class="o">.</span><span class="n">panel</span><span class="p">(</span><span class="n">specplot</span><span class="p">)</span>
 
-				<span class="c1"># extract the widget</span>
-				<span class="n">widget_panel</span> <span class="o">=</span> <span class="n">spec_dynamic</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-				<span class="n">specplot_static</span> <span class="o">=</span> <span class="n">spec_dynamic</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+			<span class="c1"># extract the widget</span>
+			<span class="n">widget_panel</span> <span class="o">=</span> <span class="n">spec_dynamic</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+			<span class="n">specplot_static</span> <span class="o">=</span> <span class="n">spec_dynamic</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
-				<span class="c1"># combined plot</span>
-				<span class="n">final_plot</span> <span class="o">=</span> <span class="n">pn</span><span class="o">.</span><span class="n">Row</span><span class="p">(</span><span class="n">topo_static</span><span class="p">,</span> <span class="n">pn</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">widget_panel</span><span class="p">,</span> <span class="n">specplot_static</span><span class="p">))</span>
-				<span class="c1">## without using panel</span>
-				<span class="c1"># final_plot = hv.Layout([topoplot, specplot]).cols(2) # cols(2) to plot side by side</span>
-				
-				<span class="c1"># adjust size</span>
-				<span class="c1"># final_plot.height = height</span>
+			<span class="c1"># combined plot</span>
+			<span class="n">final_plot</span> <span class="o">=</span> <span class="n">pn</span><span class="o">.</span><span class="n">Row</span><span class="p">(</span><span class="n">topo_static</span><span class="p">,</span> <span class="n">pn</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">widget_panel</span><span class="p">,</span> <span class="n">specplot_static</span><span class="p">))</span>
+			<span class="c1">## without using panel</span>
+			<span class="c1"># final_plot = hv.Layout([topoplot, specplot]).cols(2) # cols(2) to plot side by side</span>
+			
+			<span class="c1"># adjust size</span>
+			<span class="c1"># final_plot.height = height</span>
 
 		<span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">datatype</span> <span class="o">==</span> <span class="s1">&#39;line&#39;</span><span class="p">:</span>
 			<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">spectype</span> <span class="o">==</span> <span class="s1">&#39;iv&#39;</span><span class="p">:</span>
