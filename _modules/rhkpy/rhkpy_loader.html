@@ -85,6 +85,12 @@
 <span class="kn">from</span> <span class="nn">spym.process.level</span> <span class="kn">import</span> <span class="n">align</span>
 <span class="kn">from</span> <span class="nn">spym.process.level</span> <span class="kn">import</span> <span class="n">plane</span>
 
+<span class="c1"># for fancy plotting</span>
+<span class="kn">import</span> <span class="nn">hvplot.xarray</span>
+<span class="kn">import</span> <span class="nn">holoviews</span> <span class="k">as</span> <span class="nn">hv</span>
+<span class="kn">import</span> <span class="nn">panel</span> <span class="k">as</span> <span class="nn">pn</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
 <span class="kn">from</span> <span class="nn">.rhkpy_process</span> <span class="kn">import</span> <span class="o">*</span>
 
 <div class="viewcode-block" id="rhkdata"><a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_loader.rhkdata">[docs]</a><span class="k">class</span> <span class="nc">rhkdata</span><span class="p">:</span>
@@ -229,9 +235,6 @@
 		<span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">spymdata</span><span class="p">:</span>
 			<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="rhkdata.plot_specpos"><a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_loader.rhkdata.plot_specpos">[docs]</a>	<span class="k">def</span> <span class="nf">plot_specpos</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>		
-		<span class="c1"># plot the positions of spectra on a topography image</span>
-		<span class="k">return</span> <span class="n">plot_specpos</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="rhkdata.coord_to_absolute"><a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_loader.rhkdata.coord_to_absolute">[docs]</a>	<span class="k">def</span> <span class="nf">coord_to_absolute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Returns a new :class:`rhkdata` instance, with the coordinates updated to reflect the abolute tip position. This includes X, Y offset and rotation.</span>
@@ -300,7 +303,127 @@
 		<span class="c1"># apply flatten to the copy</span>
 		<span class="n">flattened_rhkdataobj</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">polyflatten</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-		<span class="k">return</span> <span class="n">flattened_rhkdataobj</span></div></div>
+		<span class="k">return</span> <span class="n">flattened_rhkdataobj</span></div>
+
+	
+<div class="viewcode-block" id="rhkdata.qplot"><a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_loader.rhkdata.qplot">[docs]</a>	<span class="k">def</span> <span class="nf">qplot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+		<span class="c1"># suppress warnings</span>
+		<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">,</span> <span class="n">category</span> <span class="o">=</span> <span class="ne">UserWarning</span><span class="p">,</span> <span class="n">module</span> <span class="o">=</span> <span class="s1">&#39;holoviews.plotting.bokeh.plot&#39;</span><span class="p">)</span>
+		
+		<span class="c1"># if the rhkdata instance is &#39;map&#39;</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">datatype</span> <span class="o">==</span> <span class="s1">&#39;map&#39;</span><span class="p">:</span>
+			<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">spectype</span> <span class="o">==</span> <span class="s1">&#39;iv&#39;</span><span class="p">:</span>
+				<span class="c1"># take the mean of the spectra in a point and plot it</span>
+				<span class="n">meanmap</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">spectra</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;repetitions&#39;</span><span class="p">,</span> <span class="s1">&#39;biasscandir&#39;</span><span class="p">])</span>
+				<span class="c1"># select the lia</span>
+				<span class="n">specplot</span> <span class="o">=</span> <span class="n">meanmap</span><span class="o">.</span><span class="n">lia</span><span class="o">.</span><span class="n">hvplot</span><span class="o">.</span><span class="n">image</span><span class="p">(</span>
+					<span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;specpos_x&#39;</span><span class="p">,</span>
+					<span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;specpos_y&#39;</span><span class="p">,</span>
+					<span class="n">groupby</span> <span class="o">=</span> <span class="s1">&#39;bias&#39;</span><span class="p">,</span>
+					<span class="n">cmap</span> <span class="o">=</span> <span class="s1">&#39;viridis&#39;</span>
+				<span class="p">)</span>
+			<span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">spectype</span> <span class="o">==</span> <span class="s1">&#39;iz&#39;</span><span class="p">:</span>
+				<span class="c1"># take the mean of the spectra in a point and plot it</span>
+				<span class="n">meanmap</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">spectra</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;repetitions&#39;</span><span class="p">,</span> <span class="s1">&#39;zscandir&#39;</span><span class="p">])</span>
+				<span class="n">specplot</span> <span class="o">=</span> <span class="n">meanmap</span><span class="o">.</span><span class="n">current</span><span class="o">.</span><span class="n">hvplot</span><span class="o">.</span><span class="n">image</span><span class="p">(</span>
+					<span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;specpos_x&#39;</span><span class="p">,</span>
+					<span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;specpos_y&#39;</span><span class="p">,</span>
+					<span class="n">groupby</span> <span class="o">=</span> <span class="s1">&#39;z&#39;</span><span class="p">,</span>
+					<span class="n">cmap</span> <span class="o">=</span> <span class="s1">&#39;viridis&#39;</span>
+				<span class="p">)</span>
+				<span class="c1"># plot the topography</span>
+				<span class="n">topoplot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">topography</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">hvplot</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="s1">&#39;fire&#39;</span><span class="p">)</span>
+
+				<span class="c1">## adjust options</span>
+				<span class="n">topoplot</span><span class="o">.</span><span class="n">opts</span><span class="p">(</span><span class="n">frame_width</span> <span class="o">=</span> <span class="n">width</span><span class="p">)</span>
+				<span class="n">specplot</span><span class="o">.</span><span class="n">opts</span><span class="p">(</span><span class="n">frame_width</span> <span class="o">=</span> <span class="n">width</span><span class="p">)</span>
+
+				<span class="c1"># separate the plots and the widget into panels, so I can place the widget</span>
+				<span class="n">topo_static</span> <span class="o">=</span> <span class="n">pn</span><span class="o">.</span><span class="n">panel</span><span class="p">(</span><span class="n">topoplot</span><span class="p">)</span>
+				<span class="n">spec_dynamic</span> <span class="o">=</span> <span class="n">pn</span><span class="o">.</span><span class="n">panel</span><span class="p">(</span><span class="n">specplot</span><span class="p">)</span>
+
+				<span class="c1"># extract the widget</span>
+				<span class="n">widget_panel</span> <span class="o">=</span> <span class="n">spec_dynamic</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+				<span class="n">specplot_static</span> <span class="o">=</span> <span class="n">spec_dynamic</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+				<span class="c1"># combined plot</span>
+				<span class="n">final_plot</span> <span class="o">=</span> <span class="n">pn</span><span class="o">.</span><span class="n">Row</span><span class="p">(</span><span class="n">topo_static</span><span class="p">,</span> <span class="n">pn</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">widget_panel</span><span class="p">,</span> <span class="n">specplot_static</span><span class="p">))</span>
+				<span class="c1">## without using panel</span>
+				<span class="c1"># final_plot = hv.Layout([topoplot, specplot]).cols(2) # cols(2) to plot side by side</span>
+				
+				<span class="c1"># adjust size</span>
+				<span class="c1"># final_plot.height = height</span>
+
+		<span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">datatype</span> <span class="o">==</span> <span class="s1">&#39;line&#39;</span><span class="p">:</span>
+			<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">spectype</span> <span class="o">==</span> <span class="s1">&#39;iv&#39;</span><span class="p">:</span>
+				<span class="c1"># take the mean of the spectra in a point and plot it</span>
+				<span class="n">meanmap</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">spectra</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;repetitions&#39;</span><span class="p">,</span> <span class="s1">&#39;biasscandir&#39;</span><span class="p">])</span>
+				<span class="c1"># select the lia</span>
+				<span class="n">specplot</span> <span class="o">=</span> <span class="n">meanmap</span><span class="o">.</span><span class="n">lia</span><span class="o">.</span><span class="n">hvplot</span><span class="o">.</span><span class="n">image</span><span class="p">(</span>
+					<span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;bias&#39;</span><span class="p">,</span>
+					<span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;dist&#39;</span><span class="p">,</span>
+					<span class="n">cmap</span> <span class="o">=</span> <span class="s1">&#39;viridis&#39;</span>
+				<span class="p">)</span>
+
+				<span class="c1"># also plot the positions of the spectra</span>
+				<span class="c1"># # for this we need to make a new dataarray, with the x and y coordinates</span>
+				<span class="c1"># ds = xr.DataArray(</span>
+				<span class="c1"># 	np.meshgrid(self.spectra.x.data, self.spectra.y.data)[0],</span>
+				<span class="c1"># 	coords = {&#39;x&#39;: self.spectra.x.data, &#39;y&#39;: self.spectra.y.data},</span>
+				<span class="c1"># 	dims = [&#39;x&#39;, &#39;y&#39;]</span>
+				<span class="c1"># )</span>
+				<span class="c1"># specposplot = ds.hvplot.scatter(aspect = 1, color = &#39;red&#39;, marker = &#39;dot&#39;)</span>
+
+				<span class="c1"># combined plot</span>
+				<span class="n">final_plot</span> <span class="o">=</span> <span class="n">specplot</span>
+
+			<span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">spectype</span> <span class="o">==</span> <span class="s1">&#39;iz&#39;</span><span class="p">:</span>
+				<span class="c1"># take the mean of the spectra in a point and plot it</span>
+				<span class="n">meanmap</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">spectra</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;repetitions&#39;</span><span class="p">,</span> <span class="s1">&#39;zscandir&#39;</span><span class="p">])</span>
+				<span class="c1"># select the current</span>
+				<span class="n">specplot</span> <span class="o">=</span> <span class="n">meanmap</span><span class="o">.</span><span class="n">current</span><span class="o">.</span><span class="n">hvplot</span><span class="o">.</span><span class="n">image</span><span class="p">(</span>
+					<span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;z&#39;</span><span class="p">,</span>
+					<span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;dist&#39;</span><span class="p">,</span>
+					<span class="n">cmap</span> <span class="o">=</span> <span class="s1">&#39;viridis&#39;</span>
+				<span class="p">)</span>
+				<span class="n">final_plot</span> <span class="o">=</span> <span class="n">specplot</span>
+
+		<span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">datatype</span> <span class="o">==</span> <span class="s1">&#39;spec&#39;</span><span class="p">:</span>
+			<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">spectype</span> <span class="o">==</span> <span class="s1">&#39;iv&#39;</span><span class="p">:</span>
+				<span class="n">meanspec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">spectra</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;repetitions&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">drop_vars</span><span class="p">([</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">])</span>
+				<span class="n">specplot_left</span> <span class="o">=</span> <span class="n">meanspec</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">biasscandir</span> <span class="o">=</span> <span class="s1">&#39;left&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">lia</span><span class="o">.</span><span class="n">hvplot</span><span class="p">(</span>
+					<span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;bias&#39;</span>
+					<span class="p">)</span>
+				<span class="n">specplot_right</span> <span class="o">=</span> <span class="n">meanspec</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">biasscandir</span> <span class="o">=</span> <span class="s1">&#39;right&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">lia</span><span class="o">.</span><span class="n">hvplot</span><span class="p">(</span>
+					<span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;bias&#39;</span>
+					<span class="p">)</span>
+
+				<span class="c1"># current</span>
+				<span class="n">curr_left</span> <span class="o">=</span> <span class="n">meanspec</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">biasscandir</span> <span class="o">=</span> <span class="s1">&#39;left&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">current</span><span class="o">.</span><span class="n">hvplot</span><span class="p">(</span>
+					<span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;bias&#39;</span>
+					<span class="p">)</span>
+				<span class="n">curr_right</span> <span class="o">=</span> <span class="n">meanspec</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">biasscandir</span> <span class="o">=</span> <span class="s1">&#39;right&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">current</span><span class="o">.</span><span class="n">hvplot</span><span class="p">(</span>
+					<span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;bias&#39;</span>
+					<span class="p">)</span>
+				
+				<span class="n">leftpanel</span> <span class="o">=</span> <span class="p">(</span><span class="n">specplot_left</span><span class="o">*</span><span class="n">specplot_right</span><span class="p">)</span><span class="o">.</span><span class="n">opts</span><span class="p">(</span><span class="n">width</span> <span class="o">=</span> <span class="mi">300</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;dI/dV&#39;</span><span class="p">)</span>
+				<span class="n">rightpanel</span> <span class="o">=</span> <span class="p">(</span><span class="n">curr_left</span><span class="o">*</span><span class="n">curr_right</span><span class="p">)</span><span class="o">.</span><span class="n">opts</span><span class="p">(</span><span class="n">width</span> <span class="o">=</span> <span class="mi">300</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;current&#39;</span><span class="p">)</span>
+				<span class="n">final_plot</span> <span class="o">=</span> <span class="n">hv</span><span class="o">.</span><span class="n">Layout</span><span class="p">([</span><span class="n">leftpanel</span><span class="p">,</span> <span class="n">rightpanel</span><span class="p">])</span><span class="o">.</span><span class="n">cols</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="c1"># cols(2) to plot side by side</span>
+			
+			<span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">spectype</span> <span class="o">==</span> <span class="s1">&#39;iz&#39;</span><span class="p">:</span>
+				<span class="n">meanspec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">spectra</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;repetitions&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">drop_vars</span><span class="p">([</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">])</span>
+				<span class="n">specplot_left</span> <span class="o">=</span> <span class="n">meanspec</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">zscandir</span> <span class="o">=</span> <span class="s1">&#39;up&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">current</span><span class="o">.</span><span class="n">hvplot</span><span class="p">(</span>
+					<span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;z&#39;</span>
+					<span class="p">)</span>
+				<span class="n">specplot_right</span> <span class="o">=</span> <span class="n">meanspec</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">zscandir</span> <span class="o">=</span> <span class="s1">&#39;down&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">current</span><span class="o">.</span><span class="n">hvplot</span><span class="p">(</span>
+					<span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;z&#39;</span>
+					<span class="p">)</span>
+				
+				<span class="n">final_plot</span> <span class="o">=</span> <span class="p">(</span><span class="n">specplot_left</span><span class="o">*</span><span class="n">specplot_right</span><span class="p">)</span><span class="o">.</span><span class="n">opts</span><span class="p">(</span><span class="n">width</span> <span class="o">=</span> <span class="mi">300</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;current&#39;</span><span class="p">)</span>
+
+		<span class="c1">## This shows the plot in a separate window</span>
+		<span class="c1"># hvplot.show(topoplot)</span>
+		<span class="k">return</span> <span class="n">final_plot</span></div></div>
 
 
 <span class="c1">### internal functions -----------------------------------------------------------</span>
@@ -998,6 +1121,14 @@
 			<span class="n">yoffset_units</span> <span class="o">=</span> <span class="s1">&#39;nm&#39;</span>
 			<span class="p">)</span>
 		<span class="p">)</span>
+
+	<span class="c1"># calculate image size</span>
+	<span class="n">pixelsizex</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">xx</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">xx</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+	<span class="n">pixelsizey</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">yy</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">yy</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+	<span class="n">xrimage</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;size_x&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">round</span><span class="p">((</span><span class="n">xlength</span> <span class="o">+</span> <span class="n">pixelsizex</span><span class="p">)</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">9</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+	<span class="n">xrimage</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;size_y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">round</span><span class="p">((</span><span class="n">ylength</span> <span class="o">+</span> <span class="n">pixelsizey</span><span class="p">)</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">9</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+	<span class="n">xrimage</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;size_x units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;nm&#39;</span>
+	<span class="n">xrimage</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;size_y units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;nm&#39;</span>
 
 	<span class="n">xrimage</span><span class="p">[</span><span class="s1">&#39;topography&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;nm&#39;</span>
 	<span class="n">xrimage</span><span class="p">[</span><span class="s1">&#39;topography&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;long units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;nanometer&#39;</span>
