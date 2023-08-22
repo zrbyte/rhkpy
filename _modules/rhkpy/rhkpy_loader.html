@@ -621,10 +621,7 @@
 	
 	<span class="c1"># The last axis (in this case with length of 1) contains the repeated scans in one particular pixel.</span>
 	<span class="c1"># If the `repetitions` variable is set to greater than 1, this will contains the repeated spectra within an `X, Y` pixel.</span>
-	<span class="c1"># The array needs to be flipped along axis = 1 (the &quot;x&quot; axis in the topography image) to fit with the data read by the ASCII method</span>
-	
-	<span class="c1"># liafw = np.flip(speccmap_fw, axis = 2)</span>
-	<span class="c1"># liabw = np.flip(speccmap_bw, axis = 2)</span>
+
 	<span class="n">liafw</span> <span class="o">=</span> <span class="n">speccmap_fw</span>
 	<span class="n">liabw</span> <span class="o">=</span> <span class="n">speccmap_bw</span>
 
@@ -640,10 +637,7 @@
 	
 	<span class="c1"># The last axis (in this case with length of 1) contains the repeated scans in one particular pixel.</span>
 	<span class="c1"># If the `repetitions` variable is set to greater than 1, this will contains the repeated spectra within an `X, Y` pixel.</span>
-	<span class="c1"># The array needs to be flipped along axis = 1 (the &quot;x&quot; axis in the topography image) to fit with the data read by the ASCII method</span>
-	
-	<span class="c1"># currentfw = np.flip(currentmap_fw, axis = 2)</span>
-	<span class="c1"># currentbw = np.flip(currentmap_bw, axis = 2)</span>
+
 	<span class="n">currentfw</span> <span class="o">=</span> <span class="n">currentmap_fw</span>
 	<span class="n">currentbw</span> <span class="o">=</span> <span class="n">currentmap_bw</span>
 
@@ -886,10 +880,9 @@
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	The last axis (in this case with length of 1) contains the repeated scans in one particular pixel.</span>
 <span class="sd">	If the `repetitions` variable is set to greater than 1, this will contains the repeated spectra within an `X, Y` pixel.</span>
-<span class="sd">	The array needs to be flipped along axis = 1 (the &quot;x&quot; axis in the topography image) to fit with the data read by the ASCII method</span>
 <span class="sd">	&quot;&quot;&quot;</span>
-	<span class="n">currentfw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">currentmap_fw</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-	<span class="n">currentbw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">currentmap_bw</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>	
+	<span class="n">currentfw</span> <span class="o">=</span> <span class="n">currentmap_fw</span>
+	<span class="n">currentbw</span> <span class="o">=</span> <span class="n">currentmap_bw</span>
 
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Coordinates of the spectroscopy map</span>
