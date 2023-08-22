@@ -10,11 +10,11 @@
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../../_static/jquery.js"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-        <script src="../../../_static/doctools.js"></script>
-        <script src="../../../_static/sphinx_highlight.js"></script>
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=0f4f00c4"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -76,7 +76,9 @@
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">ndimage</span>
 
-<div class="viewcode-block" id="Filters"><a class="viewcode-back" href="../../../spym.process.html#spym.process.filters.Filters">[docs]</a><span class="k">class</span> <span class="nc">Filters</span><span class="p">():</span>
+<div class="viewcode-block" id="Filters">
+<a class="viewcode-back" href="../../../spym.process.html#spym.process.filters.Filters">[docs]</a>
+<span class="k">class</span> <span class="nc">Filters</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39; Filters.</span>
 
 <span class="sd">    &#39;&#39;&#39;</span>
@@ -84,7 +86,9 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">spym_instance</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_spym</span> <span class="o">=</span> <span class="n">spym_instance</span>
 
-<div class="viewcode-block" id="Filters.gauss"><a class="viewcode-back" href="../../../spym.process.html#spym.process.filters.Filters.gauss">[docs]</a>    <span class="k">def</span> <span class="nf">gauss</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="Filters.gauss">
+<a class="viewcode-back" href="../../../spym.process.html#spym.process.filters.Filters.gauss">[docs]</a>
+    <span class="k">def</span> <span class="nf">gauss</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39; Apply Gaussian smoothing filter.</span>
 
 <span class="sd">        Args:</span>
@@ -94,7 +98,10 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_spym</span><span class="o">.</span><span class="n">_dr</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">gauss</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_spym</span><span class="o">.</span><span class="n">_dr</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Filters.median"><a class="viewcode-back" href="../../../spym.process.html#spym.process.filters.Filters.median">[docs]</a>    <span class="k">def</span> <span class="nf">median</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Filters.median">
+<a class="viewcode-back" href="../../../spym.process.html#spym.process.filters.Filters.median">[docs]</a>
+    <span class="k">def</span> <span class="nf">median</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39; Apply median smoothing filter.</span>
 
 <span class="sd">        Args:</span>
@@ -104,7 +111,10 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_spym</span><span class="o">.</span><span class="n">_dr</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">median</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_spym</span><span class="o">.</span><span class="n">_dr</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Filters.mean"><a class="viewcode-back" href="../../../spym.process.html#spym.process.filters.Filters.mean">[docs]</a>    <span class="k">def</span> <span class="nf">mean</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Filters.mean">
+<a class="viewcode-back" href="../../../spym.process.html#spym.process.filters.Filters.mean">[docs]</a>
+    <span class="k">def</span> <span class="nf">mean</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39; Apply mean smoothing filter.</span>
 
 <span class="sd">        Args:</span>
@@ -114,7 +124,10 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_spym</span><span class="o">.</span><span class="n">_dr</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">mean</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_spym</span><span class="o">.</span><span class="n">_dr</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Filters.sharpen"><a class="viewcode-back" href="../../../spym.process.html#spym.process.filters.Filters.sharpen">[docs]</a>    <span class="k">def</span> <span class="nf">sharpen</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Filters.sharpen">
+<a class="viewcode-back" href="../../../spym.process.html#spym.process.filters.Filters.sharpen">[docs]</a>
+    <span class="k">def</span> <span class="nf">sharpen</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39; Apply a sharpening filter.</span>
 
 <span class="sd">        Args:</span>
@@ -125,7 +138,10 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_spym</span><span class="o">.</span><span class="n">_dr</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">sharpen</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_spym</span><span class="o">.</span><span class="n">_dr</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Filters.destripe"><a class="viewcode-back" href="../../../spym.process.html#spym.process.filters.Filters.destripe">[docs]</a>    <span class="k">def</span> <span class="nf">destripe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Filters.destripe">
+<a class="viewcode-back" href="../../../spym.process.html#spym.process.filters.Filters.destripe">[docs]</a>
+    <span class="k">def</span> <span class="nf">destripe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39; Find and remove scan stripes by averaging neighbourhood lines.</span>
 
 <span class="sd">        Args:</span>
@@ -144,9 +160,13 @@
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The DataArray is not an image. Abort.&quot;</span><span class="p">)</span>
             <span class="k">return</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_spym</span><span class="o">.</span><span class="n">_dr</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_spym</span><span class="o">.</span><span class="n">_mask</span> <span class="o">=</span> <span class="n">destripe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_spym</span><span class="o">.</span><span class="n">_dr</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_spym</span><span class="o">.</span><span class="n">_dr</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_spym</span><span class="o">.</span><span class="n">_mask</span> <span class="o">=</span> <span class="n">destripe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_spym</span><span class="o">.</span><span class="n">_dr</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+</div>
 
-<div class="viewcode-block" id="gauss"><a class="viewcode-back" href="../../../spym.process.html#spym.process.filters.gauss">[docs]</a><span class="k">def</span> <span class="nf">gauss</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> 
+
+<div class="viewcode-block" id="gauss">
+<a class="viewcode-back" href="../../../spym.process.html#spym.process.filters.gauss">[docs]</a>
+<span class="k">def</span> <span class="nf">gauss</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> 
           <span class="n">size</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39; Apply Gaussian smoothing filter.</span>
 
@@ -163,7 +183,10 @@
 
     <span class="k">return</span> <span class="n">ndimage</span><span class="o">.</span><span class="n">filters</span><span class="o">.</span><span class="n">gaussian_filter</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="median"><a class="viewcode-back" href="../../../spym.process.html#spym.process.filters.median">[docs]</a><span class="k">def</span> <span class="nf">median</span><span class="p">(</span><span class="n">image</span><span class="p">,</span>
+
+<div class="viewcode-block" id="median">
+<a class="viewcode-back" href="../../../spym.process.html#spym.process.filters.median">[docs]</a>
+<span class="k">def</span> <span class="nf">median</span><span class="p">(</span><span class="n">image</span><span class="p">,</span>
            <span class="n">size</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39; Apply median smoothing filter.</span>
 
@@ -178,7 +201,10 @@
 
     <span class="k">return</span> <span class="n">ndimage</span><span class="o">.</span><span class="n">filters</span><span class="o">.</span><span class="n">median_filter</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="mean"><a class="viewcode-back" href="../../../spym.process.html#spym.process.filters.mean">[docs]</a><span class="k">def</span> <span class="nf">mean</span><span class="p">(</span><span class="n">image</span><span class="p">,</span>
+
+<div class="viewcode-block" id="mean">
+<a class="viewcode-back" href="../../../spym.process.html#spym.process.filters.mean">[docs]</a>
+<span class="k">def</span> <span class="nf">mean</span><span class="p">(</span><span class="n">image</span><span class="p">,</span>
          <span class="n">size</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39; Apply mean smoothing filter.</span>
 
@@ -193,7 +219,10 @@
 
     <span class="k">return</span> <span class="n">ndimage</span><span class="o">.</span><span class="n">filters</span><span class="o">.</span><span class="n">uniform_filter</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="sharpen"><a class="viewcode-back" href="../../../spym.process.html#spym.process.filters.sharpen">[docs]</a><span class="k">def</span> <span class="nf">sharpen</span><span class="p">(</span><span class="n">image</span><span class="p">,</span>
+
+<div class="viewcode-block" id="sharpen">
+<a class="viewcode-back" href="../../../spym.process.html#spym.process.filters.sharpen">[docs]</a>
+<span class="k">def</span> <span class="nf">sharpen</span><span class="p">(</span><span class="n">image</span><span class="p">,</span>
             <span class="n">size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
             <span class="n">alpha</span><span class="o">=</span><span class="mi">30</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39; Apply a sharpening filter.</span>
@@ -214,7 +243,10 @@
 
     <span class="k">return</span> <span class="n">sharpened</span></div>
 
-<div class="viewcode-block" id="destripe"><a class="viewcode-back" href="../../../spym.process.html#spym.process.filters.destripe">[docs]</a><span class="k">def</span> <span class="nf">destripe</span><span class="p">(</span><span class="n">image</span><span class="p">,</span>
+
+<div class="viewcode-block" id="destripe">
+<a class="viewcode-back" href="../../../spym.process.html#spym.process.filters.destripe">[docs]</a>
+<span class="k">def</span> <span class="nf">destripe</span><span class="p">(</span><span class="n">image</span><span class="p">,</span>
              <span class="n">min_length</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span>
              <span class="n">hard_threshold</span> <span class="o">=</span> <span class="mf">0.4</span><span class="p">,</span>
              <span class="n">soft_threshold</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
@@ -283,6 +315,7 @@
     <span class="n">filtered</span> <span class="o">=</span> <span class="n">image</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">invert</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span> <span class="o">+</span> <span class="n">filt</span><span class="o">*</span><span class="n">mask</span>
 
     <span class="k">return</span> <span class="n">filtered</span><span class="p">,</span> <span class="n">mask</span></div>
+
 </pre></div>
 
            </div>

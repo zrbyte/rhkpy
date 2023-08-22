@@ -10,11 +10,11 @@
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=0f4f00c4"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
@@ -93,7 +93,9 @@
 <span class="c1"># 			)</span>
 <span class="c1"># 		) # can&#39;t set default colormap with this</span>
 
-<div class="viewcode-block" id="coord_to_absolute"><a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_process.coord_to_absolute">[docs]</a><span class="k">def</span> <span class="nf">coord_to_absolute</span><span class="p">(</span><span class="n">xrobj</span><span class="p">):</span>
+<div class="viewcode-block" id="coord_to_absolute">
+<a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_process.coord_to_absolute">[docs]</a>
+<span class="k">def</span> <span class="nf">coord_to_absolute</span><span class="p">(</span><span class="n">xrobj</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Takes as input the :class:`rhkdata.image` variable of an :class:`~rhkpy.rhkpy_loader.rhkdata` instance.</span>
 <span class="sd">	Returns a new :py:mod:`xarray` instance, with the coordinates updated to reflect the abolute tip position. This includes X, Y offset and rotation.</span>
 
@@ -253,7 +255,10 @@
 	<span class="k">return</span> <span class="n">xrobj_abscoord</span></div>
 
 
-<div class="viewcode-block" id="gaussian"><a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_process.gaussian">[docs]</a><span class="k">def</span> <span class="nf">gaussian</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x0</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">ampl</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">offset</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+
+<div class="viewcode-block" id="gaussian">
+<a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_process.gaussian">[docs]</a>
+<span class="k">def</span> <span class="nf">gaussian</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x0</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">ampl</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">offset</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Gaussian function. Width and amplitude parameters have the same meaning as for :func:`lorentz`.</span>
 
 <span class="sd">	:param x: values for the x coordinate</span>
@@ -274,7 +279,10 @@
 	<span class="k">return</span> <span class="n">offset</span> <span class="o">+</span> <span class="n">ampl</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">x0</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">width</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="lorentz"><a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_process.lorentz">[docs]</a><span class="k">def</span> <span class="nf">lorentz</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x0</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">ampl</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">offset</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+
+<div class="viewcode-block" id="lorentz">
+<a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_process.lorentz">[docs]</a>
+<span class="k">def</span> <span class="nf">lorentz</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x0</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">ampl</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">offset</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Single Lorentz function</span>
 
 <span class="sd">	:param x: values for the x coordinate</span>
@@ -302,7 +310,10 @@
 	<span class="n">area</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">ampl</span> <span class="o">*</span> <span class="n">width</span> <span class="o">/</span> <span class="mi">2</span>
 	<span class="k">return</span> <span class="n">offset</span> <span class="o">+</span> <span class="p">(</span><span class="mi">2</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">area</span> <span class="o">*</span> <span class="n">width</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">x0</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">width</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="gaussian2"><a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_process.gaussian2">[docs]</a><span class="k">def</span> <span class="nf">gaussian2</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x01</span> <span class="o">=</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="n">ampl1</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">width1</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">x02</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">ampl2</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">width2</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">offset</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+
+<div class="viewcode-block" id="gaussian2">
+<a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_process.gaussian2">[docs]</a>
+<span class="k">def</span> <span class="nf">gaussian2</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x01</span> <span class="o">=</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="n">ampl1</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">width1</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">x02</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">ampl2</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">width2</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">offset</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Double Gaussian function</span>
 
 <span class="sd">	:param x: values for the x coordinate</span>
@@ -327,7 +338,10 @@
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="k">return</span> <span class="n">offset</span> <span class="o">+</span> <span class="n">ampl1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">x01</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">width1</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span> <span class="o">+</span> <span class="n">ampl2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">x02</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">width2</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="polynomial_fit"><a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_process.polynomial_fit">[docs]</a><span class="k">def</span> <span class="nf">polynomial_fit</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">x_data</span><span class="p">,</span> <span class="n">y_data</span><span class="p">):</span>
+
+<div class="viewcode-block" id="polynomial_fit">
+<a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_process.polynomial_fit">[docs]</a>
+<span class="k">def</span> <span class="nf">polynomial_fit</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">x_data</span><span class="p">,</span> <span class="n">y_data</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Polinomial fit to `x_data`, `y_data`</span>
 
 <span class="sd">	:param order: order of the polinomial to be fit</span>
@@ -354,7 +368,10 @@
 
 	<span class="k">return</span> <span class="n">coeff</span><span class="p">,</span> <span class="n">covar</span></div>
 
-<div class="viewcode-block" id="bgsubtract"><a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_process.bgsubtract">[docs]</a><span class="k">def</span> <span class="nf">bgsubtract</span><span class="p">(</span><span class="n">x_data</span><span class="p">,</span> <span class="n">y_data</span><span class="p">,</span> <span class="n">polyorder</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">toplot</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">fitmask</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">hmin</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">hmax</span> <span class="o">=</span> <span class="mi">10000</span><span class="p">,</span> <span class="n">wmin</span> <span class="o">=</span> <span class="mf">1.5</span><span class="p">,</span> <span class="n">wmax</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="n">prom</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">exclusion_factor</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">peak_pos</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="bgsubtract">
+<a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_process.bgsubtract">[docs]</a>
+<span class="k">def</span> <span class="nf">bgsubtract</span><span class="p">(</span><span class="n">x_data</span><span class="p">,</span> <span class="n">y_data</span><span class="p">,</span> <span class="n">polyorder</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">toplot</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">fitmask</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">hmin</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">hmax</span> <span class="o">=</span> <span class="mi">10000</span><span class="p">,</span> <span class="n">wmin</span> <span class="o">=</span> <span class="mf">1.5</span><span class="p">,</span> <span class="n">wmax</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="n">prom</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">exclusion_factor</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">peak_pos</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Takes the ``x_data`` and ``y_data`` and automatically finds peaks, using :py:mod:`scipy.find_peaks`.</span>
 <span class="sd">	These peaks are then used to define the areas of the background signal (``y_data``).</span>
 <span class="sd">	In the areas with the peaks removed, the background is fitted by a polynomial of order given by the optional argument: ``polyorder``.</span>
@@ -489,7 +506,10 @@
 
 	<span class="k">return</span> <span class="n">y_data_nobg</span><span class="p">,</span> <span class="n">bg_values</span><span class="p">,</span> <span class="n">coeff</span><span class="p">,</span> <span class="n">params_used_at_run</span><span class="p">,</span> <span class="n">mask</span><span class="p">,</span> <span class="n">covar</span></div>
 
-<div class="viewcode-block" id="peakfit"><a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_process.peakfit">[docs]</a><span class="k">def</span> <span class="nf">peakfit</span><span class="p">(</span><span class="n">xrobj</span><span class="p">,</span> <span class="n">func</span> <span class="o">=</span> <span class="n">gaussian</span><span class="p">,</span> <span class="n">fitresult</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">stval</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">bounds</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">toplot</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">pos_x</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">pos_y</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="peakfit">
+<a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_process.peakfit">[docs]</a>
+<span class="k">def</span> <span class="nf">peakfit</span><span class="p">(</span><span class="n">xrobj</span><span class="p">,</span> <span class="n">func</span> <span class="o">=</span> <span class="n">gaussian</span><span class="p">,</span> <span class="n">fitresult</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">stval</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">bounds</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">toplot</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">pos_x</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">pos_y</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Fitting a function to peaks in the data contained in ``xrobj``.</span>
 
 <span class="sd">	:param xrobj: :py:mod:`xarray` DataArray, of a single spectrum or a map.</span>
@@ -617,7 +637,10 @@
 	<span class="k">return</span> <span class="n">fit</span></div>
 
 
-<div class="viewcode-block" id="polyflatten"><a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_process.polyflatten">[docs]</a><span class="k">def</span> <span class="nf">polyflatten</span><span class="p">(</span><span class="n">xrobj</span><span class="p">,</span> <span class="n">field_type</span> <span class="o">=</span> <span class="s1">&#39;topography&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="polyflatten">
+<a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_process.polyflatten">[docs]</a>
+<span class="k">def</span> <span class="nf">polyflatten</span><span class="p">(</span><span class="n">xrobj</span><span class="p">,</span> <span class="n">field_type</span> <span class="o">=</span> <span class="s1">&#39;topography&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Fits a polynomial to the fast scan lines of topography data and </span>
 <span class="sd">	</span>
 <span class="sd">	The keyword argument ``polyorder`` works the same way as in :func:`bgsubtract`.</span>
@@ -656,10 +679,14 @@
 
 	<span class="k">return</span> <span class="n">flatxrobj</span></div>
 
+
 <span class="c1">## plotting and data visualization -------------------------------------------</span>
 
-<div class="viewcode-block" id="navigation"><a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_process.navigation">[docs]</a><span class="k">def</span> <span class="nf">navigation</span><span class="p">():</span>
+<div class="viewcode-block" id="navigation">
+<a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_process.navigation">[docs]</a>
+<span class="k">def</span> <span class="nf">navigation</span><span class="p">():</span>
 	<span class="k">pass</span></div>
+
 </pre></div>
 
            </div>

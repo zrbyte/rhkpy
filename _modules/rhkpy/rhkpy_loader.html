@@ -10,11 +10,11 @@
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=0f4f00c4"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
@@ -93,7 +93,9 @@
 
 <span class="kn">from</span> <span class="nn">.rhkpy_process</span> <span class="kn">import</span> <span class="o">*</span>
 
-<div class="viewcode-block" id="rhkdata"><a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_loader.rhkdata">[docs]</a><span class="k">class</span> <span class="nc">rhkdata</span><span class="p">:</span>
+<div class="viewcode-block" id="rhkdata">
+<a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_loader.rhkdata">[docs]</a>
+<span class="k">class</span> <span class="nc">rhkdata</span><span class="p">:</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	A container for the xarray based structure of the RHK data. Loads the RHK &quot;sm4&quot; file from the path at: ``filename``.</span>
 
@@ -218,7 +220,9 @@
 		<span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">datatype</span> <span class="o">==</span> <span class="s1">&#39;image&#39;</span><span class="p">:</span>
 			<span class="bp">self</span> <span class="o">=</span> <span class="n">_load_image</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
-<div class="viewcode-block" id="rhkdata.print_info"><a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_loader.rhkdata.print_info">[docs]</a>	<span class="k">def</span> <span class="nf">print_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="rhkdata.print_info">
+<a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_loader.rhkdata.print_info">[docs]</a>
+	<span class="k">def</span> <span class="nf">print_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;List the variables of the :class:`rhkdata` instance.</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">:</span>
@@ -236,7 +240,10 @@
 			<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="rhkdata.coord_to_absolute"><a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_loader.rhkdata.coord_to_absolute">[docs]</a>	<span class="k">def</span> <span class="nf">coord_to_absolute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="rhkdata.coord_to_absolute">
+<a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_loader.rhkdata.coord_to_absolute">[docs]</a>
+	<span class="k">def</span> <span class="nf">coord_to_absolute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Returns a new :class:`rhkdata` instance, with the coordinates updated to reflect the abolute tip position. This includes X, Y offset and rotation.</span>
 
 <span class="sd">		:return: :class:`rhkdata` instance, with the same data and metadata, but the :class:`rhkdata.image`, :py:mod:`xarray` variable coordinates shifted to absolute tip positions.</span>
@@ -286,7 +293,10 @@
 		<span class="k">return</span> <span class="n">rhkdataobj_new</span></div>
 
 
-<div class="viewcode-block" id="rhkdata.polyflatten"><a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_loader.rhkdata.polyflatten">[docs]</a>	<span class="k">def</span> <span class="nf">polyflatten</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+<div class="viewcode-block" id="rhkdata.polyflatten">
+<a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_loader.rhkdata.polyflatten">[docs]</a>
+	<span class="k">def</span> <span class="nf">polyflatten</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Uses :func:`~rhkpy.rhkpy_process.polyflatten` to flatten the selected datafield in the :class:`rhkdata` instance.</span>
 <span class="sd">		All keywords accepted by :func:`~rhkpy.rhkpy_process.polyflatten` can be passed.</span>
 
@@ -305,8 +315,11 @@
 
 		<span class="k">return</span> <span class="n">flattened_rhkdataobj</span></div>
 
+
 	
-<div class="viewcode-block" id="rhkdata.qplot"><a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_loader.rhkdata.qplot">[docs]</a>	<span class="k">def</span> <span class="nf">qplot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="rhkdata.qplot">
+<a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_loader.rhkdata.qplot">[docs]</a>
+	<span class="k">def</span> <span class="nf">qplot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Quick plot of the :class:`rhkdata` instance</span>
 
 <span class="sd">		:param width: set size of plot, defaults to None</span>
@@ -339,7 +352,8 @@
 					<span class="n">cmap</span> <span class="o">=</span> <span class="s1">&#39;viridis&#39;</span>
 				<span class="p">)</span>
 			<span class="c1"># plot the topography</span>
-			<span class="n">topoplot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">topography</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">hvplot</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="s1">&#39;fire&#39;</span><span class="p">)</span>
+			<span class="c1"># The backward direction should be plotted, since this is the direction in which the tip moves, when the spectroscopy data is measured.</span>
+			<span class="n">topoplot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">topography</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">hvplot</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="s1">&#39;fire&#39;</span><span class="p">)</span>
 
 			<span class="c1">## adjust options</span>
 			<span class="n">topoplot</span><span class="o">.</span><span class="n">opts</span><span class="p">(</span><span class="n">frame_width</span> <span class="o">=</span> <span class="n">width</span><span class="p">)</span>
@@ -430,7 +444,9 @@
 
 		<span class="c1">## This shows the plot in a separate window</span>
 		<span class="c1"># hvplot.show(topoplot)</span>
-		<span class="k">return</span> <span class="n">final_plot</span></div></div>
+		<span class="k">return</span> <span class="n">final_plot</span></div>
+</div>
+
 
 
 <span class="c1">### internal functions -----------------------------------------------------------</span>
@@ -607,8 +623,10 @@
 	<span class="c1"># If the `repetitions` variable is set to greater than 1, this will contains the repeated spectra within an `X, Y` pixel.</span>
 	<span class="c1"># The array needs to be flipped along axis = 1 (the &quot;x&quot; axis in the topography image) to fit with the data read by the ASCII method</span>
 	
-	<span class="n">liafw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">speccmap_fw</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-	<span class="n">liabw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">speccmap_bw</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+	<span class="c1"># liafw = np.flip(speccmap_fw, axis = 2)</span>
+	<span class="c1"># liabw = np.flip(speccmap_bw, axis = 2)</span>
+	<span class="n">liafw</span> <span class="o">=</span> <span class="n">speccmap_fw</span>
+	<span class="n">liabw</span> <span class="o">=</span> <span class="n">speccmap_bw</span>
 
 	<span class="c1"># reshape Current data</span>
 	<span class="n">temp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">currentarray</span><span class="p">,</span> <span class="p">(</span><span class="n">currentarray</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">numberofspectra</span><span class="p">),</span> <span class="n">order</span><span class="o">=</span><span class="s1">&#39;C&#39;</span><span class="p">)</span>
@@ -624,8 +642,10 @@
 	<span class="c1"># If the `repetitions` variable is set to greater than 1, this will contains the repeated spectra within an `X, Y` pixel.</span>
 	<span class="c1"># The array needs to be flipped along axis = 1 (the &quot;x&quot; axis in the topography image) to fit with the data read by the ASCII method</span>
 	
-	<span class="n">currentfw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">currentmap_fw</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-	<span class="n">currentbw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">currentmap_bw</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>	
+	<span class="c1"># currentfw = np.flip(currentmap_fw, axis = 2)</span>
+	<span class="c1"># currentbw = np.flip(currentmap_bw, axis = 2)</span>
+	<span class="n">currentfw</span> <span class="o">=</span> <span class="n">currentmap_fw</span>
+	<span class="n">currentbw</span> <span class="o">=</span> <span class="n">currentmap_bw</span>
 
 	<span class="c1"># Coordinates of the spectroscopy map</span>
 	
@@ -646,10 +666,10 @@
 	<span class="c1"># also adding specific attributes</span>
 	<span class="n">xrspec</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span>
 		<span class="n">data_vars</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-			<span class="n">lia</span> <span class="o">=</span> <span class="p">([</span><span class="s1">&#39;bias&#39;</span><span class="p">,</span> <span class="s1">&#39;specpos_x&#39;</span><span class="p">,</span> <span class="s1">&#39;specpos_y&#39;</span><span class="p">,</span> <span class="s1">&#39;repetitions&#39;</span><span class="p">,</span> <span class="s1">&#39;biasscandir&#39;</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">liafw</span><span class="p">,</span> <span class="n">liabw</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">12</span><span class="p">),</span>
-			<span class="n">current</span> <span class="o">=</span> <span class="p">([</span><span class="s1">&#39;bias&#39;</span><span class="p">,</span> <span class="s1">&#39;specpos_x&#39;</span><span class="p">,</span> <span class="s1">&#39;specpos_y&#39;</span><span class="p">,</span> <span class="s1">&#39;repetitions&#39;</span><span class="p">,</span> <span class="s1">&#39;biasscandir&#39;</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">currentfw</span><span class="p">,</span> <span class="n">currentbw</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">12</span><span class="p">),</span>
-			<span class="n">x</span> <span class="o">=</span> <span class="p">([</span><span class="s1">&#39;specpos_x&#39;</span><span class="p">,</span> <span class="s1">&#39;specpos_y&#39;</span><span class="p">],</span> <span class="n">meshx</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">9</span><span class="p">),</span>
-			<span class="n">y</span> <span class="o">=</span> <span class="p">([</span><span class="s1">&#39;specpos_x&#39;</span><span class="p">,</span> <span class="s1">&#39;specpos_y&#39;</span><span class="p">],</span> <span class="n">meshy</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">9</span><span class="p">)</span>
+			<span class="n">lia</span> <span class="o">=</span> <span class="p">([</span><span class="s1">&#39;bias&#39;</span><span class="p">,</span> <span class="s1">&#39;specpos_y&#39;</span><span class="p">,</span> <span class="s1">&#39;specpos_x&#39;</span><span class="p">,</span> <span class="s1">&#39;repetitions&#39;</span><span class="p">,</span> <span class="s1">&#39;biasscandir&#39;</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">liafw</span><span class="p">,</span> <span class="n">liabw</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">12</span><span class="p">),</span>
+			<span class="n">current</span> <span class="o">=</span> <span class="p">([</span><span class="s1">&#39;bias&#39;</span><span class="p">,</span> <span class="s1">&#39;specpos_y&#39;</span><span class="p">,</span> <span class="s1">&#39;specpos_x&#39;</span><span class="p">,</span> <span class="s1">&#39;repetitions&#39;</span><span class="p">,</span> <span class="s1">&#39;biasscandir&#39;</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">currentfw</span><span class="p">,</span> <span class="n">currentbw</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">12</span><span class="p">),</span>
+			<span class="n">x</span> <span class="o">=</span> <span class="p">([</span><span class="s1">&#39;specpos_y&#39;</span><span class="p">,</span> <span class="s1">&#39;specpos_x&#39;</span><span class="p">],</span> <span class="n">meshx</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">9</span><span class="p">),</span>
+			<span class="n">y</span> <span class="o">=</span> <span class="p">([</span><span class="s1">&#39;specpos_y&#39;</span><span class="p">,</span> <span class="s1">&#39;specpos_x&#39;</span><span class="p">],</span> <span class="n">meshy</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">9</span><span class="p">)</span>
 			<span class="p">),</span>
 		<span class="n">coords</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
 			<span class="n">bias</span> <span class="o">=</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s1">&#39;LIA_Current_x&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
@@ -1350,13 +1370,19 @@
 	<span class="k">return</span> <span class="n">stmdata_object</span>
 
 
-<div class="viewcode-block" id="load_rhksm4"><a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_loader.load_rhksm4">[docs]</a><span class="k">def</span> <span class="nf">load_rhksm4</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+<div class="viewcode-block" id="load_rhksm4">
+<a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_loader.load_rhksm4">[docs]</a>
+<span class="k">def</span> <span class="nf">load_rhksm4</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Load the data from the .sm4 file using the old loader from spym&quot;&quot;&quot;</span>
 	<span class="k">return</span> <span class="n">rhksm4</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="load_spym"><a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_loader.load_spym">[docs]</a><span class="k">def</span> <span class="nf">load_spym</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+
+<div class="viewcode-block" id="load_spym">
+<a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_loader.load_spym">[docs]</a>
+<span class="k">def</span> <span class="nf">load_spym</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Load the data from the .sm4 file using spym&quot;&quot;&quot;</span>
 	<span class="k">return</span> <span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span></div>
+
 
 </pre></div>
 

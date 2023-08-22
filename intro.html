@@ -11,11 +11,11 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="_static/jquery.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=0f4f00c4"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -46,6 +46,7 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#known-issues">Known issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#notes">Notes</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="#installation">Installation</a></li>
@@ -79,25 +80,30 @@
            <div itemprop="articleBody">
              
   <section id="introduction">
-<h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading"></a></h1>
+<h1>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h1>
 <p>A python package for processing Scanning Tunneling Microscopy (STM) data from RHK, based on the <a class="reference external" href="https://github.com/rescipy-project/spym">spym project</a>.
 Source is available from <a class="reference external" href="https://github.com/zrbyte/rhkpy/">GitHub</a>.</p>
 <section id="known-issues">
-<h2>Known issues<a class="headerlink" href="#known-issues" title="Permalink to this heading"></a></h2>
+<h2>Known issues<a class="headerlink" href="#known-issues" title="Link to this heading"></a></h2>
 <ul class="simple">
-<li><p>For line spectra, topography (and probably all the other data) is loaded in the incorrect order. <cite>coord_to_absolute()</cite> doesn’t work for the image part of line spectra.</p></li>
+<li><p>For line spectra, topography (and probably all the other data) is loaded in the incorrect order. The topography data of line spectra should not be used at the moment.</p></li>
+<li><p>The method: <cite>coord_to_absolute()</cite> doesn’t work for the image part of line spectra.</p></li>
 <li><p>For the older version (<cite>RHK_MinorVer = 5</cite>) of the RHK software, the I(z) spectra seem to have the wrong <cite>RHK_LineTypeName</cite> field value. They show up as dI/dV spectra.</p></li>
 </ul>
 </section>
+<section id="notes">
+<h2>Notes<a class="headerlink" href="#notes" title="Link to this heading"></a></h2>
+<p>The “forward” scan direction in rhkpy is the “right” scan direction, when the file is opened in Gwyddion.</p>
+</section>
 </section>
 <section id="installation">
-<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this heading"></a></h1>
+<h1>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h1>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">rhkpy</span>
 </pre></div>
 </div>
 </section>
 <section id="examples">
-<h1>Examples<a class="headerlink" href="#examples" title="Permalink to this heading"></a></h1>
+<h1>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h1>
 <p>Take a look at the <code class="docutils literal notranslate"><span class="pre">tutorial.ipynb</span></code> Jupyter notebook in the <a class="reference external" href="https://github.com/zrbyte/rhkpy/">GitHub repository</a>.</p>
 <p>Below is a simple example.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">rhkpy</span>
