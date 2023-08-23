@@ -66,6 +66,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#rhkpy.rhkpy_process.coord_to_absolute"><code class="docutils literal notranslate"><span class="pre">coord_to_absolute()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#rhkpy.rhkpy_process.gaussian"><code class="docutils literal notranslate"><span class="pre">gaussian()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#rhkpy.rhkpy_process.gaussian2"><code class="docutils literal notranslate"><span class="pre">gaussian2()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rhkpy.rhkpy_process.genthumbs"><code class="docutils literal notranslate"><span class="pre">genthumbs()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#rhkpy.rhkpy_process.lorentz"><code class="docutils literal notranslate"><span class="pre">lorentz()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#rhkpy.rhkpy_process.navigation"><code class="docutils literal notranslate"><span class="pre">navigation()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#rhkpy.rhkpy_process.peakfit"><code class="docutils literal notranslate"><span class="pre">peakfit()</span></code></a></li>
@@ -90,6 +91,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#rhkpy.rhkpy_process.coord_to_absolute"><code class="docutils literal notranslate"><span class="pre">coord_to_absolute()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#rhkpy.rhkpy_process.gaussian"><code class="docutils literal notranslate"><span class="pre">gaussian()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#rhkpy.rhkpy_process.gaussian2"><code class="docutils literal notranslate"><span class="pre">gaussian2()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rhkpy.rhkpy_process.genthumbs"><code class="docutils literal notranslate"><span class="pre">genthumbs()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#rhkpy.rhkpy_process.lorentz"><code class="docutils literal notranslate"><span class="pre">lorentz()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#rhkpy.rhkpy_process.navigation"><code class="docutils literal notranslate"><span class="pre">navigation()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#rhkpy.rhkpy_process.peakfit"><code class="docutils literal notranslate"><span class="pre">peakfit()</span></code></a></li>
@@ -457,6 +459,41 @@ Returns a new <code class="xref py py-mod docutils literal notranslate"><span cl
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="rhkpy.rhkpy_process.genthumbs">
+<span class="sig-prename descclassname"><span class="pre">rhkpy.rhkpy_process.</span></span><span class="sig-name descname"><span class="pre">genthumbs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folderpath</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rhkpy/rhkpy_process.html#genthumbs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rhkpy.rhkpy_process.genthumbs" title="Link to this definition"></a></dt>
+<dd><p>Generate thumbnails for the sm4 files present in the current folder (usually the folder where the jupyter notebook is present).
+It <code class="docutils literal notranslate"><span class="pre">folderpath</span></code> is specified it generates the thumbnails in the path given.
+All other files are ignored. Subfolders are ignored.
+The method uses <a class="reference internal" href="#rhkpy.rhkpy_loader.rhkdata.qplot" title="rhkpy.rhkpy_loader.rhkdata.qplot"><code class="xref py py-func docutils literal notranslate"><span class="pre">qplot()</span></code></a> to make the png images.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>folderpath</strong> (<em>str</em><em>, </em><em>optional</em>) – path to the folder containing the sm4 files, defaults to ‘’</p>
+</dd>
+<dt class="field-even">Example<span class="colon">:</span></dt>
+<dd class="field-even"><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">rhkpy</span>
+
+<span class="c1"># generate thumbnails of the sm4 files in the current working directory</span>
+<span class="n">rhkpy</span><span class="o">.</span><span class="n">genthumbs</span><span class="p">()</span>
+
+<span class="c1"># generate thumbnails for the folder &quot;stm measurements/maps&quot;</span>
+<span class="n">rhkpy</span><span class="o">.</span><span class="n">genthumbs</span><span class="p">(</span><span class="n">folderpath</span> <span class="o">=</span> <span class="s1">&#39;./stm measurements/maps/&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Remember. Possible options for <code class="docutils literal notranslate"><span class="pre">folderpath</span></code> are:</p>
+<ul class="simple">
+<li><p>relative path: “./” means the current directory. “../” is one directory above the current one.</p></li>
+<li><p>absolute path: Can start with: “c:/users/averagejoe/data”</p></li>
+</ul>
+<p>If you use backslashes to separate folder names, remember to append “r” to the beginning of the path to escape backslashes. For example: <code class="docutils literal notranslate"><span class="pre">folderpath</span> <span class="pre">=</span> <span class="pre">r&quot;c:\users\averagejoe\data&quot;</span></code>.
+Paths can be copied directly from Windows explorer, if you append an “r”.</p>
+</div>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="rhkpy.rhkpy_process.lorentz">
 <span class="sig-prename descclassname"><span class="pre">rhkpy.rhkpy_process.</span></span><span class="sig-name descname"><span class="pre">lorentz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ampl</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rhkpy/rhkpy_process.html#lorentz"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rhkpy.rhkpy_process.lorentz" title="Link to this definition"></a></dt>
 <dd><p>Single Lorentz function</p>
@@ -488,7 +525,7 @@ Returns a new <code class="xref py py-mod docutils literal notranslate"><span cl
 
 <dl class="py function">
 <dt class="sig sig-object py" id="rhkpy.rhkpy_process.navigation">
-<span class="sig-prename descclassname"><span class="pre">rhkpy.rhkpy_process.</span></span><span class="sig-name descname"><span class="pre">navigation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/rhkpy/rhkpy_process.html#navigation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rhkpy.rhkpy_process.navigation" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">rhkpy.rhkpy_process.</span></span><span class="sig-name descname"><span class="pre">navigation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rhkpy/rhkpy_process.html#navigation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rhkpy.rhkpy_process.navigation" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
@@ -539,7 +576,7 @@ Returns a new <code class="xref py py-mod docutils literal notranslate"><span cl
 <dl class="py function">
 <dt class="sig sig-object py" id="rhkpy.rhkpy_process.polyflatten">
 <span class="sig-prename descclassname"><span class="pre">rhkpy.rhkpy_process.</span></span><span class="sig-name descname"><span class="pre">polyflatten</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xrobj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'topography'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rhkpy/rhkpy_process.html#polyflatten"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rhkpy.rhkpy_process.polyflatten" title="Link to this definition"></a></dt>
-<dd><p>Fits a polynomial to the fast scan lines of topography data and</p>
+<dd><p>Fits a polynomial to the fast scan lines of topography data and subtracts it from the lines.</p>
 <p>The keyword argument <code class="docutils literal notranslate"><span class="pre">polyorder</span></code> works the same way as in <a class="reference internal" href="#rhkpy.rhkpy_process.bgsubtract" title="rhkpy.rhkpy_process.bgsubtract"><code class="xref py py-func docutils literal notranslate"><span class="pre">bgsubtract()</span></code></a>.
 Keywords used by <a class="reference internal" href="#rhkpy.rhkpy_process.bgsubtract" title="rhkpy.rhkpy_process.bgsubtract"><code class="xref py py-func docutils literal notranslate"><span class="pre">bgsubtract()</span></code></a> can be passed.</p>
 <p>Still needs testing.</p>

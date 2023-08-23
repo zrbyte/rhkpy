@@ -76,22 +76,11 @@
 <span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">pl</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
-<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">copy</span><span class="o">,</span> <span class="nn">glob</span><span class="o">,</span> <span class="nn">re</span>
 <span class="kn">from</span> <span class="nn">scipy.signal</span> <span class="kn">import</span> <span class="n">find_peaks</span>
 <span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">curve_fit</span>
 <span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">ndimage</span>
 <span class="kn">import</span> <span class="nn">hvplot.xarray</span>
-
-<span class="c1"># def conf_hvplot_defaults():</span>
-<span class="c1"># 	&quot;&quot;&quot;Set up some default values for the plotting parameters, when using `hvplot`.</span>
-<span class="c1"># 	&quot;&quot;&quot;	</span>
-<span class="c1"># 	# Setting some default plot options for hvplot</span>
-<span class="c1"># 	from holoviews import opts</span>
-<span class="c1"># 	opts.defaults(</span>
-<span class="c1"># 		opts.Image(</span>
-<span class="c1"># 			aspect = 1</span>
-<span class="c1"># 			)</span>
-<span class="c1"># 		) # can&#39;t set default colormap with this</span>
 
 <div class="viewcode-block" id="coord_to_absolute">
 <a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_process.coord_to_absolute">[docs]</a>
@@ -641,7 +630,7 @@
 <div class="viewcode-block" id="polyflatten">
 <a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_process.polyflatten">[docs]</a>
 <span class="k">def</span> <span class="nf">polyflatten</span><span class="p">(</span><span class="n">xrobj</span><span class="p">,</span> <span class="n">field_type</span> <span class="o">=</span> <span class="s1">&#39;topography&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;Fits a polynomial to the fast scan lines of topography data and </span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Fits a polynomial to the fast scan lines of topography data and subtracts it from the lines.</span>
 <span class="sd">	</span>
 <span class="sd">	The keyword argument ``polyorder`` works the same way as in :func:`bgsubtract`.</span>
 <span class="sd">	Keywords used by :func:`bgsubtract` can be passed.</span>
@@ -682,10 +671,73 @@
 
 <span class="c1">## plotting and data visualization -------------------------------------------</span>
 
+<div class="viewcode-block" id="genthumbs">
+<a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_process.genthumbs">[docs]</a>
+<span class="k">def</span> <span class="nf">genthumbs</span><span class="p">(</span><span class="n">folderpath</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Generate thumbnails for the sm4 files present in the current folder (usually the folder where the jupyter notebook is present).</span>
+<span class="sd">	It ``folderpath`` is specified it generates the thumbnails in the path given.</span>
+<span class="sd">	All other files are ignored. Subfolders are ignored.</span>
+<span class="sd">	The method uses :func:`~rhkpy.rhkpy_loader.rhkdata.qplot` to make the png images.</span>
+
+<span class="sd">	:param folderpath: path to the folder containing the sm4 files, defaults to &#39;&#39;</span>
+<span class="sd">	:type folderpath: str, optional</span>
+
+<span class="sd">	:Example:</span>
+<span class="sd">		</span>
+<span class="sd">		.. code-block:: python</span>
+
+<span class="sd">			import rhkpy</span>
+
+<span class="sd">			# generate thumbnails of the sm4 files in the current working directory</span>
+<span class="sd">			rhkpy.genthumbs()</span>
+
+<span class="sd">			# generate thumbnails for the folder &quot;stm measurements/maps&quot;</span>
+<span class="sd">			rhkpy.genthumbs(folderpath = &#39;./stm measurements/maps/&#39;)</span>
+
+<span class="sd">	.. note::</span>
+
+<span class="sd">		Remember. Possible options for ``folderpath`` are:</span>
+<span class="sd">		</span>
+<span class="sd">		- relative path: &quot;./&quot; means the current directory. &quot;../&quot; is one directory above the current one.</span>
+<span class="sd">		- absolute path: Can start with: &quot;c:/users/averagejoe/data&quot;</span>
+
+<span class="sd">		If you use backslashes to separate folder names, remember to append &quot;r&quot; to the beginning of the path to escape backslashes. For example: ``folderpath = r&quot;c:\\users\\averagejoe\\data&quot;``.</span>
+<span class="sd">		Paths can be copied directly from Windows explorer, if you append an &quot;r&quot;.</span>
+<span class="sd">	&quot;&quot;&quot;</span>	
+	<span class="c1"># import some dependencies</span>
+	<span class="kn">from</span> <span class="nn">.rhkpy_loader</span> <span class="kn">import</span> <span class="n">_get_filename</span><span class="p">,</span> <span class="n">rhkdata</span>
+
+	<span class="c1"># make sure folderpath is correct, add a trailing \\ if none is present</span>
+	<span class="k">if</span> <span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">$&#39;</span><span class="p">,</span> <span class="n">folderpath</span><span class="p">):</span>
+		<span class="n">folderpath</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span>
+
+	<span class="c1"># get the sm4 filenames in the folder</span>
+	<span class="n">sm4list</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">folderpath</span> <span class="o">+</span> <span class="s1">&#39;*.sm4&#39;</span><span class="p">)</span>
+	<span class="n">filenames</span> <span class="o">=</span> <span class="p">[]</span>
+	<span class="k">for</span> <span class="n">sm4path</span> <span class="ow">in</span> <span class="n">sm4list</span><span class="p">:</span>
+		<span class="nb">print</span><span class="p">(</span><span class="n">sm4path</span><span class="p">)</span>
+		<span class="n">filenames</span> <span class="o">+=</span> <span class="p">[</span><span class="n">_get_filename</span><span class="p">(</span><span class="n">sm4path</span><span class="p">)]</span>
+	
+	<span class="c1"># generate thumbs</span>
+	<span class="k">for</span> <span class="n">fname</span> <span class="ow">in</span> <span class="n">filenames</span><span class="p">:</span>
+		<span class="c1"># load file</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="n">data</span> <span class="o">=</span> <span class="n">rhkdata</span><span class="p">(</span><span class="n">folderpath</span> <span class="o">+</span> <span class="n">fname</span><span class="p">)</span>
+		<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+			<span class="c1"># handle the exception</span>
+			<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;A load error occured in file:&#39;</span><span class="p">,</span> <span class="n">fname</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\n\t</span><span class="s1">The error is:&#39;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+			<span class="k">continue</span>
+		
+		<span class="c1"># plot the thumbnail</span>
+		<span class="n">data_plot</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">qplot</span><span class="p">()</span>
+		<span class="n">data_plot</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">folderpath</span> <span class="o">+</span> <span class="n">fname</span><span class="p">[:</span><span class="o">-</span><span class="mi">4</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;.png&#39;</span><span class="p">)</span></div>
+
+
 <div class="viewcode-block" id="navigation">
 <a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_process.navigation">[docs]</a>
-<span class="k">def</span> <span class="nf">navigation</span><span class="p">():</span>
-	<span class="k">pass</span></div>
+<span class="k">def</span> <span class="nf">navigation</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
+	<span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+		<span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span></div>
 
 </pre></div>
 
