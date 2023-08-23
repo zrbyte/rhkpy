@@ -423,15 +423,6 @@
 				<span class="n">plot_panel</span> <span class="o">=</span> <span class="n">combined_panel</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 				<span class="n">plot_widget</span> <span class="o">=</span> <span class="n">combined_panel</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
-				<span class="c1"># also plot the positions of the spectra</span>
-				<span class="c1"># # for this we need to make a new dataarray, with the x and y coordinates</span>
-				<span class="c1"># ds = xr.DataArray(</span>
-				<span class="c1"># 	np.meshgrid(self.spectra.x.data, self.spectra.y.data)[0],</span>
-				<span class="c1"># 	coords = {&#39;x&#39;: self.spectra.x.data, &#39;y&#39;: self.spectra.y.data},</span>
-				<span class="c1"># 	dims = [&#39;x&#39;, &#39;y&#39;]</span>
-				<span class="c1"># )</span>
-				<span class="c1"># specposplot = ds.hvplot.scatter(aspect = 1, color = &#39;red&#39;, marker = &#39;dot&#39;)</span>
-
 				<span class="c1"># combined plot</span>
 				<span class="n">final_plot</span> <span class="o">=</span> <span class="n">pn</span><span class="o">.</span><span class="n">Row</span><span class="p">(</span><span class="n">twod_plot_panel</span><span class="p">,</span> <span class="n">pn</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">plot_widget</span><span class="p">,</span> <span class="n">plot_panel</span><span class="p">))</span>
 
