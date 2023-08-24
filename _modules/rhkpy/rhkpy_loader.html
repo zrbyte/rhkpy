@@ -338,19 +338,18 @@
 <span class="sd">		:rtype: :py:mod:`panel`</span>
 <span class="sd">		&quot;&quot;&quot;</span>			
 		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">datatype</span> <span class="o">==</span> <span class="s1">&#39;image&#39;</span><span class="p">:</span>
-			<span class="n">topo_plot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qplot_topo</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-			<span class="n">lia_plot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qplot_lia</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+			<span class="n">topo_plot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_qplot_topo</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+			<span class="n">lia_plot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_qplot_lia</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 			<span class="n">final_plot</span> <span class="o">=</span> <span class="n">pn</span><span class="o">.</span><span class="n">Row</span><span class="p">(</span><span class="n">pn</span><span class="o">.</span><span class="n">panel</span><span class="p">(</span><span class="n">topo_plot</span><span class="p">),</span> <span class="n">pn</span><span class="o">.</span><span class="n">panel</span><span class="p">(</span><span class="n">lia_plot</span><span class="p">))</span>
 		<span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">datatype</span> <span class="o">==</span> <span class="s1">&#39;map&#39;</span><span class="p">:</span>
 			<span class="c1"># if the rhkdata instance is &#39;map&#39;</span>
 			<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">spectype</span> <span class="o">==</span> <span class="s1">&#39;iv&#39;</span><span class="p">:</span>
-				<span class="n">specplot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qplot_map_iv</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+				<span class="n">specplot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_qplot_map_iv</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 			<span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">spectype</span> <span class="o">==</span> <span class="s1">&#39;iz&#39;</span><span class="p">:</span>
-				<span class="n">specplot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qplot_map_iz</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+				<span class="n">specplot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_qplot_map_iz</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 			<span class="c1"># plot the topography</span>
-			<span class="n">topoplot</span> <span class="o">=</span> <span class="n">qplot_topo</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-
-			<span class="c1">## adjust options</span>
+			<span class="n">topoplot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_qplot_topo</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+			<span class="c1"># adjust options</span>
 			<span class="n">topoplot</span><span class="o">.</span><span class="n">opts</span><span class="p">(</span><span class="n">frame_width</span> <span class="o">=</span> <span class="n">width</span><span class="p">)</span>
 			<span class="n">specplot</span><span class="o">.</span><span class="n">opts</span><span class="p">(</span><span class="n">frame_width</span> <span class="o">=</span> <span class="n">width</span><span class="p">)</span>
 			<span class="c1"># separate the plots and the widget into panels, so I can place the widget</span>
@@ -363,10 +362,9 @@
 			<span class="n">final_plot</span> <span class="o">=</span> <span class="n">pn</span><span class="o">.</span><span class="n">Row</span><span class="p">(</span><span class="n">topo_static</span><span class="p">,</span> <span class="n">pn</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">widget_panel</span><span class="p">,</span> <span class="n">specplot_static</span><span class="p">))</span>
 		<span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">datatype</span> <span class="o">==</span> <span class="s1">&#39;line&#39;</span><span class="p">:</span>
 			<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">spectype</span> <span class="o">==</span> <span class="s1">&#39;iv&#39;</span><span class="p">:</span>
-				<span class="n">specplot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qplot_line_iv</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+				<span class="n">specplot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_qplot_line_iv</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 				<span class="c1"># plot a selected spectrum along the dist dimensions</span>
-				<span class="n">combined</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qplot_line_spec_iv</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
+				<span class="n">combined</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_qplot_line_spec_iv</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 				<span class="c1"># if width parameter is specified, set the size of the plots</span>
 				<span class="k">if</span> <span class="n">width</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 					<span class="n">twod_plot_panel</span> <span class="o">=</span> <span class="n">pn</span><span class="o">.</span><span class="n">panel</span><span class="p">(</span><span class="n">specplot</span><span class="p">)</span>
@@ -381,9 +379,8 @@
 				<span class="n">final_plot</span> <span class="o">=</span> <span class="n">pn</span><span class="o">.</span><span class="n">Row</span><span class="p">(</span><span class="n">twod_plot_panel</span><span class="p">,</span> <span class="n">pn</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">plot_widget</span><span class="p">,</span> <span class="n">plot_panel</span><span class="p">))</span>
 			<span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">spectype</span> <span class="o">==</span> <span class="s1">&#39;iz&#39;</span><span class="p">:</span>
 				<span class="c1"># take the mean of the spectra in a point and plot it</span>
-				<span class="n">specplot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qplot_line_iz</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-				<span class="n">combined</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qplot_line_spec_iz</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-				
+				<span class="n">specplot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_qplot_line_iz</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+				<span class="n">combined</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_qplot_line_spec_iz</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 				<span class="c1"># if width parameter is specified, set the size of the plots</span>
 				<span class="k">if</span> <span class="n">width</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 					<span class="n">twod_plot_panel</span> <span class="o">=</span> <span class="n">pn</span><span class="o">.</span><span class="n">panel</span><span class="p">(</span><span class="n">specplot</span><span class="p">)</span>
@@ -391,26 +388,21 @@
 				<span class="k">else</span><span class="p">:</span>
 					<span class="n">twod_plot_panel</span> <span class="o">=</span> <span class="n">pn</span><span class="o">.</span><span class="n">panel</span><span class="p">(</span><span class="n">specplot</span><span class="o">.</span><span class="n">opts</span><span class="p">(</span><span class="n">frame_width</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">0.8</span><span class="o">*</span><span class="n">width</span><span class="p">)))</span>
 					<span class="n">combined_panel</span> <span class="o">=</span> <span class="n">pn</span><span class="o">.</span><span class="n">panel</span><span class="p">(</span><span class="n">combined</span><span class="o">.</span><span class="n">opts</span><span class="p">(</span><span class="n">frame_width</span> <span class="o">=</span> <span class="n">width</span><span class="p">))</span>
-				
 				<span class="c1"># separate the widget and plot into panels</span>
 				<span class="n">plot_panel</span> <span class="o">=</span> <span class="n">combined_panel</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 				<span class="n">plot_widget</span> <span class="o">=</span> <span class="n">combined_panel</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-
 				<span class="c1"># combined plot</span>
 				<span class="n">final_plot</span> <span class="o">=</span> <span class="n">pn</span><span class="o">.</span><span class="n">Row</span><span class="p">(</span><span class="n">twod_plot_panel</span><span class="p">,</span> <span class="n">pn</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">plot_widget</span><span class="p">,</span> <span class="n">plot_panel</span><span class="p">))</span>
 
 		<span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">datatype</span> <span class="o">==</span> <span class="s1">&#39;spec&#39;</span><span class="p">:</span>
 			<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">spectype</span> <span class="o">==</span> <span class="s1">&#39;iv&#39;</span><span class="p">:</span>
-				<span class="n">leftpanel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qplot_spec_iv_lia</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-				<span class="n">rightpanel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qplot_spec_iv_curr</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
+				<span class="n">leftpanel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_qplot_spec_iv_lia</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+				<span class="n">rightpanel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_qplot_spec_iv_curr</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 				<span class="n">left_panel</span> <span class="o">=</span> <span class="n">pn</span><span class="o">.</span><span class="n">panel</span><span class="p">(</span><span class="n">leftpanel</span><span class="p">)</span>
 				<span class="n">right_panel</span> <span class="o">=</span> <span class="n">pn</span><span class="o">.</span><span class="n">panel</span><span class="p">(</span><span class="n">rightpanel</span><span class="p">)</span>
 				<span class="n">final_plot</span> <span class="o">=</span> <span class="n">pn</span><span class="o">.</span><span class="n">Row</span><span class="p">(</span><span class="n">left_panel</span><span class="p">,</span> <span class="n">right_panel</span><span class="p">)</span>
-			
 			<span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">spectype</span> <span class="o">==</span> <span class="s1">&#39;iz&#39;</span><span class="p">:</span>
-				<span class="n">combined</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qplot_spec_iz</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-				
+				<span class="n">combined</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_qplot_spec_iz</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 				<span class="n">final_plot</span> <span class="o">=</span> <span class="n">pn</span><span class="o">.</span><span class="n">panel</span><span class="p">(</span><span class="n">combined</span><span class="o">.</span><span class="n">opts</span><span class="p">(</span><span class="n">width</span> <span class="o">=</span> <span class="mi">400</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;current&#39;</span><span class="p">))</span>
 
 		<span class="c1">## This shows the plot in a separate window</span>
@@ -418,11 +410,10 @@
 		<span class="k">return</span> <span class="n">final_plot</span></div>
 
 
-<span class="c1">## plotting functions for qplot</span>
+	<span class="c1">## internal functions -----------------------------------------------------------------------------------------</span>
+	<span class="c1">## plotting functions for qplot</span>
 
-<div class="viewcode-block" id="rhkdata.qplot_topo">
-<a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_loader.rhkdata.qplot_topo">[docs]</a>
-	<span class="k">def</span> <span class="nf">qplot_topo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmap_topo</span> <span class="o">=</span> <span class="s1">&#39;fire&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+	<span class="k">def</span> <span class="nf">_qplot_topo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmap_topo</span> <span class="o">=</span> <span class="s1">&#39;fire&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Plotting topography data using :py:mod:`hvplot`.</span>
 
 <span class="sd">		:param cmap_topo: colorscale used for topography data, defaults to &#39;fire&#39;</span>
@@ -432,12 +423,9 @@
 <span class="sd">		:rtype: :py:mod:`holoviews`</span>
 <span class="sd">		&quot;&quot;&quot;</span>	
 		<span class="c1"># The backward direction should be plotted, since this is the direction in which the tip moves, when the spectroscopy data is measured.</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">topography</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">hvplot</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="n">cmap_topo</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;topography backward&#39;</span><span class="p">)</span></div>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">topography</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">hvplot</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="n">cmap_topo</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;topography backward&#39;</span><span class="p">)</span>
 
-
-<div class="viewcode-block" id="rhkdata.qplot_lia">
-<a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_loader.rhkdata.qplot_lia">[docs]</a>
-	<span class="k">def</span> <span class="nf">qplot_lia</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmap_spec</span> <span class="o">=</span> <span class="s1">&#39;viridis&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+	<span class="k">def</span> <span class="nf">_qplot_lia</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmap_spec</span> <span class="o">=</span> <span class="s1">&#39;viridis&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Plotting dI/dV image data using :py:mod:`hvplot`.</span>
 
 <span class="sd">		:param cmap_spec: colorscale used for dI/dV data, defaults to &#39;viridis&#39;</span>
@@ -446,12 +434,9 @@
 <span class="sd">		:return: :py:mod:`holoviews` plot</span>
 <span class="sd">		:rtype: :py:mod:`holoviews`</span>
 <span class="sd">		&quot;&quot;&quot;</span>	
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">lia</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">hvplot</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="n">cmap</span> <span class="o">=</span> <span class="n">cmap_spec</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;dI/dV backward&#39;</span><span class="p">)</span></div>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">lia</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">hvplot</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="n">cmap</span> <span class="o">=</span> <span class="n">cmap_spec</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;dI/dV backward&#39;</span><span class="p">)</span>
 
-
-<div class="viewcode-block" id="rhkdata.qplot_map_iv">
-<a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_loader.rhkdata.qplot_map_iv">[docs]</a>
-	<span class="k">def</span> <span class="nf">qplot_map_iv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmap_spec</span> <span class="o">=</span> <span class="s1">&#39;viridis&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+	<span class="k">def</span> <span class="nf">_qplot_map_iv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmap_spec</span> <span class="o">=</span> <span class="s1">&#39;viridis&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Plotting dI/dV map data using :py:mod:`hvplot`.</span>
 <span class="sd">		The mean values (biasscandir and repetitions) of the dI/dV signal are plotted on the density plot.</span>
 
@@ -472,12 +457,9 @@
 			<span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;dI/dV map&#39;</span>
 		<span class="p">)</span>
 		<span class="c1"># holoviews plot</span>
-		<span class="k">return</span> <span class="n">specplot</span></div>
-
+		<span class="k">return</span> <span class="n">specplot</span>
 	
-<div class="viewcode-block" id="rhkdata.qplot_map_iz">
-<a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_loader.rhkdata.qplot_map_iz">[docs]</a>
-	<span class="k">def</span> <span class="nf">qplot_map_iz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmap_spec</span> <span class="o">=</span> <span class="s1">&#39;viridis&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+	<span class="k">def</span> <span class="nf">_qplot_map_iz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmap_spec</span> <span class="o">=</span> <span class="s1">&#39;viridis&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Plotting I(z) map data using :py:mod:`hvplot`.</span>
 
 <span class="sd">		:param cmap_spec: colorscale used for I(z) data, defaults to &#39;viridis&#39;</span>
@@ -495,12 +477,9 @@
 			<span class="n">cmap</span> <span class="o">=</span> <span class="n">cmap_spec</span><span class="p">,</span>
 			<span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;I(z) map&#39;</span>
 		<span class="p">)</span>
-		<span class="k">return</span> <span class="n">specplot</span></div>
+		<span class="k">return</span> <span class="n">specplot</span>
 
-
-<div class="viewcode-block" id="rhkdata.qplot_line_iv">
-<a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_loader.rhkdata.qplot_line_iv">[docs]</a>
-	<span class="k">def</span> <span class="nf">qplot_line_iv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmap_spec</span> <span class="o">=</span> <span class="s1">&#39;viridis&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+	<span class="k">def</span> <span class="nf">_qplot_line_iv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmap_spec</span> <span class="o">=</span> <span class="s1">&#39;viridis&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Plotting dI/dV line data on a density plot (bias vs distance), using :py:mod:`hvplot`.</span>
 <span class="sd">		The mean values of the dI/dV signal are plotted on the density plot.</span>
 
@@ -520,12 +499,9 @@
 			<span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;dI/dV line spectra&#39;</span><span class="p">,</span>
 			<span class="n">aspect</span> <span class="o">=</span> <span class="mi">1</span>
 		<span class="p">)</span>
-		<span class="k">return</span> <span class="n">specplot</span></div>
+		<span class="k">return</span> <span class="n">specplot</span>
 
-
-<div class="viewcode-block" id="rhkdata.qplot_line_spec_iv">
-<a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_loader.rhkdata.qplot_line_spec_iv">[docs]</a>
-	<span class="k">def</span> <span class="nf">qplot_line_spec_iv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+	<span class="k">def</span> <span class="nf">_qplot_line_spec_iv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Plotting dI/dV spectra of a line spectroscopy instance, using :py:mod:`hvplot`.</span>
 
 <span class="sd">		:return: :py:mod:`holoviews` plot</span>
@@ -547,12 +523,9 @@
 			<span class="n">lineplot_bw</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">spectra</span><span class="o">.</span><span class="n">lia</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span> <span class="o">=</span> <span class="s1">&#39;repetitions&#39;</span><span class="p">)[:,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">hvplot</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;bias&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">line_width</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;avg right&#39;</span><span class="p">)</span>
 
 		<span class="c1"># combine the fw and bw bias sweeps</span>
-		<span class="k">return</span> <span class="n">lineplot_fw</span> <span class="o">*</span> <span class="n">lineplot_bw</span></div>
+		<span class="k">return</span> <span class="n">lineplot_fw</span> <span class="o">*</span> <span class="n">lineplot_bw</span>
 
-
-<div class="viewcode-block" id="rhkdata.qplot_line_iz">
-<a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_loader.rhkdata.qplot_line_iz">[docs]</a>
-	<span class="k">def</span> <span class="nf">qplot_line_iz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmap_spec</span> <span class="o">=</span> <span class="s1">&#39;viridis&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+	<span class="k">def</span> <span class="nf">_qplot_line_iz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmap_spec</span> <span class="o">=</span> <span class="s1">&#39;viridis&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Plotting I(z) line data on a density plot (tip height vs distance), using :py:mod:`hvplot`.</span>
 <span class="sd">		The mean values of the I(z) signal are plotted.</span>
 
@@ -571,12 +544,9 @@
 			<span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;I(z) line spectra&#39;</span><span class="p">,</span>
 			<span class="n">aspect</span> <span class="o">=</span> <span class="mi">1</span>
 		<span class="p">)</span>
-		<span class="k">return</span> <span class="n">specplot</span></div>
+		<span class="k">return</span> <span class="n">specplot</span>
 
-
-<div class="viewcode-block" id="rhkdata.qplot_line_spec_iz">
-<a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_loader.rhkdata.qplot_line_spec_iz">[docs]</a>
-	<span class="k">def</span> <span class="nf">qplot_line_spec_iz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+	<span class="k">def</span> <span class="nf">_qplot_line_spec_iz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Plotting I(z) spectra of a line spectroscopy instance, using :py:mod:`hvplot`.</span>
 
 <span class="sd">		:return: :py:mod:`holoviews` plot</span>
@@ -598,12 +568,9 @@
 			<span class="n">lineplot_bw</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">spectra</span><span class="o">.</span><span class="n">current</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span> <span class="o">=</span> <span class="s1">&#39;repetitions&#39;</span><span class="p">)[:,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">hvplot</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;z&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">line_width</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;avg down&#39;</span><span class="p">)</span>
 
 		<span class="c1"># combine the fw and bw z sweeps</span>
-		<span class="k">return</span> <span class="n">lineplot_fw</span> <span class="o">*</span> <span class="n">lineplot_bw</span></div>
+		<span class="k">return</span> <span class="n">lineplot_fw</span> <span class="o">*</span> <span class="n">lineplot_bw</span>
 
-
-<div class="viewcode-block" id="rhkdata.qplot_spec_iv_lia">
-<a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_loader.rhkdata.qplot_spec_iv_lia">[docs]</a>
-	<span class="k">def</span> <span class="nf">qplot_spec_iv_lia</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+	<span class="k">def</span> <span class="nf">_qplot_spec_iv_lia</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Plotting the dI/dV signal of a single spectrum instance, using :py:mod:`hvplot`.</span>
 
 <span class="sd">		:return: :py:mod:`holoviews` plot</span>
@@ -621,12 +588,9 @@
 				<span class="n">liaplot_bw</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">spectra</span><span class="o">.</span><span class="n">lia</span><span class="p">[:,</span> <span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">hvplot</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;bias&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;LightSkyBlue&#39;</span><span class="p">,</span> <span class="n">line_dash</span> <span class="o">=</span> <span class="s1">&#39;dotted&#39;</span><span class="p">,</span> <span class="n">line_width</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
 			<span class="n">liaplot_fw</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">spectra</span><span class="o">.</span><span class="n">lia</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span> <span class="o">=</span> <span class="s1">&#39;repetitions&#39;</span><span class="p">)[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">hvplot</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;bias&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">line_width</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;avg left&#39;</span><span class="p">)</span>
 			<span class="n">liaplot_bw</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">spectra</span><span class="o">.</span><span class="n">lia</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span> <span class="o">=</span> <span class="s1">&#39;repetitions&#39;</span><span class="p">)[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">hvplot</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;bias&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">line_width</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;avg right&#39;</span><span class="p">)</span>
-		<span class="k">return</span> <span class="p">(</span><span class="n">liaplot_fw</span><span class="o">*</span><span class="n">liaplot_bw</span><span class="p">)</span><span class="o">.</span><span class="n">opts</span><span class="p">(</span><span class="n">width</span> <span class="o">=</span> <span class="mi">400</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;dI/dV&#39;</span><span class="p">)</span></div>
+		<span class="k">return</span> <span class="p">(</span><span class="n">liaplot_fw</span><span class="o">*</span><span class="n">liaplot_bw</span><span class="p">)</span><span class="o">.</span><span class="n">opts</span><span class="p">(</span><span class="n">width</span> <span class="o">=</span> <span class="mi">400</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;dI/dV&#39;</span><span class="p">)</span>
 
-
-<div class="viewcode-block" id="rhkdata.qplot_spec_iv_curr">
-<a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_loader.rhkdata.qplot_spec_iv_curr">[docs]</a>
-	<span class="k">def</span> <span class="nf">qplot_spec_iv_curr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+	<span class="k">def</span> <span class="nf">_qplot_spec_iv_curr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Plotting the current signal of a single spectrum instance, using :py:mod:`hvplot`.</span>
 
 <span class="sd">		:return: :py:mod:`holoviews` plot</span>
@@ -644,12 +608,9 @@
 				<span class="n">currplot_bw</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">spectra</span><span class="o">.</span><span class="n">current</span><span class="p">[:,</span> <span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">hvplot</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;bias&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;LightSkyBlue&#39;</span><span class="p">,</span> <span class="n">line_dash</span> <span class="o">=</span> <span class="s1">&#39;dotted&#39;</span><span class="p">,</span> <span class="n">line_width</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
 			<span class="n">currplot_fw</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">spectra</span><span class="o">.</span><span class="n">current</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span> <span class="o">=</span> <span class="s1">&#39;repetitions&#39;</span><span class="p">)[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">hvplot</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;bias&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">line_width</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;avg left&#39;</span><span class="p">)</span>
 			<span class="n">currplot_bw</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">spectra</span><span class="o">.</span><span class="n">current</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span> <span class="o">=</span> <span class="s1">&#39;repetitions&#39;</span><span class="p">)[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">hvplot</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;bias&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">line_width</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;avg right&#39;</span><span class="p">)</span>
-		<span class="k">return</span> <span class="p">(</span><span class="n">currplot_fw</span><span class="o">*</span><span class="n">currplot_bw</span><span class="p">)</span><span class="o">.</span><span class="n">opts</span><span class="p">(</span><span class="n">width</span> <span class="o">=</span> <span class="mi">400</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;current&#39;</span><span class="p">)</span></div>
+		<span class="k">return</span> <span class="p">(</span><span class="n">currplot_fw</span><span class="o">*</span><span class="n">currplot_bw</span><span class="p">)</span><span class="o">.</span><span class="n">opts</span><span class="p">(</span><span class="n">width</span> <span class="o">=</span> <span class="mi">400</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;current&#39;</span><span class="p">)</span>
 
-
-<div class="viewcode-block" id="rhkdata.qplot_spec_iz">
-<a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_loader.rhkdata.qplot_spec_iz">[docs]</a>
-	<span class="k">def</span> <span class="nf">qplot_spec_iz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+	<span class="k">def</span> <span class="nf">_qplot_spec_iz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Plotting an I(z) single spectrum instance, using :py:mod:`hvplot`.</span>
 
 <span class="sd">		:return: :py:mod:`holoviews` plot</span>
@@ -668,11 +629,26 @@
 			<span class="n">specplot_up</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">spectra</span><span class="o">.</span><span class="n">current</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span> <span class="o">=</span> <span class="s1">&#39;repetitions&#39;</span><span class="p">)[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">hvplot</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;z&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">line_width</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;avg up&#39;</span><span class="p">)</span>
 			<span class="n">specplot_down</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">spectra</span><span class="o">.</span><span class="n">current</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span> <span class="o">=</span> <span class="s1">&#39;repetitions&#39;</span><span class="p">)[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">hvplot</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;z&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">line_width</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;avg down&#39;</span><span class="p">)</span>
 		<span class="k">return</span> <span class="n">specplot_up</span><span class="o">*</span><span class="n">specplot_down</span></div>
-</div>
 
 
 
-<span class="c1">### internal functions -----------------------------------------------------------</span>
+<div class="viewcode-block" id="load_rhksm4">
+<a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_loader.load_rhksm4">[docs]</a>
+<span class="k">def</span> <span class="nf">load_rhksm4</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Load the data from the .sm4 file using the old loader from spym&quot;&quot;&quot;</span>
+	<span class="k">return</span> <span class="n">rhksm4</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="load_spym">
+<a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_loader.load_spym">[docs]</a>
+<span class="k">def</span> <span class="nf">load_spym</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Load the data from the .sm4 file using spym&quot;&quot;&quot;</span>
+	<span class="k">return</span> <span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span></div>
+
+
+<span class="c1">## internal functions ------------------------------------------------</span>
+<span class="c1">## loading -----------------------------------------------------------</span>
 
 <span class="k">def</span> <span class="nf">_checkrepetitions</span><span class="p">(</span><span class="n">stmdata_object</span><span class="p">):</span>
 	<span class="n">coordlist</span> <span class="o">=</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="o">.</span><span class="n">Current</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;RHK_SpecDrift_Xcoord&#39;</span><span class="p">]</span>
@@ -1584,21 +1560,6 @@
 	<span class="n">stmdata_object</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;spectype&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spectype</span>
 
 	<span class="k">return</span> <span class="n">stmdata_object</span>
-
-
-<div class="viewcode-block" id="load_rhksm4">
-<a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_loader.load_rhksm4">[docs]</a>
-<span class="k">def</span> <span class="nf">load_rhksm4</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;Load the data from the .sm4 file using the old loader from spym&quot;&quot;&quot;</span>
-	<span class="k">return</span> <span class="n">rhksm4</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="load_spym">
-<a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_loader.load_spym">[docs]</a>
-<span class="k">def</span> <span class="nf">load_spym</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;Load the data from the .sm4 file using spym&quot;&quot;&quot;</span>
-	<span class="k">return</span> <span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span></div>
-
 
 </pre></div>
 
