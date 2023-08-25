@@ -221,6 +221,43 @@
 		<span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">datatype</span> <span class="o">==</span> <span class="s1">&#39;image&#39;</span><span class="p">:</span>
 			<span class="bp">self</span> <span class="o">=</span> <span class="n">_load_image</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
+<div class="viewcode-block" id="rhkdata.mrep">
+<a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_loader.rhkdata.mrep">[docs]</a>
+	<span class="k">def</span> <span class="nf">mrep</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Returns a new instance of :class:`rhkdata`, with the data averaged (using :py:mod:`xarray.Variable.mean`) along the &#39;repetitions&#39; coordinate.</span>
+<span class="sd">		Meant to be shorthand for: ``rhkdata_instance.spectra.mean(dim = &#39;repetitions&#39;)``.</span>
+
+<span class="sd">		:return: :class:`rhkdata` instance</span>
+<span class="sd">		:rtype: :class:`rhkdata`</span>
+<span class="sd">		&quot;&quot;&quot;</span>		
+		<span class="c1"># function to take the mean along the repetitions coordinate</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">datatype</span> <span class="o">==</span> <span class="s1">&#39;image&#39;</span><span class="p">:</span>
+			<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Can</span><span class="se">\&#39;</span><span class="s1">t drop the repetitions from an image.&#39;</span><span class="p">)</span>
+		<span class="n">newdata</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+		<span class="n">newdata</span><span class="o">.</span><span class="n">spectra</span> <span class="o">=</span> <span class="n">newdata</span><span class="o">.</span><span class="n">spectra</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span> <span class="o">=</span> <span class="s1">&#39;repetitions&#39;</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">newdata</span></div>
+
+
+<div class="viewcode-block" id="rhkdata.msw">
+<a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_loader.rhkdata.msw">[docs]</a>
+	<span class="k">def</span> <span class="nf">msw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">&quot;&quot;&quot;Returns a new instance of :class:`rhkdata`, with the data averaged (using :py:mod:`xarray.Variable.mean`) along the &#39;biasscandir&#39; or &#39;zscandir&#39; coordinate.</span>
+<span class="sd">		Meant to be shorthand for: ``rhkdata_instance.spectra.mean(dim = &#39;biasscandir&#39;)``, or ``rhkdata_instance.spectra.mean(dim = &#39;zscandir&#39;)``.</span>
+
+<span class="sd">		:return: :class:`rhkdata` instance</span>
+<span class="sd">		:rtype: :class:`rhkdata`</span>
+<span class="sd">		&quot;&quot;&quot;</span>		
+		<span class="c1"># function to take the mean along the biasscan coordinate</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">datatype</span> <span class="o">==</span> <span class="s1">&#39;image&#39;</span><span class="p">:</span>
+			<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Can</span><span class="se">\&#39;</span><span class="s1">t drop the repetitions from an image.&#39;</span><span class="p">)</span>
+		<span class="n">newdata</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">spectype</span> <span class="o">==</span> <span class="s1">&#39;iv&#39;</span><span class="p">:</span>
+			<span class="n">newdata</span><span class="o">.</span><span class="n">spectra</span> <span class="o">=</span> <span class="n">newdata</span><span class="o">.</span><span class="n">spectra</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span> <span class="o">=</span> <span class="s1">&#39;biasscandir&#39;</span><span class="p">)</span>
+		<span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">spectype</span> <span class="o">==</span> <span class="s1">&#39;iz&#39;</span><span class="p">:</span>
+			<span class="n">newdata</span><span class="o">.</span><span class="n">spectra</span> <span class="o">=</span> <span class="n">newdata</span><span class="o">.</span><span class="n">spectra</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span> <span class="o">=</span> <span class="s1">&#39;zscandir&#39;</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">newdata</span></div>
+
+
 <div class="viewcode-block" id="rhkdata.print_info">
 <a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_loader.rhkdata.print_info">[docs]</a>
 	<span class="k">def</span> <span class="nf">print_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
