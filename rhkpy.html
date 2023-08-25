@@ -536,7 +536,48 @@ Paths can be copied directly from Windows explorer, if you append an “r”.</p
 <dl class="py function">
 <dt class="sig sig-object py" id="rhkpy.rhkpy_process.navigation">
 <span class="sig-prename descclassname"><span class="pre">rhkpy.rhkpy_process.</span></span><span class="sig-name descname"><span class="pre">navigation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rhkpy/rhkpy_process.html#navigation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rhkpy.rhkpy_process.navigation" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Takes any number of <a class="reference internal" href="#rhkpy.rhkpy_loader.rhkdata" title="rhkpy.rhkpy_loader.rhkdata"><code class="xref py py-class docutils literal notranslate"><span class="pre">rhkdata</span></code></a> arguments: ‘map’, ‘line’, ‘spec’ and plots all of them on a single plot.
+Plotting of the spectroscopy positions can be skipped by setting the optional keyword: <code class="docutils literal notranslate"><span class="pre">plot_spec</span></code> to <cite>False</cite>.
+Plotting is done in the order of passing of the arguments. First argument will be plotted first.</p>
+<p>The color map used for plotting topography images can be specified by the <code class="docutils literal notranslate"><span class="pre">cmap</span></code> optional keyword argument. Default value is ‘bone’.</p>
+<p>Colors for use in the labels can be specified by the optional keyword: <code class="docutils literal notranslate"><span class="pre">palette_name</span></code>. If this is used, the number of colors also needs to be specified, by: <code class="docutils literal notranslate"><span class="pre">num_colors</span></code>.
+For possible palette options look at the <a class="reference external" href="https://docs.bokeh.org/en/latest/docs/reference/palettes.html">bokeh palettes</a>.</p>
+<dl class="field-list">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">holoviews</span></code> plot</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">holoviews</span></code></p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">rhkpy</span>
+
+<span class="c1"># Load some data</span>
+<span class="n">didvmap</span> <span class="o">=</span> <span class="n">rhkpy</span><span class="o">.</span><span class="n">rhkdata</span><span class="p">(</span><span class="s1">&#39;didvmap path/map.sm4&#39;</span><span class="p">)</span>
+<span class="n">topography</span> <span class="o">=</span> <span class="n">rhkpy</span><span class="o">.</span><span class="n">rhkdata</span><span class="p">(</span><span class="s1">&#39;topo path/topo1.sm4&#39;</span><span class="p">)</span>
+<span class="n">single_spec</span> <span class="o">=</span> <span class="n">rhkpy</span><span class="o">.</span><span class="n">rhkdata</span><span class="p">(</span><span class="s1">&#39;single spec path/single spec.sm4&#39;</span><span class="p">)</span>
+
+<span class="c1"># plot the topography and spectroscopy positions</span>
+<span class="n">rhkpy</span><span class="o">.</span><span class="n">navigation</span><span class="p">(</span><span class="n">topography</span><span class="p">,</span> <span class="n">didvmap</span><span class="p">,</span> <span class="n">single_spec</span><span class="p">)</span>
+
+<span class="c1"># skip plotting the spectroscopy positions</span>
+<span class="n">rhkpy</span><span class="o">.</span><span class="n">navigation</span><span class="p">(</span><span class="n">topography</span><span class="p">,</span> <span class="n">didvmap</span><span class="p">,</span> <span class="n">single_spec</span><span class="p">,</span> <span class="n">plot_spec</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># In the above examples, the image from topography</span>
+<span class="c1"># is plotted before the image data of didivmap!</span>
+<span class="c1"># You can change the plotting order by changing</span>
+<span class="c1"># the order of the `rhkdata` instances in the arguments.</span>
+<span class="n">rhkpy</span><span class="o">.</span><span class="n">navigation</span><span class="p">(</span><span class="n">didvmap</span><span class="p">,</span> <span class="n">topography</span><span class="p">,</span> <span class="n">single_spec</span><span class="p">)</span> <span class="c1"># now didvmap is plotted first</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Arguments are plotted in the order they are passed to <a class="reference internal" href="#rhkpy.rhkpy_process.navigation" title="rhkpy.rhkpy_process.navigation"><code class="xref py py-func docutils literal notranslate"><span class="pre">navigation()</span></code></a>.</p>
+<p>The spectroscopy positions in dI/dV maps can be simply visualized by just passing the map <a class="reference internal" href="#rhkpy.rhkpy_loader.rhkdata" title="rhkpy.rhkpy_loader.rhkdata"><code class="xref py py-class docutils literal notranslate"><span class="pre">rhkdata</span></code></a> instance.</p>
+</div>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="rhkpy.rhkpy_process.peakfit">
