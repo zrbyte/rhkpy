@@ -893,16 +893,18 @@
 <div class="viewcode-block" id="mapsection">
 <a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_process.mapsection">[docs]</a>
 <span class="k">def</span> <span class="nf">mapsection</span><span class="p">(</span><span class="n">specmap</span><span class="p">,</span> <span class="n">start_point</span><span class="p">,</span> <span class="n">end_point</span><span class="p">):</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;Make a section across a dI/dV spectroscopy map: ``specmap``, from ``start_point`` to ``end_point``.</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Makes a section across a dI/dV spectroscopy map: ``specmap``. Starting and end points: ``start_point`` to ``end_point``.</span>
+<span class="sd">	It uses :py:mod:`xarray.Dataset.interp` to interpolate between data values.</span>
 
-<span class="sd">	:param specmap: _description_</span>
-<span class="sd">	:type specmap: _type_</span>
-<span class="sd">	:param start_point: _description_</span>
-<span class="sd">	:type start_point: _type_</span>
-<span class="sd">	:param end_point: _description_</span>
-<span class="sd">	:type end_point: _type_</span>
-<span class="sd">	:return: _description_</span>
-<span class="sd">	:rtype: _type_</span>
+<span class="sd">	:param specmap: the `spectra` :py:mod:`xarray` variable of an :class:`~rhkpy.rhkpy_loader.rhkdata` instance. Found under: :class:`~rhkpy.rhkpy_loader.rhkdata.spectra`.</span>
+<span class="sd">	:type specmap: :py:mod:`xarray` DataSet</span>
+<span class="sd">	:param start_point: starting point for the line section. In the format: `(x, y)`, found in the ``specpos_x``, ``specpos_y`` coordinates of ``specmap``.</span>
+<span class="sd">	:type start_point: tuple: (float, float)</span>
+<span class="sd">	:param end_point: end point for the line section. In the format: `(x, y)`, found in the ``specpos_x``, ``specpos_y`` coordinates of ``specmap``.</span>
+<span class="sd">	:type end_point: tuple: (float, float)</span>
+<span class="sd">	</span>
+<span class="sd">	:return: :py:mod:`xarray` DataSet of the line section</span>
+<span class="sd">	:rtype: :py:mod:`xarray` DataSet</span>
 <span class="sd">	&quot;&quot;&quot;</span>	
 	<span class="c1"># Extract the start and end coordinates</span>
 	<span class="n">x_start</span><span class="p">,</span> <span class="n">y_start</span> <span class="o">=</span> <span class="n">start_point</span>
@@ -921,10 +923,10 @@
 
 	<span class="c1"># Loop through the variables in the dataset</span>
 	<span class="k">for</span> <span class="n">var_name</span><span class="p">,</span> <span class="n">var_data</span> <span class="ow">in</span> <span class="n">specmap</span><span class="o">.</span><span class="n">data_vars</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-	    <span class="c1"># Interpolate along the specified line</span>
-	    <span class="n">interpolated_values</span> <span class="o">=</span> <span class="n">var_data</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">specpos_x</span> <span class="o">=</span> <span class="n">line_x_coords</span><span class="p">,</span> <span class="n">specpos_y</span> <span class="o">=</span> <span class="n">line_y_coords</span><span class="p">)</span>
-	    <span class="c1"># Store the interpolated values in the dictionary</span>
-	    <span class="n">sections_dict</span><span class="p">[</span><span class="n">var_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">interpolated_values</span>
+		<span class="c1"># Interpolate along the specified line</span>
+		<span class="n">interpolated_values</span> <span class="o">=</span> <span class="n">var_data</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">specpos_x</span> <span class="o">=</span> <span class="n">line_x_coords</span><span class="p">,</span> <span class="n">specpos_y</span> <span class="o">=</span> <span class="n">line_y_coords</span><span class="p">)</span>
+		<span class="c1"># Store the interpolated values in the dictionary</span>
+		<span class="n">sections_dict</span><span class="p">[</span><span class="n">var_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">interpolated_values</span>
 	
 	<span class="c1"># Create a new xarray Dataset containing the sections</span>
 	<span class="c1"># new distance dimension coordinates</span>

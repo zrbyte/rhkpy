@@ -570,20 +570,21 @@ Paths can be copied directly from Windows explorer, if you append an “r”.</p
 <dl class="py function">
 <dt class="sig sig-object py" id="rhkpy.rhkpy_process.mapsection">
 <span class="sig-prename descclassname"><span class="pre">rhkpy.rhkpy_process.</span></span><span class="sig-name descname"><span class="pre">mapsection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">specmap</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_point</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rhkpy/rhkpy_process.html#mapsection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rhkpy.rhkpy_process.mapsection" title="Link to this definition"></a></dt>
-<dd><p>Make a section across a dI/dV spectroscopy map: <code class="docutils literal notranslate"><span class="pre">specmap</span></code>, from <code class="docutils literal notranslate"><span class="pre">start_point</span></code> to <code class="docutils literal notranslate"><span class="pre">end_point</span></code>.</p>
+<dd><p>Makes a section across a dI/dV spectroscopy map: <code class="docutils literal notranslate"><span class="pre">specmap</span></code>. Starting and end points: <code class="docutils literal notranslate"><span class="pre">start_point</span></code> to <code class="docutils literal notranslate"><span class="pre">end_point</span></code>.
+It uses <code class="xref py py-mod docutils literal notranslate"><span class="pre">xarray.Dataset.interp</span></code> to interpolate between data values.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>specmap</strong> (<em>_type_</em>) – _description_</p></li>
-<li><p><strong>start_point</strong> (<em>_type_</em>) – _description_</p></li>
-<li><p><strong>end_point</strong> (<em>_type_</em>) – _description_</p></li>
+<li><p><strong>specmap</strong> (<code class="xref py py-mod docutils literal notranslate"><span class="pre">xarray</span></code> DataSet) – the <cite>spectra</cite> <code class="xref py py-mod docutils literal notranslate"><span class="pre">xarray</span></code> variable of an <a class="reference internal" href="#rhkpy.rhkpy_loader.rhkdata" title="rhkpy.rhkpy_loader.rhkdata"><code class="xref py py-class docutils literal notranslate"><span class="pre">rhkdata</span></code></a> instance. Found under: <code class="xref py py-class docutils literal notranslate"><span class="pre">spectra</span></code>.</p></li>
+<li><p><strong>start_point</strong> (<em>tuple:</em><em> (</em><em>float</em><em>, </em><em>float</em><em>)</em>) – starting point for the line section. In the format: <cite>(x, y)</cite>, found in the <code class="docutils literal notranslate"><span class="pre">specpos_x</span></code>, <code class="docutils literal notranslate"><span class="pre">specpos_y</span></code> coordinates of <code class="docutils literal notranslate"><span class="pre">specmap</span></code>.</p></li>
+<li><p><strong>end_point</strong> (<em>tuple:</em><em> (</em><em>float</em><em>, </em><em>float</em><em>)</em>) – end point for the line section. In the format: <cite>(x, y)</cite>, found in the <code class="docutils literal notranslate"><span class="pre">specpos_x</span></code>, <code class="docutils literal notranslate"><span class="pre">specpos_y</span></code> coordinates of <code class="docutils literal notranslate"><span class="pre">specmap</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>_description_</p>
+<dd class="field-even"><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">xarray</span></code> DataSet of the line section</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>_type_</p>
+<dd class="field-odd"><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">xarray</span></code> DataSet</p>
 </dd>
 </dl>
 </dd></dl>
