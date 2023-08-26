@@ -505,7 +505,9 @@
 <div class="viewcode-block" id="peakfit">
 <a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_process.peakfit">[docs]</a>
 <span class="k">def</span> <span class="nf">peakfit</span><span class="p">(</span><span class="n">xrobj</span><span class="p">,</span> <span class="n">func</span> <span class="o">=</span> <span class="n">gaussian</span><span class="p">,</span> <span class="n">fitresult</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">stval</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">bounds</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">toplot</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">pos_x</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">pos_y</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;Fitting a function to peaks in the data contained in ``xrobj``.</span>
+<span class="w">	</span><span class="sd">&quot;&quot;&quot;Fitting a function to peaks in the data contained in the ``xrobj`` DataArray.</span>
+<span class="sd">	Currently, Datasets with multiple DataArrays is not supported.</span>
+<span class="sd">	Peak fitting is always assumed to be along the `bias` coordinate.</span>
 
 <span class="sd">	:param xrobj: :py:mod:`xarray` DataArray, of a single spectrum or a map.</span>
 <span class="sd">	:type xrobj: :py:mod:`xarray`</span>

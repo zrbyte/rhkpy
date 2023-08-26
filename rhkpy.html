@@ -638,7 +638,9 @@ For possible palette options look at the <a class="reference external" href="htt
 <dl class="py function">
 <dt class="sig sig-object py" id="rhkpy.rhkpy_process.peakfit">
 <span class="sig-prename descclassname"><span class="pre">rhkpy.rhkpy_process.</span></span><span class="sig-name descname"><span class="pre">peakfit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xrobj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">func=&lt;function</span> <span class="pre">gaussian&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fitresult=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stval=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">toplot=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos_x=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos_y=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rhkpy/rhkpy_process.html#peakfit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rhkpy.rhkpy_process.peakfit" title="Link to this definition"></a></dt>
-<dd><p>Fitting a function to peaks in the data contained in <code class="docutils literal notranslate"><span class="pre">xrobj</span></code>.</p>
+<dd><p>Fitting a function to peaks in the data contained in the <code class="docutils literal notranslate"><span class="pre">xrobj</span></code> DataArray.
+Currently, Datasets with multiple DataArrays is not supported.
+Peak fitting is always assumed to be along the <cite>bias</cite> coordinate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
