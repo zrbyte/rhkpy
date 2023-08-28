@@ -232,7 +232,8 @@
 <span class="sd">		&quot;&quot;&quot;</span>		
 		<span class="c1"># function to take the mean along the repetitions coordinate</span>
 		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">datatype</span> <span class="o">==</span> <span class="s1">&#39;image&#39;</span><span class="p">:</span>
-			<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Can</span><span class="se">\&#39;</span><span class="s1">t drop the repetitions from an image.&#39;</span><span class="p">)</span>
+			<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Can</span><span class="se">\&#39;</span><span class="s1">t calculate the repetitions of an image.&#39;</span><span class="p">)</span>
+			<span class="k">return</span>
 		<span class="n">newdata</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 		<span class="n">newdata</span><span class="o">.</span><span class="n">spectra</span> <span class="o">=</span> <span class="n">newdata</span><span class="o">.</span><span class="n">spectra</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span> <span class="o">=</span> <span class="s1">&#39;repetitions&#39;</span><span class="p">)</span>
 		<span class="k">return</span> <span class="n">newdata</span></div>
@@ -249,7 +250,8 @@
 <span class="sd">		&quot;&quot;&quot;</span>		
 		<span class="c1"># function to take the mean along the biasscan coordinate</span>
 		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">datatype</span> <span class="o">==</span> <span class="s1">&#39;image&#39;</span><span class="p">:</span>
-			<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Can</span><span class="se">\&#39;</span><span class="s1">t drop the repetitions from an image.&#39;</span><span class="p">)</span>
+			<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Can</span><span class="se">\&#39;</span><span class="s1">t calculate the repetitions of an image.&#39;</span><span class="p">)</span>
+			<span class="k">return</span>
 		<span class="n">newdata</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">spectype</span> <span class="o">==</span> <span class="s1">&#39;iv&#39;</span><span class="p">:</span>
 			<span class="n">newdata</span><span class="o">.</span><span class="n">spectra</span> <span class="o">=</span> <span class="n">newdata</span><span class="o">.</span><span class="n">spectra</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span> <span class="o">=</span> <span class="s1">&#39;biasscandir&#39;</span><span class="p">)</span>
@@ -272,11 +274,11 @@
 		<span class="k">if</span> <span class="s1">&#39;spectra&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">:</span>
 			<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">spectra:&#39;</span><span class="p">)</span>
 			<span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">spectra</span><span class="o">.</span><span class="n">data_vars</span><span class="p">:</span>
-				<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
-		<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">spymdata:&#39;</span><span class="p">)</span>
-		<span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">spymdata</span><span class="p">:</span>
-			<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span></div>
+				<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span></div>
 
+		<span class="c1"># print(&#39;\nspymdata:&#39;)</span>
+		<span class="c1"># for item in self.spymdata:</span>
+		<span class="c1"># 	print(&#39;\t&#39;, item)</span>
 
 
 <div class="viewcode-block" id="rhkdata.coord_to_absolute">
