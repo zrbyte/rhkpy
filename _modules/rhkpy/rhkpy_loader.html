@@ -232,7 +232,7 @@
 <span class="sd">		&quot;&quot;&quot;</span>		
 		<span class="c1"># function to take the mean along the repetitions coordinate</span>
 		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">datatype</span> <span class="o">==</span> <span class="s1">&#39;image&#39;</span><span class="p">:</span>
-			<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Can</span><span class="se">\&#39;</span><span class="s1">t calculate the repetitions of an image.&#39;</span><span class="p">)</span>
+			<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;An image instance doesn</span><span class="se">\&#39;</span><span class="s1">t have repetitions.&#39;</span><span class="p">)</span>
 			<span class="k">return</span>
 		<span class="n">newdata</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 		<span class="n">newdata</span><span class="o">.</span><span class="n">spectra</span> <span class="o">=</span> <span class="n">newdata</span><span class="o">.</span><span class="n">spectra</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span> <span class="o">=</span> <span class="s1">&#39;repetitions&#39;</span><span class="p">)</span>
@@ -250,7 +250,7 @@
 <span class="sd">		&quot;&quot;&quot;</span>		
 		<span class="c1"># function to take the mean along the biasscan coordinate</span>
 		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">datatype</span> <span class="o">==</span> <span class="s1">&#39;image&#39;</span><span class="p">:</span>
-			<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Can</span><span class="se">\&#39;</span><span class="s1">t calculate the repetitions of an image.&#39;</span><span class="p">)</span>
+			<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;An image instance doesn</span><span class="se">\&#39;</span><span class="s1">t have biasscandir or zscandir.&#39;</span><span class="p">)</span>
 			<span class="k">return</span>
 		<span class="n">newdata</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">spectype</span> <span class="o">==</span> <span class="s1">&#39;iv&#39;</span><span class="p">:</span>
