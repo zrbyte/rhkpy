@@ -820,6 +820,7 @@ def _xr_map_iv(stmdata_object):
 	xrspec['y'].attrs['units'] = 'nm'
 	xrspec['y'].attrs['long units'] = 'nanometer'
 	xrspec.coords['bias'].attrs['units'] = 'V'
+	xrspec.coords['bias'].attrs['long units'] = 'Volt'
 	xrspec.coords['specpos_x'].attrs['units'] = 'nm'
 	xrspec.coords['specpos_y'].attrs['units'] = 'nm'
 	xrspec.coords['specpos_x'].attrs['long units'] = 'nanometer'
@@ -900,6 +901,8 @@ def _xr_line_iv(stmdata_object):
 
 	xrspec.coords['dist'].attrs['units'] = 'nm'
 	xrspec.coords['dist'].attrs['long units'] = 'nanometer'
+	xrspec.coords['bias'].attrs['units'] = 'V'
+	xrspec.coords['bias'].attrs['long units'] = 'Volt'
 
 	xrspec['x'].attrs['units'] = 'nm'
 	xrspec['y'].attrs['units'] = 'nm'
@@ -961,6 +964,9 @@ def _xr_spec_iv(stmdata_object):
 			),
 		attrs = dict(filename = _get_filename(stmdata_object.filename))
 	)
+
+	xrspec.coords['bias'].attrs['units'] = 'V'
+	xrspec.coords['bias'].attrs['long units'] = 'Volt'
 
 	xrspec.attrs['speccoord_x'] = tempx*10**9
 	xrspec.attrs['speccoord_y'] = tempy*10**9
