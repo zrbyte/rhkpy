@@ -939,6 +939,10 @@
 	<span class="n">sections_dataset</span> <span class="o">=</span> <span class="n">sections_dataset</span><span class="o">.</span><span class="n">drop_vars</span><span class="p">([</span><span class="s1">&#39;specpos_x&#39;</span><span class="p">,</span> <span class="s1">&#39;specpos_y&#39;</span><span class="p">])</span>
 	<span class="c1"># assign the dist coordinate</span>
 	<span class="n">sections_dataset</span> <span class="o">=</span> <span class="n">sections_dataset</span><span class="o">.</span><span class="n">assign_coords</span><span class="p">(</span><span class="n">dist</span> <span class="o">=</span> <span class="n">dist</span><span class="p">)</span>
+
+	<span class="c1"># add metadata to dist coordinate</span>
+	<span class="n">sections_dataset</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s1">&#39;dist&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;nm&#39;</span>
+	<span class="n">sections_dataset</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s1">&#39;dist&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;long units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;nanometer&#39;</span>
 	
 	<span class="k">return</span> <span class="n">sections_dataset</span></div>
 
