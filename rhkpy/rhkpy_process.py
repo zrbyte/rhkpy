@@ -832,5 +832,9 @@ def mapsection(specmap, start_point, end_point):
 	sections_dataset = sections_dataset.drop_vars(['specpos_x', 'specpos_y'])
 	# assign the dist coordinate
 	sections_dataset = sections_dataset.assign_coords(dist = dist)
+
+	# add metadata to dist coordinate
+	sections_dataset.coords['dist'].attrs['units'] = 'nm'
+	sections_dataset.coords['dist'].attrs['long units'] = 'nanometer'
 	
 	return sections_dataset
