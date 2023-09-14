@@ -367,7 +367,7 @@ class rhkdata:
 		:rtype: :py:mod:`holoviews`
 		"""	
 		# The backward direction should be plotted, since this is the direction in which the tip moves, when the spectroscopy data is measured.
-		return self.image.topography[:, :, 1].hvplot.image(x = 'x', y = 'y', cmap = cmap_topo, title = 'topography backward')
+		return self.image.topography[:, :, 1].hvplot.image(x = 'x', y = 'y', cmap = cmap_topo, title = 'topography backward', **kwargs)
 
 	def _qplot_lia(self, cmap_spec = 'viridis', **kwargs):
 		"""Plotting dI/dV image data using :py:mod:`hvplot`.

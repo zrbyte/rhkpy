@@ -703,7 +703,7 @@ def navigation(*args, **kwargs):
 
 	# we need a function to plot a bounding box around the topo data
 	def bounding_box(rhkdata_obj, c):
-		l_top = rhkdata_obj.image.topography.drop('scandir')[-1, :].hvplot.line(x = 'x', y = 'y', color = c, label = rhkdata_obj.image.attrs['filename'])
+		l_top = rhkdata_obj.image.topography.drop('scandir')[-1, :].hvplot.line(x = 'x', y = 'y', color = c) # label = rhkdata_obj.image.attrs['filename']
 		l_bottom = rhkdata_obj.image.topography.drop('scandir')[0, :].hvplot.line(x = 'x', y = 'y', color = c)
 		l_left = rhkdata_obj.image.topography.drop('scandir')[:, 0].hvplot.line(x = 'x', y = 'y', color = c)
 		l_right = rhkdata_obj.image.topography.drop('scandir')[:, -1].hvplot.line(x = 'x', y = 'y', color = c)
@@ -725,7 +725,8 @@ def navigation(*args, **kwargs):
 				_ = rhkdata_obj.spectra.drop_vars(['current']).drop(['zscandir', 'repetitions', 'z'])
 				specplot = _.hvplot.scatter(x = 'x', y = 'y', groupby = [], marker = 'x', color = c, label = 'spec pos: ' + rhkdata_obj.spectra.attrs['filename'])
 		elif rhkdata_obj.datatype == 'spec':
-			specplot = rhkdata_obj.spectra.hvplot.scatter(x = 'x', y = 'y', groupby = [], marker = 'x', color = c, size = 200, line_width = 3, label = 'spec pos: ' + rhkdata_obj.spectra.attrs['filename'])
+			# specplot = rhkdata_obj.spectra.hvplot.scatter(x = 'x', y = 'y', groupby = [], marker = 'x', color = c, size = 200, line_width = 3, label = 'spec pos: ' + rhkdata_obj.spectra.attrs['filename'])
+			specplot = hv.Scatter((rhkdata_obj.spectra.x.data, rhkdata_obj.spectra.y.data), label = 'spec pos: ' + rhkdata_obj.spectra.attrs['filename']).opts(marker = 'x', size = 20, line_width = 3)
 		else:
 			# it should never get to this point
 			specplot = hv.Empty()
@@ -763,12 +764,12 @@ def navigation(*args, **kwargs):
 	if indices_topo != []:
 		# plot the first one
 		topo_abs = args[indices_topo[0]].coord_to_absolute()
-		navi_plot = topo_abs._qplot_topo(cmap_topo = cmap)
+		navi_plot = topo_abs._qplot_topo(cmap_topo = cmap, clabel = 'height (nm)', label = topo_abs.image.attrs['filename'])
 		# draw a bounding box
 		navi_plot *= bounding_box(topo_abs, next(color_cycle))
 		for i in indices_topo[1:]:
 			topo_abs = args[i].coord_to_absolute()
-			navi_plot *= topo_abs._qplot_topo(cmap_topo = cmap, clabel = 'height (nm)')
+			navi_plot *= topo_abs._qplot_topo(cmap_topo = cmap, label = topo_abs.image.attrs['filename'])
 			# plot a bounding box around the image
 			navi_plot *= bounding_box(topo_abs, next(color_cycle))
 		
