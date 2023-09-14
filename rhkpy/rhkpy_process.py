@@ -580,13 +580,13 @@ def polyflatten(xrobj, field_type = 'topography', **kwargs):
 
 ## plotting and data visualization -------------------------------------------
 
-def genthumbs(folderpath = '', **kwargs):
+def genthumbs(folderpath = './', **kwargs):
 	"""Generate thumbnails for the sm4 files present in the current folder (usually the folder where the jupyter notebook is present).
 	It ``folderpath`` is specified it generates the thumbnails in the path given.
 	All other files are ignored. Subfolders are ignored.
 	The method uses :func:`~rhkpy.rhkpy_loader.rhkdata.qplot` to make the png images.
 
-	:param folderpath: path to the folder containing the sm4 files, defaults to ''
+	:param folderpath: path to the folder containing the sm4 files, defaults to './'
 	:type folderpath: str, optional
 
 	:Example:
