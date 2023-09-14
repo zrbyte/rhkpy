@@ -703,10 +703,10 @@ def navigation(*args, **kwargs):
 
 	# we need a function to plot a bounding box around the topo data
 	def bounding_box(rhkdata_obj, c):
-		l_top = rhkdata_obj.image.topography.drop('scandir')[-1, :].hvplot.line(x = 'x', y = 'y', color = c) # label = rhkdata_obj.image.attrs['filename']
-		l_bottom = rhkdata_obj.image.topography.drop('scandir')[0, :].hvplot.line(x = 'x', y = 'y', color = c)
-		l_left = rhkdata_obj.image.topography.drop('scandir')[:, 0].hvplot.line(x = 'x', y = 'y', color = c)
-		l_right = rhkdata_obj.image.topography.drop('scandir')[:, -1].hvplot.line(x = 'x', y = 'y', color = c)
+		l_top = rhkdata_obj.image.topography.drop('scandir')[-1, :].hvplot.line(x = 'x', y = 'y', color = c, label = rhkdata_obj.image.attrs['filename']) # label = rhkdata_obj.image.attrs['filename']
+		l_bottom = rhkdata_obj.image.topography.drop('scandir')[0, :].hvplot.line(x = 'x', y = 'y', color = c, label = rhkdata_obj.image.attrs['filename'])
+		l_left = rhkdata_obj.image.topography.drop('scandir')[:, 0].hvplot.line(x = 'x', y = 'y', color = c, label = rhkdata_obj.image.attrs['filename'])
+		l_right = rhkdata_obj.image.topography.drop('scandir')[:, -1].hvplot.line(x = 'x', y = 'y', color = c, label = rhkdata_obj.image.attrs['filename'])
 		return l_bottom * l_left * l_right * l_top
 
 	def plot_spec_positions(rhkdata_obj, c):
