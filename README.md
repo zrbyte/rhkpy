@@ -16,3 +16,24 @@ Documentation can be found here: https://zrbyte.github.io/rhkpy/
 - Recreating the "navigation" window in Rev9, by plotting the relative positions of measurements (see the [`navigation`](https://zrbyte.github.io/rhkpy/rhkpy.html#rhkpy.rhkpy_process.navigation) function).
 - generating thumbnails of your measurements (see [`genthumbs`](https://zrbyte.github.io/rhkpy/rhkpy.html#rhkpy.rhkpy_process.genthumbs))
 - peak fitting (see [peakfit](https://zrbyte.github.io/rhkpy/rhkpy.html#rhkpy.rhkpy_process.peakfit))
+
+## Installation
+`pip install rhkpy`
+
+## Simple example
+```python
+import rhkpy
+
+# Load an sm4 file
+data = rhkpy.rhkdata('filename.sm4')
+
+# "quick plot" of the data
+data.qplot()
+
+# make thumbnails of the sm4 files in the current working directory
+rhkpy.genthumbs()
+```
+
+Also take a look the `demo.ipynb` and `tutorial.ipynb` Jupyter notebooks in this repository.
+
+To make the most of rhkpy, also consult the xarray documentation and check out plotting examples, with HoloViews. The HoloViews website has examples on how to customize plots, as well as tutorial notebooks.
