@@ -7,7 +7,8 @@ Documentation can be found here: https://zrbyte.github.io/rhkpy/
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/zrbyte/rhkpy/HEAD)
 
 If you use this package in your publication, consider citing it:
-
+Peter Nemes-I., & Mirco Panighel. (2023). zrbyte/rhkpy: v1.3.3 (v1.3.3). Zenodo. https://zenodo.org/doi/10.5281/zenodo.10143224
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10143224.svg)](https://doi.org/10.5281/zenodo.10143224)
 
 ## Main features
 - Able to handle spectroscopy measurements (both dI/dV and I(z)):
