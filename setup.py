@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name = "rhkpy",
-    version = "1.3.4",
+    version = "1.3.5",
     packages = find_packages(),
     # python_requires = '>=3.10',
     install_requires = [

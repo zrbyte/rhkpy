@@ -1,3 +1,4 @@
+from .version import __version__
 from .rhkpy_loader import *
 from .rhkpy_process import *
 
