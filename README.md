@@ -1,6 +1,6 @@
 # RHK STM data analysis tool
 
-Based on the [spym project](https://github.com/rescipy-project/spym) (version 0.9).
+Based on the [spym project](https://github.com/rescipy-project/spym) (version 0.9.1).
 
 Documentation can be found here: https://zrbyte.github.io/rhkpy/
 
