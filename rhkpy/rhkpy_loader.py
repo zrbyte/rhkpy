@@ -588,13 +588,13 @@ def load_spym(filename):
 ## loading -----------------------------------------------------------
 
 def _checkrepetitions(stmdata_object):
-	coordlist = stmdata_object.spymdata.Current.attrs['RHK_SpecDrift_Xcoord']
-	reps = 0
-	for coo in coordlist:
-		if coo == coordlist[0]:
-			reps += 1
-		else:
-			break
+	coordlist = np.column_stack((
+		np.array(stmdata_object.spymdata.Current.attrs['RHK_SpecDrift_Xcoord']),
+		np.array(stmdata_object.spymdata.Current.attrs['RHK_SpecDrift_Ycoord'])
+	))
+	# get the number of unique pairs
+	_, counts = np.unique(coordlist, axis=0, return_counts=True)
+	reps = counts.max()
 	reps = int(reps / (stmdata_object.alternate + 1))
 	return reps
 
