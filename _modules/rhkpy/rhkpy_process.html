@@ -214,10 +214,10 @@
 	<span class="n">newxx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">newxlen</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">newxlen</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">num</span> <span class="o">=</span> <span class="n">rotatedtopofw</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 	<span class="n">newyy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">newylen</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">newylen</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">num</span> <span class="o">=</span> <span class="n">rotatedtopofw</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 	<span class="c1"># new pixel size due to rotation</span>
-	<span class="n">newpixelsizex</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">newxx</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">newxx</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-	<span class="n">newpixelsizey</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">newyy</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">newyy</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+	<span class="c1"># newpixelsizex = np.abs(newxx[1] - newxx[0])</span>
+	<span class="c1"># newpixelsizey = np.abs(newyy[1] - newyy[0])</span>
 
-	<span class="c1"># correction to the offet of the image</span>
+	<span class="c1"># correction to the offset of the image</span>
 	<span class="c1"># In the RHK Rev software, the offsets shown in the software refer to the bottom - left corner</span>
 	<span class="c1"># of the image. This does NOT include the rotation. For the proper shift of the image</span>
 	<span class="c1"># coordinates including rotation this has to be taken into account</span>
