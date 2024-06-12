@@ -588,6 +588,7 @@ def load_spym(filename):
 ## loading -----------------------------------------------------------
 
 def _checkrepetitions(stmdata_object):
+	# make an array of x and y coordinates
 	coordlist = np.column_stack((
 		np.array(stmdata_object.spymdata.Current.attrs['RHK_SpecDrift_Xcoord']),
 		np.array(stmdata_object.spymdata.Current.attrs['RHK_SpecDrift_Ycoord'])
@@ -784,12 +785,17 @@ def _xr_map_iv(stmdata_object):
 	xcoo = np.array(stmdata_object.spymdata.LIA_Current.attrs['RHK_SpecDrift_Xcoord'])
 	ycoo = np.array(stmdata_object.spymdata.LIA_Current.attrs['RHK_SpecDrift_Ycoord'])
 	
-	# reshaping the coordinates similarly to the spectra. This is a coordinates mesh
-	# at the end slicing the arrays to get the X, Y coordinates, we don't need the mesh
+	# reshaping the spectra positions similarly to the spectra.
 	meshx = np.reshape(xcoo, (mapsize, mapsize, numberofspectra), order='C')[:, :, 0]
 	meshy = np.reshape(ycoo, (mapsize, mapsize, numberofspectra), order='C')[:, :, 0]
-	tempx = np.reshape(xcoo, (mapsize, mapsize, numberofspectra), order='C')[0, :, 0]
-	tempy = np.reshape(ycoo, (mapsize, mapsize, numberofspectra), order='C')[:, 0, 0]
+	
+	# make coordinates for the spectra positions
+	# calculate the pixel size, distance between the neighboring spectra
+	pixelsizex = stmdata_object.image.attrs['size_x'] / mapsize
+	pixelsizey = stmdata_object.image.attrs['size_y'] / mapsize
+	# make coordinates for the spectra positions
+	tempx = np.linspace(pixelsizex/2, stmdata_object.image.attrs['size_x'] - pixelsizex/2, num=mapsize) + stmdata_object.image.attrs['xoffset']
+	tempy = np.linspace(pixelsizey/2, stmdata_object.image.attrs['size_y'] - pixelsizey/2, num=mapsize) + stmdata_object.image.attrs['yoffset']
 
 	# Constructing the xarray DataSet 
 	# stacking the forward and backward bias sweeps and using the scandir coordinate
@@ -803,8 +809,8 @@ def _xr_map_iv(stmdata_object):
 			),
 		coords = dict(
 			bias = stmdata_object.spymdata.coords['LIA_Current_x'].data,
-			specpos_x = tempx*10**9,
-			specpos_y = tempy*10**9,
+			specpos_x = tempx,
+			specpos_y = tempy,
 			repetitions = np.array(range(stmdata_object.repetitions)),
 			biasscandir = np.array(['left', 'right'], dtype = 'U')
 			),
@@ -1033,12 +1039,17 @@ def _xr_map_iz(stmdata_object):
 	# This contains the coordinates in the order that the spectra are in. 
 	xcoo = np.array(stmdata_object.spymdata.Current.attrs['RHK_SpecDrift_Xcoord'])
 	ycoo = np.array(stmdata_object.spymdata.Current.attrs['RHK_SpecDrift_Ycoord'])
-	# reshaping the coordinates similarly to the spectra. This is a coordinates mesh
-	# at the end slicing the arrays to get the X, Y coordinates, we don't need the mesh
+	# reshaping the spectra positions similarly to the spectra.
 	meshx = np.reshape(xcoo, (mapsize, mapsize, numberofspectra), order='C')[:, :, 0]
 	meshy = np.reshape(ycoo, (mapsize, mapsize, numberofspectra), order='C')[:, :, 0]
-	tempx = np.reshape(xcoo, (mapsize, mapsize, numberofspectra), order='C')[0, :, 0]
-	tempy = np.reshape(ycoo, (mapsize, mapsize, numberofspectra), order='C')[:, 0, 0]
+	
+	# make coordinates for the spectra positions
+	# calculate the pixel size, distance between the neighboring spectra
+	pixelsizex = stmdata_object.image.attrs['size_x'] / mapsize
+	pixelsizey = stmdata_object.image.attrs['size_y'] / mapsize
+	# make coordinates for the spectra positions
+	tempx = np.linspace(pixelsizex/2, stmdata_object.image.attrs['size_x'] - pixelsizex/2, num=mapsize) + stmdata_object.image.attrs['xoffset']
+	tempy = np.linspace(pixelsizey/2, stmdata_object.image.attrs['size_y'] - pixelsizey/2, num=mapsize) + stmdata_object.image.attrs['yoffset']
 
 	"""
 	Constructing the xarray DataSet 
@@ -1053,8 +1064,8 @@ def _xr_map_iz(stmdata_object):
 			),
 		coords = dict(
 			z = stmdata_object.spymdata.coords['Current_x'].data*10**9,
-			specpos_x = tempx*10**9,
-			specpos_y = tempy*10**9,
+			specpos_x = tempx,
+			specpos_y = tempy,
 			repetitions = np.array(range(stmdata_object.repetitions)),
 			zscandir = np.array(['up', 'down'], dtype = 'U')
 			),

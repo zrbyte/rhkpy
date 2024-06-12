@@ -135,10 +135,10 @@ def coord_to_absolute(xrobj):
 	newxx = np.linspace(-newxlen/2, newxlen/2, num = rotatedtopofw.shape[0])
 	newyy = np.linspace(-newylen/2, newylen/2, num = rotatedtopofw.shape[1])
 	# new pixel size due to rotation
-	newpixelsizex = np.abs(newxx[1] - newxx[0])
-	newpixelsizey = np.abs(newyy[1] - newyy[0])
+	# newpixelsizex = np.abs(newxx[1] - newxx[0])
+	# newpixelsizey = np.abs(newyy[1] - newyy[0])
 
-	# correction to the offet of the image
+	# correction to the offset of the image
 	# In the RHK Rev software, the offsets shown in the software refer to the bottom - left corner
 	# of the image. This does NOT include the rotation. For the proper shift of the image
 	# coordinates including rotation this has to be taken into account
