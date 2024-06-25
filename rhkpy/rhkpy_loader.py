@@ -761,8 +761,8 @@ def _xr_map_iv(stmdata_object):
 
 	# need to flip the x and y axes so that the spectra line up with the topography image.
 	# Meaning the first topo pixel in both directions is also the first spectroscopy pixel in each direction.
-	liafw = np.flip(speccmap_fw)
-	liabw = np.flip(speccmap_bw)
+	liafw = np.flip(speccmap_fw, axis=(1, 2))
+	liabw = np.flip(speccmap_bw, axis=(1, 2))
 
 	# reshape Current data
 	temp = np.reshape(currentarray, (currentarray.shape[0], -1, numberofspectra), order='C')
@@ -779,8 +779,8 @@ def _xr_map_iv(stmdata_object):
 
 	# need to flip the x and y axes so that the spectra line up with the topography image.
 	# Meaning the first topo pixel in both directions is also the first spectroscopy pixel in each direction.
-	currentfw = np.flip(currentmap_fw)
-	currentbw = np.flip(currentmap_bw)
+	currentfw = np.flip(currentmap_fw, axis=(1, 2))
+	currentbw = np.flip(currentmap_bw, axis=(1, 2))
 
 	# Coordinates of the spectroscopy map
 	
@@ -1033,8 +1033,8 @@ def _xr_map_iz(stmdata_object):
 	The last axis (in this case with length of 1) contains the repeated scans in one particular pixel.
 	If the `repetitions` variable is set to greater than 1, this will contains the repeated spectra within an `X, Y` pixel.
 	"""
-	currentfw = np.flip(currentmap_fw)
-	currentbw = np.flip(currentmap_bw)
+	currentfw = np.flip(currentmap_fw, axis=(1, 2))
+	currentbw = np.flip(currentmap_bw, axis=(1, 2))
 
 	"""
 	Coordinates of the spectroscopy map
