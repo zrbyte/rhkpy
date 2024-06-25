@@ -865,8 +865,8 @@
 
 	<span class="c1"># need to flip the x and y axes so that the spectra line up with the topography image.</span>
 	<span class="c1"># Meaning the first topo pixel in both directions is also the first spectroscopy pixel in each direction.</span>
-	<span class="n">liafw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">speccmap_fw</span><span class="p">)</span>
-	<span class="n">liabw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">speccmap_bw</span><span class="p">)</span>
+	<span class="n">liafw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">speccmap_fw</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+	<span class="n">liabw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">speccmap_bw</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
 
 	<span class="c1"># reshape Current data</span>
 	<span class="n">temp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">currentarray</span><span class="p">,</span> <span class="p">(</span><span class="n">currentarray</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">numberofspectra</span><span class="p">),</span> <span class="n">order</span><span class="o">=</span><span class="s1">&#39;C&#39;</span><span class="p">)</span>
@@ -883,8 +883,8 @@
 
 	<span class="c1"># need to flip the x and y axes so that the spectra line up with the topography image.</span>
 	<span class="c1"># Meaning the first topo pixel in both directions is also the first spectroscopy pixel in each direction.</span>
-	<span class="n">currentfw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">currentmap_fw</span><span class="p">)</span>
-	<span class="n">currentbw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">currentmap_bw</span><span class="p">)</span>
+	<span class="n">currentfw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">currentmap_fw</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+	<span class="n">currentbw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">currentmap_bw</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
 
 	<span class="c1"># Coordinates of the spectroscopy map</span>
 	
@@ -1137,8 +1137,8 @@
 <span class="sd">	The last axis (in this case with length of 1) contains the repeated scans in one particular pixel.</span>
 <span class="sd">	If the `repetitions` variable is set to greater than 1, this will contains the repeated spectra within an `X, Y` pixel.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
-	<span class="n">currentfw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">currentmap_fw</span><span class="p">)</span>
-	<span class="n">currentbw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">currentmap_bw</span><span class="p">)</span>
+	<span class="n">currentfw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">currentmap_fw</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+	<span class="n">currentbw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">currentmap_bw</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
 
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Coordinates of the spectroscopy map</span>
