@@ -4,11 +4,6 @@ import xarray as xr
 import re, copy
 # import load from spym
 from spym.io import load
-## Using the old loader
-from spym.io import rhksm4
-## flatten and plane fitting
-from spym.process.level import align
-from spym.process.level import plane
 
 # for fancy plotting
 import hvplot.xarray
@@ -575,14 +570,9 @@ class rhkdata:
 		return specplot_up*specplot_down
 
 
-def load_rhksm4(filename):
-	"""Load the data from the .sm4 file using the old loader from spym"""
-	return rhksm4.load(filename)
-
-
 def load_spym(filename):
-	"""Load the data from the .sm4 file using spym"""
-	return load(filename)
+        """Load the data from the .sm4 file using spym"""
+        return load(filename)
 
 ## internal functions ------------------------------------------------
 ## loading -----------------------------------------------------------

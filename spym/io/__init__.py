@@ -1,2 +1,4 @@
-from .load import load, convert
+from .load import load
+
+__all__ = ["load"]
 

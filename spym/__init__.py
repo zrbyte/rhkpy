@@ -1,4 +1,5 @@
-from ._version import __version__
+"""Minimal subset of the :mod:`spym` package used by ``rhkpy``."""
 
-from ._accessors import _SpymDataArray, _SpymDataset
 from .io import load
+
+__all__ = ["load"]
