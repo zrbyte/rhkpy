@@ -2,13 +2,8 @@ import matplotlib.pyplot as pl
 import numpy as np
 import xarray as xr
 import re, copy
-# import load from spym
-from spym.io import load
-## Using the old loader
-from spym.io import rhksm4
-## flatten and plane fitting
-from spym.process.level import align
-from spym.process.level import plane
+# load function for sm4 files
+from .sm4load import load
 
 # for fancy plotting
 import hvplot.xarray
@@ -34,8 +29,8 @@ class rhkdata:
 
 	:var filename: (type str) filename of the "sm4" file
 	:var image: (type :py:mod:`xarray` Dataset) Dataset containing the image data
-	:var spectra: (type :py:mod:`xarray` Dataset) Dataset containing the spectroscopy data
-	:var spymdata: (type :py:mod:`spym` instance) Dataset, as loaded by the :py:mod:`spym` module
+        :var spectra: (type :py:mod:`xarray` Dataset) Dataset containing the spectroscopy data
+        :var spymdata: (type object) Dataset loaded via :mod:`rhkpy.sm4load`
 
 	All the variables can be listed by calling: :class:`rhkdata.print_info`.
 
@@ -104,7 +99,7 @@ class rhkdata:
 		# Boolean value, True if alternate scan directions is turned on
 		self.alternate = alternate
 
-		# Load the data using spym
+		# Load the data using the internal loader
 		self.spymdata = load_spym(self.filename)
 		if self.spymdata is None:
 			return
@@ -575,14 +570,9 @@ class rhkdata:
 		return specplot_up*specplot_down
 
 
-def load_rhksm4(filename):
-	"""Load the data from the .sm4 file using the old loader from spym"""
-	return rhksm4.load(filename)
-
-
 def load_spym(filename):
-	"""Load the data from the .sm4 file using spym"""
-	return load(filename)
+        """Load the data from the .sm4 file using :mod:`rhkpy.sm4load`."""
+        return load(filename)
 
 ## internal functions ------------------------------------------------
 ## loading -----------------------------------------------------------
