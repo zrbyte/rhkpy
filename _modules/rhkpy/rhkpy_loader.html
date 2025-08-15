@@ -1,22 +1,20 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>rhkpy.rhkpy_loader &mdash; rhkpy 2023.08.10 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
   
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../_static/documentation_options.js?v=0f4f00c4"></script>
-        <script src="../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=0f4f00c4"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
@@ -75,28 +73,28 @@
            <div itemprop="articleBody">
              
   <h1>Source code for rhkpy.rhkpy_loader</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">pl</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
-<span class="kn">import</span> <span class="nn">re</span><span class="o">,</span> <span class="nn">copy</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span><span class="o">,</span><span class="w"> </span><span class="nn">copy</span>
 <span class="c1"># import load from spym</span>
-<span class="kn">from</span> <span class="nn">spym.io</span> <span class="kn">import</span> <span class="n">load</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">spym.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">load</span>
 <span class="c1">## Using the old loader</span>
-<span class="kn">from</span> <span class="nn">spym.io</span> <span class="kn">import</span> <span class="n">rhksm4</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">spym.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">rhksm4</span>
 <span class="c1">## flatten and plane fitting</span>
-<span class="kn">from</span> <span class="nn">spym.process.level</span> <span class="kn">import</span> <span class="n">align</span>
-<span class="kn">from</span> <span class="nn">spym.process.level</span> <span class="kn">import</span> <span class="n">plane</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">spym.process.level</span><span class="w"> </span><span class="kn">import</span> <span class="n">align</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">spym.process.level</span><span class="w"> </span><span class="kn">import</span> <span class="n">plane</span>
 
 <span class="c1"># for fancy plotting</span>
-<span class="kn">import</span> <span class="nn">hvplot.xarray</span>
-<span class="kn">import</span> <span class="nn">holoviews</span> <span class="k">as</span> <span class="nn">hv</span>
-<span class="kn">import</span> <span class="nn">panel</span> <span class="k">as</span> <span class="nn">pn</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">hvplot.xarray</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">holoviews</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">hv</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">panel</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pn</span>
 
-<span class="kn">from</span> <span class="nn">.rhkpy_process</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.rhkpy_process</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 
 <div class="viewcode-block" id="rhkdata">
 <a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_loader.rhkdata">[docs]</a>
-<span class="k">class</span> <span class="nc">rhkdata</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">rhkdata</span><span class="p">:</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	A container for the xarray based structure of the RHK data. Loads the RHK &quot;sm4&quot; file from the path at: ``filename``.</span>
 
@@ -168,7 +166,7 @@
 <span class="sd">			linespec_avg.plot()</span>
 
 <span class="sd">	&quot;&quot;&quot;</span>
-	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">repetitions</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">alternate</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">loadraw</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+	<span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">repetitions</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">alternate</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">loadraw</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Initialize the :class:`rhkdata` instance</span>
 <span class="sd">		&quot;&quot;&quot;</span>		
 
@@ -225,7 +223,7 @@
 
 <div class="viewcode-block" id="rhkdata.mrep">
 <a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_loader.rhkdata.mrep">[docs]</a>
-	<span class="k">def</span> <span class="nf">mrep</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="k">def</span><span class="w"> </span><span class="nf">mrep</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Returns a new instance of :class:`rhkdata`, with the data averaged (using :py:mod:`xarray.Variable.mean`) along the &#39;repetitions&#39; coordinate.</span>
 <span class="sd">		Meant to be shorthand for: ``rhkdata_instance.spectra.mean(dim = &#39;repetitions&#39;)``.</span>
 
@@ -243,7 +241,7 @@
 
 <div class="viewcode-block" id="rhkdata.msw">
 <a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_loader.rhkdata.msw">[docs]</a>
-	<span class="k">def</span> <span class="nf">msw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="k">def</span><span class="w"> </span><span class="nf">msw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Returns a new instance of :class:`rhkdata`, with the data averaged (using :py:mod:`xarray.Variable.mean`) along the &#39;biasscandir&#39; or &#39;zscandir&#39; coordinate.</span>
 <span class="sd">		Meant to be shorthand for: ``rhkdata_instance.spectra.mean(dim = &#39;biasscandir&#39;)``, or ``rhkdata_instance.spectra.mean(dim = &#39;zscandir&#39;)``.</span>
 
@@ -264,7 +262,7 @@
 
 <div class="viewcode-block" id="rhkdata.print_info">
 <a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_loader.rhkdata.print_info">[docs]</a>
-	<span class="k">def</span> <span class="nf">print_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="k">def</span><span class="w"> </span><span class="nf">print_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;List the variables of the :class:`rhkdata` instance.</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">:</span>
@@ -285,7 +283,7 @@
 
 <div class="viewcode-block" id="rhkdata.coord_to_absolute">
 <a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_loader.rhkdata.coord_to_absolute">[docs]</a>
-	<span class="k">def</span> <span class="nf">coord_to_absolute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="k">def</span><span class="w"> </span><span class="nf">coord_to_absolute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Returns a new :class:`rhkdata` instance, with the coordinates updated to reflect the abolute tip position. This includes X, Y offset and rotation.</span>
 
 <span class="sd">		:return: :class:`rhkdata` instance, with the same data and metadata, but the :class:`rhkdata.image`, :py:mod:`xarray` variable coordinates shifted to absolute tip positions.</span>
@@ -338,7 +336,7 @@
 
 <div class="viewcode-block" id="rhkdata.polyflatten">
 <a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_loader.rhkdata.polyflatten">[docs]</a>
-	<span class="k">def</span> <span class="nf">polyflatten</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+	<span class="k">def</span><span class="w"> </span><span class="nf">polyflatten</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Uses :func:`~rhkpy.rhkpy_process.polyflatten` to flatten the selected datafield in the :class:`rhkdata` instance.</span>
 <span class="sd">		All keywords accepted by :func:`~rhkpy.rhkpy_process.polyflatten` can be passed.</span>
 
@@ -361,7 +359,7 @@
 	
 <div class="viewcode-block" id="rhkdata.qplot">
 <a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_loader.rhkdata.qplot">[docs]</a>
-	<span class="k">def</span> <span class="nf">qplot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+	<span class="k">def</span><span class="w"> </span><span class="nf">qplot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Quick plot of the :class:`rhkdata` instance</span>
 
 <span class="sd">		:param width: set size of plot, defaults to None</span>
@@ -454,7 +452,7 @@
 	<span class="c1">## internal functions -----------------------------------------------------------------------------------------</span>
 	<span class="c1">## plotting functions for qplot</span>
 
-	<span class="k">def</span> <span class="nf">_qplot_topo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmap_topo</span> <span class="o">=</span> <span class="s1">&#39;fire&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+	<span class="k">def</span><span class="w"> </span><span class="nf">_qplot_topo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmap_topo</span> <span class="o">=</span> <span class="s1">&#39;fire&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Plotting topography data using :py:mod:`hvplot`.</span>
 
 <span class="sd">		:param cmap_topo: colorscale used for topography data, defaults to &#39;fire&#39;</span>
@@ -466,7 +464,7 @@
 		<span class="c1"># The backward direction should be plotted, since this is the direction in which the tip moves, when the spectroscopy data is measured.</span>
 		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">topography</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">hvplot</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="n">cmap_topo</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;topography backward&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-	<span class="k">def</span> <span class="nf">_qplot_lia</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmap_spec</span> <span class="o">=</span> <span class="s1">&#39;viridis&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+	<span class="k">def</span><span class="w"> </span><span class="nf">_qplot_lia</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmap_spec</span> <span class="o">=</span> <span class="s1">&#39;viridis&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Plotting dI/dV image data using :py:mod:`hvplot`.</span>
 
 <span class="sd">		:param cmap_spec: colorscale used for dI/dV data, defaults to &#39;viridis&#39;</span>
@@ -477,7 +475,7 @@
 <span class="sd">		&quot;&quot;&quot;</span>	
 		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">lia</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">hvplot</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="n">cmap</span> <span class="o">=</span> <span class="n">cmap_spec</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;dI/dV backward&#39;</span><span class="p">)</span>
 
-	<span class="k">def</span> <span class="nf">_qplot_map_iv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmap_spec</span> <span class="o">=</span> <span class="s1">&#39;viridis&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+	<span class="k">def</span><span class="w"> </span><span class="nf">_qplot_map_iv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmap_spec</span> <span class="o">=</span> <span class="s1">&#39;viridis&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Plotting dI/dV map data using :py:mod:`hvplot`.</span>
 <span class="sd">		The mean values (biasscandir and repetitions) of the dI/dV signal are plotted on the density plot.</span>
 
@@ -500,7 +498,7 @@
 		<span class="c1"># holoviews plot</span>
 		<span class="k">return</span> <span class="n">specplot</span>
 	
-	<span class="k">def</span> <span class="nf">_qplot_map_iz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmap_spec</span> <span class="o">=</span> <span class="s1">&#39;viridis&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+	<span class="k">def</span><span class="w"> </span><span class="nf">_qplot_map_iz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmap_spec</span> <span class="o">=</span> <span class="s1">&#39;viridis&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Plotting I(z) map data using :py:mod:`hvplot`.</span>
 
 <span class="sd">		:param cmap_spec: colorscale used for I(z) data, defaults to &#39;viridis&#39;</span>
@@ -520,7 +518,7 @@
 		<span class="p">)</span>
 		<span class="k">return</span> <span class="n">specplot</span>
 
-	<span class="k">def</span> <span class="nf">_qplot_line_iv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmap_spec</span> <span class="o">=</span> <span class="s1">&#39;viridis&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+	<span class="k">def</span><span class="w"> </span><span class="nf">_qplot_line_iv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmap_spec</span> <span class="o">=</span> <span class="s1">&#39;viridis&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Plotting dI/dV line data on a density plot (bias vs distance), using :py:mod:`hvplot`.</span>
 <span class="sd">		The mean values of the dI/dV signal are plotted on the density plot.</span>
 
@@ -542,7 +540,7 @@
 		<span class="p">)</span>
 		<span class="k">return</span> <span class="n">specplot</span>
 
-	<span class="k">def</span> <span class="nf">_qplot_line_spec_iv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+	<span class="k">def</span><span class="w"> </span><span class="nf">_qplot_line_spec_iv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Plotting dI/dV spectra of a line spectroscopy instance, using :py:mod:`hvplot`.</span>
 
 <span class="sd">		:return: :py:mod:`holoviews` plot</span>
@@ -566,7 +564,7 @@
 		<span class="c1"># combine the fw and bw bias sweeps</span>
 		<span class="k">return</span> <span class="n">lineplot_fw</span> <span class="o">*</span> <span class="n">lineplot_bw</span>
 
-	<span class="k">def</span> <span class="nf">_qplot_line_iz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmap_spec</span> <span class="o">=</span> <span class="s1">&#39;viridis&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+	<span class="k">def</span><span class="w"> </span><span class="nf">_qplot_line_iz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmap_spec</span> <span class="o">=</span> <span class="s1">&#39;viridis&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Plotting I(z) line data on a density plot (tip height vs distance), using :py:mod:`hvplot`.</span>
 <span class="sd">		The mean values of the I(z) signal are plotted.</span>
 
@@ -587,7 +585,7 @@
 		<span class="p">)</span>
 		<span class="k">return</span> <span class="n">specplot</span>
 
-	<span class="k">def</span> <span class="nf">_qplot_line_spec_iz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+	<span class="k">def</span><span class="w"> </span><span class="nf">_qplot_line_spec_iz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Plotting I(z) spectra of a line spectroscopy instance, using :py:mod:`hvplot`.</span>
 
 <span class="sd">		:return: :py:mod:`holoviews` plot</span>
@@ -611,7 +609,7 @@
 		<span class="c1"># combine the fw and bw z sweeps</span>
 		<span class="k">return</span> <span class="n">lineplot_fw</span> <span class="o">*</span> <span class="n">lineplot_bw</span>
 
-	<span class="k">def</span> <span class="nf">_qplot_spec_iv_lia</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+	<span class="k">def</span><span class="w"> </span><span class="nf">_qplot_spec_iv_lia</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Plotting the dI/dV signal of a single spectrum instance, using :py:mod:`hvplot`.</span>
 
 <span class="sd">		:return: :py:mod:`holoviews` plot</span>
@@ -631,7 +629,7 @@
 			<span class="n">liaplot_bw</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">spectra</span><span class="o">.</span><span class="n">lia</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span> <span class="o">=</span> <span class="s1">&#39;repetitions&#39;</span><span class="p">)[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">hvplot</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;bias&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">line_width</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;avg right&#39;</span><span class="p">)</span>
 		<span class="k">return</span> <span class="p">(</span><span class="n">liaplot_fw</span><span class="o">*</span><span class="n">liaplot_bw</span><span class="p">)</span><span class="o">.</span><span class="n">opts</span><span class="p">(</span><span class="n">width</span> <span class="o">=</span> <span class="mi">400</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;dI/dV&#39;</span><span class="p">)</span>
 
-	<span class="k">def</span> <span class="nf">_qplot_spec_iv_curr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+	<span class="k">def</span><span class="w"> </span><span class="nf">_qplot_spec_iv_curr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Plotting the current signal of a single spectrum instance, using :py:mod:`hvplot`.</span>
 
 <span class="sd">		:return: :py:mod:`holoviews` plot</span>
@@ -651,7 +649,7 @@
 			<span class="n">currplot_bw</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">spectra</span><span class="o">.</span><span class="n">current</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span> <span class="o">=</span> <span class="s1">&#39;repetitions&#39;</span><span class="p">)[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">hvplot</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;bias&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">line_width</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;avg right&#39;</span><span class="p">)</span>
 		<span class="k">return</span> <span class="p">(</span><span class="n">currplot_fw</span><span class="o">*</span><span class="n">currplot_bw</span><span class="p">)</span><span class="o">.</span><span class="n">opts</span><span class="p">(</span><span class="n">width</span> <span class="o">=</span> <span class="mi">400</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;current&#39;</span><span class="p">)</span>
 
-	<span class="k">def</span> <span class="nf">_qplot_spec_iz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+	<span class="k">def</span><span class="w"> </span><span class="nf">_qplot_spec_iz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">		</span><span class="sd">&quot;&quot;&quot;Plotting an I(z) single spectrum instance, using :py:mod:`hvplot`.</span>
 
 <span class="sd">		:return: :py:mod:`holoviews` plot</span>
@@ -675,7 +673,7 @@
 
 <div class="viewcode-block" id="load_rhksm4">
 <a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_loader.load_rhksm4">[docs]</a>
-<span class="k">def</span> <span class="nf">load_rhksm4</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_rhksm4</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Load the data from the .sm4 file using the old loader from spym&quot;&quot;&quot;</span>
 	<span class="k">return</span> <span class="n">rhksm4</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span></div>
 
@@ -683,7 +681,7 @@
 
 <div class="viewcode-block" id="load_spym">
 <a class="viewcode-back" href="../../rhkpy.html#rhkpy.rhkpy_loader.load_spym">[docs]</a>
-<span class="k">def</span> <span class="nf">load_spym</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_spym</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;Load the data from the .sm4 file using spym&quot;&quot;&quot;</span>
 	<span class="k">return</span> <span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span></div>
 
@@ -691,7 +689,7 @@
 <span class="c1">## internal functions ------------------------------------------------</span>
 <span class="c1">## loading -----------------------------------------------------------</span>
 
-<span class="k">def</span> <span class="nf">_checkrepetitions</span><span class="p">(</span><span class="n">stmdata_object</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_checkrepetitions</span><span class="p">(</span><span class="n">stmdata_object</span><span class="p">):</span>
 	<span class="c1"># make an array of x and y coordinates</span>
 	<span class="n">coordlist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">((</span>
 		<span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="o">.</span><span class="n">Current</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;RHK_SpecDrift_Xcoord&#39;</span><span class="p">]),</span>
@@ -703,7 +701,7 @@
 	<span class="n">reps</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">reps</span> <span class="o">/</span> <span class="p">(</span><span class="n">stmdata_object</span><span class="o">.</span><span class="n">alternate</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
 	<span class="k">return</span> <span class="n">reps</span>
 
-<span class="k">def</span> <span class="nf">_checkdatatype</span><span class="p">(</span><span class="n">stmdata_object</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_checkdatatype</span><span class="p">(</span><span class="n">stmdata_object</span><span class="p">):</span>
 	<span class="c1"># check if the list of keys in the spym data contain &#39;Current&#39;</span>
 	<span class="c1"># If yes, it is not a pure topo image</span>
 	<span class="n">l</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
@@ -737,7 +735,7 @@
 	<span class="k">return</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">datatype</span><span class="p">,</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spectype</span>
 
 
-<span class="k">def</span> <span class="nf">_aspect_ratio</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_aspect_ratio</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
     <span class="n">xy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
     <span class="n">eigvals</span><span class="p">,</span> <span class="n">eigvecs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">xy</span><span class="p">))</span>
     <span class="n">center</span> <span class="o">=</span> <span class="n">xy</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
@@ -748,7 +746,7 @@
     <span class="k">return</span> <span class="n">aspect</span>
 
 
-<span class="k">def</span> <span class="nf">_get_filename</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_filename</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
 	<span class="c1"># If the string ends with a slash or backslash, remove it first</span>
     <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;/</span><span class="se">\\</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="c1"># Then, match any character other than backslash or slash until the end of the string</span>
@@ -756,7 +754,7 @@
     <span class="k">return</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="k">if</span> <span class="n">match</span> <span class="k">else</span> <span class="kc">None</span>
 
 
-<span class="k">def</span> <span class="nf">_load_specmap</span><span class="p">(</span><span class="n">stmdata_object</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_load_specmap</span><span class="p">(</span><span class="n">stmdata_object</span><span class="p">):</span>
 	<span class="c1"># total number of spectra in one postion of the tip</span>
 	<span class="n">stmdata_object</span><span class="o">.</span><span class="n">numberofspectra</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">stmdata_object</span><span class="o">.</span><span class="n">alternate</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">stmdata_object</span><span class="o">.</span><span class="n">repetitions</span><span class="p">)</span>
 	<span class="c1"># load the image</span>
@@ -776,7 +774,7 @@
 	<span class="k">return</span> <span class="n">stmdata_object</span>
 
 
-<span class="k">def</span> <span class="nf">_load_line</span><span class="p">(</span><span class="n">stmdata_object</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_load_line</span><span class="p">(</span><span class="n">stmdata_object</span><span class="p">):</span>
 	<span class="c1"># total number of spectra in one postion of the tip</span>
 	<span class="n">stmdata_object</span><span class="o">.</span><span class="n">numberofspectra</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">stmdata_object</span><span class="o">.</span><span class="n">alternate</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">stmdata_object</span><span class="o">.</span><span class="n">repetitions</span><span class="p">)</span>
 	<span class="c1"># load the image data</span>
@@ -792,7 +790,7 @@
 	<span class="k">return</span> <span class="n">stmdata_object</span>
 
 
-<span class="k">def</span> <span class="nf">_load_spec</span><span class="p">(</span><span class="n">stmdata_object</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_load_spec</span><span class="p">(</span><span class="n">stmdata_object</span><span class="p">):</span>
 	<span class="c1"># in this case the total number of spectra can be inferred</span>
 	<span class="c1"># total number of spectra in one postion of the tip</span>
 	<span class="n">stmdata_object</span><span class="o">.</span><span class="n">repetitions</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="o">.</span><span class="n">Current</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">stmdata_object</span><span class="o">.</span><span class="n">alternate</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
@@ -808,7 +806,7 @@
 	<span class="k">return</span> <span class="n">stmdata_object</span>
 
 
-<span class="k">def</span> <span class="nf">_load_image</span><span class="p">(</span><span class="n">stmdata_object</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_load_image</span><span class="p">(</span><span class="n">stmdata_object</span><span class="p">):</span>
 	<span class="c1"># load the image data</span>
 	<span class="k">if</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">datatype</span> <span class="o">==</span> <span class="s1">&#39;image&#39;</span> <span class="ow">or</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">datatype</span> <span class="o">==</span> <span class="s1">&#39;map&#39;</span><span class="p">:</span>
 		<span class="n">stmdata_object</span> <span class="o">=</span> <span class="n">_xr_image</span><span class="p">(</span><span class="n">stmdata_object</span><span class="p">)</span>
@@ -823,7 +821,7 @@
 	<span class="k">return</span> <span class="n">stmdata_object</span>
 
 
-<span class="k">def</span> <span class="nf">_xr_map_iv</span><span class="p">(</span><span class="n">stmdata_object</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_xr_map_iv</span><span class="p">(</span><span class="n">stmdata_object</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	TODO need to change spectrum rearranging for the case where alternate is False</span>
 
@@ -944,7 +942,7 @@
 	<span class="k">return</span> <span class="n">stmdata_object</span>
 
 
-<span class="k">def</span> <span class="nf">_xr_line_iv</span><span class="p">(</span><span class="n">stmdata_object</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_xr_line_iv</span><span class="p">(</span><span class="n">stmdata_object</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Create a DataSet containing the Lock-In (LIA) and Current spectroscopy data</span>
 <span class="sd">	Use the absolute values of the tip positions as coordinates</span>
@@ -1031,7 +1029,7 @@
 	<span class="k">return</span> <span class="n">stmdata_object</span>
 
 
-<span class="k">def</span> <span class="nf">_xr_spec_iv</span><span class="p">(</span><span class="n">stmdata_object</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_xr_spec_iv</span><span class="p">(</span><span class="n">stmdata_object</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Create a DataSet containing the Lock-In (LIA) and Current spectroscopy data</span>
 <span class="sd">	Use the absolute values of the tip positions are in the attributes</span>
@@ -1100,7 +1098,7 @@
 	<span class="k">return</span> <span class="n">stmdata_object</span>
 
 
-<span class="k">def</span> <span class="nf">_xr_map_iz</span><span class="p">(</span><span class="n">stmdata_object</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_xr_map_iz</span><span class="p">(</span><span class="n">stmdata_object</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	TODO need to change spectrum rearranging for the case where alternate is False</span>
 
@@ -1197,7 +1195,7 @@
 	<span class="k">return</span> <span class="n">stmdata_object</span>
 
 
-<span class="k">def</span> <span class="nf">_xr_line_iz</span><span class="p">(</span><span class="n">stmdata_object</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_xr_line_iz</span><span class="p">(</span><span class="n">stmdata_object</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Create a DataSet containing the Lock-In (LIA) and Current spectroscopy data</span>
 <span class="sd">	Use the absolute values of the tip positions as coordinates</span>
@@ -1274,7 +1272,7 @@
 	<span class="k">return</span> <span class="n">stmdata_object</span>
 
 
-<span class="k">def</span> <span class="nf">_xr_spec_iz</span><span class="p">(</span><span class="n">stmdata_object</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_xr_spec_iz</span><span class="p">(</span><span class="n">stmdata_object</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Create a DataSet containing the Lock-In (LIA) and Current spectroscopy data</span>
 <span class="sd">	Use the absolute values of the tip positions are in the attributes</span>
@@ -1335,7 +1333,7 @@
 	<span class="k">return</span> <span class="n">stmdata_object</span>
 
 
-<span class="k">def</span> <span class="nf">_xr_image</span><span class="p">(</span><span class="n">stmdata_object</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_xr_image</span><span class="p">(</span><span class="n">stmdata_object</span><span class="p">):</span>
 	<span class="c1"># topography</span>
 	<span class="n">topofw</span> <span class="o">=</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="o">.</span><span class="n">Topography_Forward</span>
 	<span class="n">topobw</span> <span class="o">=</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="o">.</span><span class="n">Topography_Backward</span>
@@ -1428,7 +1426,7 @@
 	<span class="k">return</span> <span class="n">stmdata_object</span>
 
 
-<span class="k">def</span> <span class="nf">_xr_image_line</span><span class="p">(</span><span class="n">stmdata_object</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_xr_image_line</span><span class="p">(</span><span class="n">stmdata_object</span><span class="p">):</span>
 	<span class="c1"># topography</span>
 	<span class="n">topofw</span> <span class="o">=</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="o">.</span><span class="n">Topography_Forward</span>
 	<span class="n">topobw</span> <span class="o">=</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="o">.</span><span class="n">Topography_Backward</span>
@@ -1506,7 +1504,7 @@
 	<span class="k">return</span> <span class="n">stmdata_object</span>
 
 
-<span class="k">def</span> <span class="nf">_add_map_metadata</span><span class="p">(</span><span class="n">stmdata_object</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_add_map_metadata</span><span class="p">(</span><span class="n">stmdata_object</span><span class="p">):</span>
 	<span class="k">if</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spectype</span> <span class="o">==</span> <span class="s1">&#39;iv&#39;</span><span class="p">:</span>
 		<span class="n">stmdata_object</span><span class="o">.</span><span class="n">spectra</span><span class="p">[</span><span class="s1">&#39;lia&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;bias&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="o">.</span><span class="n">Current</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;bias&#39;</span><span class="p">]</span>
 		<span class="n">stmdata_object</span><span class="o">.</span><span class="n">spectra</span><span class="p">[</span><span class="s1">&#39;lia&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;bias units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;V&#39;</span>
@@ -1539,7 +1537,7 @@
 	<span class="k">return</span> <span class="n">stmdata_object</span>
 
 
-<span class="k">def</span> <span class="nf">_add_line_metadata</span><span class="p">(</span><span class="n">stmdata_object</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_add_line_metadata</span><span class="p">(</span><span class="n">stmdata_object</span><span class="p">):</span>
 	<span class="k">if</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spectype</span> <span class="o">==</span> <span class="s1">&#39;iv&#39;</span><span class="p">:</span>
 		<span class="n">stmdata_object</span><span class="o">.</span><span class="n">spectra</span><span class="p">[</span><span class="s1">&#39;lia&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;bias&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="o">.</span><span class="n">Current</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;bias&#39;</span><span class="p">]</span>
 		<span class="n">stmdata_object</span><span class="o">.</span><span class="n">spectra</span><span class="p">[</span><span class="s1">&#39;lia&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;bias units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;V&#39;</span>
@@ -1572,7 +1570,7 @@
 	<span class="k">return</span> <span class="n">stmdata_object</span>
 
 
-<span class="k">def</span> <span class="nf">_add_spec_metadata</span><span class="p">(</span><span class="n">stmdata_object</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_add_spec_metadata</span><span class="p">(</span><span class="n">stmdata_object</span><span class="p">):</span>
 	<span class="k">if</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spectype</span> <span class="o">==</span> <span class="s1">&#39;iv&#39;</span><span class="p">:</span>
 		<span class="n">stmdata_object</span><span class="o">.</span><span class="n">spectra</span><span class="p">[</span><span class="s1">&#39;lia&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;bias&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="o">.</span><span class="n">Current</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;bias&#39;</span><span class="p">]</span>
 		<span class="n">stmdata_object</span><span class="o">.</span><span class="n">spectra</span><span class="p">[</span><span class="s1">&#39;lia&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;bias units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;V&#39;</span>
@@ -1607,7 +1605,7 @@
 	<span class="k">return</span> <span class="n">stmdata_object</span>
 
 
-<span class="k">def</span> <span class="nf">_add_image_metadata</span><span class="p">(</span><span class="n">stmdata_object</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_add_image_metadata</span><span class="p">(</span><span class="n">stmdata_object</span><span class="p">):</span>
 	<span class="n">stmdata_object</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;bias&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="o">.</span><span class="n">Topography_Forward</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;RHK_Bias&#39;</span><span class="p">]</span>
 	<span class="n">stmdata_object</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;bias units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;V&#39;</span>
 	<span class="n">stmdata_object</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;setpoint&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">stmdata_object</span><span class="o">.</span><span class="n">spymdata</span><span class="o">.</span><span class="n">Topography_Forward</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;RHK_Current&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">12</span>

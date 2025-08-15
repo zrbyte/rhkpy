@@ -9,21 +9,21 @@ spym.process.filters module
 
 .. automodule:: spym.process.filters
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 spym.process.level module
 -------------------------
 
 .. automodule:: spym.process.level
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Module contents
 ---------------
 
 .. automodule:: spym.process
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:

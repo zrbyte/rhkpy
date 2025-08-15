@@ -18,13 +18,13 @@ spym.io.load module
 
 .. automodule:: spym.io.load
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Module contents
 ---------------
 
 .. automodule:: spym.io
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:

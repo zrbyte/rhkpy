@@ -16,5 +16,5 @@ Module contents
 
 .. automodule:: spym
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:

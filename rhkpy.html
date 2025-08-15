@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="./">
 <head>
@@ -5,19 +7,15 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>rhkpy package &mdash; rhkpy 2023.08.10 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
   
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="_static/jquery.js?v=5d32c60e"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="_static/documentation_options.js?v=0f4f00c4"></script>
-        <script src="_static/doctools.js?v=9a2dae69"></script>
-        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=0f4f00c4"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -157,7 +155,7 @@
 
 <dl class="py class">
 <dt class="sig sig-object py" id="rhkpy.rhkpy_loader.rhkdata">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rhkpy.rhkpy_loader.</span></span><span class="sig-name descname"><span class="pre">rhkdata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repetitions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alternate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loadraw</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rhkpy/rhkpy_loader.html#rhkdata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rhkpy.rhkpy_loader.rhkdata" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rhkpy.rhkpy_loader.</span></span><span class="sig-name descname"><span class="pre">rhkdata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repetitions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alternate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loadraw</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/rhkpy/rhkpy_loader.html#rhkdata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rhkpy.rhkpy_loader.rhkdata" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A container for the xarray based structure of the RHK data. Loads the RHK “sm4” file from the path at: <code class="docutils literal notranslate"><span class="pre">filename</span></code>.</p>
 <dl class="field-list simple">
@@ -188,7 +186,7 @@
 </div>
 <dl class="field-list">
 <dt class="field-odd">Example<span class="colon">:</span></dt>
-<dd class="field-odd"><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">rhkpy</span>
+<dd class="field-odd"><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">rhkpy</span>
 
 <span class="c1"># Load dI/dV spectra, measured along a line</span>
 <span class="n">filename</span> <span class="o">=</span> <span class="s1">&#39;linespectra.sm4&#39;</span>
@@ -247,7 +245,7 @@
 <dt class="field-odd">Example<span class="colon">:</span></dt>
 <dd class="field-odd"><p></p></dd>
 </dl>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">rhkpy</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">rhkpy</span>
 
 <span class="n">m</span> <span class="o">=</span> <span class="n">rhkpy</span><span class="o">.</span><span class="n">rhkdata</span><span class="p">(</span><span class="s1">&#39;didv map.sm4&#39;</span><span class="p">)</span>
 
@@ -425,7 +423,7 @@ Returns a new <code class="xref py py-mod docutils literal notranslate"><span cl
 <dd class="field-odd"><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">xarray</span></code> Dataset</p>
 </dd>
 <dt class="field-even">Example<span class="colon">:</span></dt>
-<dd class="field-even"><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">rhkpy</span>
+<dd class="field-even"><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">rhkpy</span>
 
 <span class="n">m</span> <span class="o">=</span> <span class="n">rhkpy</span><span class="o">.</span><span class="n">rhkdata</span><span class="p">(</span><span class="s1">&#39;didv map.sm4&#39;</span><span class="p">)</span>
 
@@ -516,7 +514,7 @@ The method uses <a class="reference internal" href="#rhkpy.rhkpy_loader.rhkdata.
 <dd class="field-odd"><p><strong>folderpath</strong> (<em>str</em><em>, </em><em>optional</em>) – path to the folder containing the sm4 files, defaults to ‘./’</p>
 </dd>
 <dt class="field-even">Example<span class="colon">:</span></dt>
-<dd class="field-even"><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">rhkpy</span>
+<dd class="field-even"><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">rhkpy</span>
 
 <span class="c1"># generate thumbnails of the sm4 files in the current working directory</span>
 <span class="n">rhkpy</span><span class="o">.</span><span class="n">genthumbs</span><span class="p">()</span>
@@ -608,7 +606,7 @@ For possible palette options look at the <a class="reference external" href="htt
 <dd class="field-even"><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">holoviews</span></code></p>
 </dd>
 <dt class="field-odd">Example<span class="colon">:</span></dt>
-<dd class="field-odd"><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">rhkpy</span>
+<dd class="field-odd"><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">rhkpy</span>
 
 <span class="c1"># Load some data</span>
 <span class="n">didvmap</span> <span class="o">=</span> <span class="n">rhkpy</span><span class="o">.</span><span class="n">rhkdata</span><span class="p">(</span><span class="s1">&#39;didvmap path/map.sm4&#39;</span><span class="p">)</span>
@@ -665,7 +663,7 @@ Peak fitting is always assumed to be along the <cite>bias</cite> coordinate.</p>
 <dt class="field-even">Example<span class="colon">:</span></dt>
 <dd class="field-even"><p></p></dd>
 </dl>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">rhkpy</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">rhkpy</span>
 
 <span class="c1"># example coming soon</span>
 </pre></div>
