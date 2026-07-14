@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rhkpy"
+dynamic = ["version"]
+description = "A python package for processing Scanning Tunneling Microscopy (STM) data from RHK, based on the spym project."
+readme = "README.md"
+authors = [{ name = "Peter Nemes-Incze" }]
+license = { file = "LICENSE" }
+requires-python = ">=3.10"
+classifiers = [
+	"License :: OSI Approved :: MIT License",
+	"Programming Language :: Python :: 3",
+	"Operating System :: OS Independent",
+]
+dependencies = [
+	"matplotlib",
+	"numpy",
+	"scipy",
+	"xarray>=2023.7.0",
+	"holoviews>=1.17.0",
+	"hvplot>=0.8.4",
+	"bokeh>=3.2.2",
+	"panel>=1.2.1",
+	"selenium>=4.6",
+]
+
+[project.urls]
+Homepage = "https://github.com/zrbyte/rhkpy"
+Documentation = "https://rhkpy.readthedocs.io"
+
+[project.optional-dependencies]
+test = ["pytest"]
+
+# NOTE: the vendored spym package is still shipped for now; it becomes a
+# testing-only legacy loader once the sm4 reader is reimplemented in rhkpy.io.
+[tool.setuptools.packages.find]
+include = ["rhkpy*", "spym*"]
+
+[tool.setuptools.dynamic]
+version = { attr = "rhkpy.version.__version__" }

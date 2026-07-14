@@ -1,7 +1,10 @@
+import logging as _logging
 import matplotlib.pyplot as pl
 import numpy as np
 import xarray as xr
 import re, copy
+
+_logger = _logging.getLogger('rhkpy')
 # import load from spym
 from spym.io import load
 ## Using the old loader
@@ -94,7 +97,7 @@ class rhkdata:
 		"""		
 
 		if isinstance(alternate, bool) == False:
-			print("alternate needs to be a bool variable: True or False. Default is True")
+			_logger.warning("alternate needs to be a bool variable: True or False. Default is True")
 
 		self.filename = filename
 		self.loadraw = loadraw
@@ -112,7 +115,7 @@ class rhkdata:
 		# check software version. Not tested for MinorVer < 6
 		l = list(self.spymdata.keys())
 		if self.spymdata[l[-1]].attrs['RHK_MinorVer'] < 6:
-			print('stmdatastruct not tested for RHK Rev version < 6. Some things might not work as expected.')
+			_logger.warning('stmdatastruct not tested for RHK Rev version < 6. Some things might not work as expected.')
 
 		# check type of data and spectra contained in the file
 		self.datatype, self.spectype = _checkdatatype(self)
@@ -124,9 +127,9 @@ class rhkdata:
 				# overwrite the default value and the value inferred from tip coordinates
 				# check if parameters passed to the class are valid
 				if repetitions <= 0:
-					print("repetitions needs to be an integer, with a value of 1 or above. Default is 1")
+					_logger.warning("repetitions needs to be an integer, with a value of 1 or above. Default is 1")
 				elif isinstance(repetitions, int) == False:
-					print("repetitions needs to be an integer. Default is 1")
+					_logger.warning("repetitions needs to be an integer. Default is 1")
 				self.repetitions = repetitions
 			else:
 				# determine the number of repetitions from the number of indentical tip coordinates in the beginning of RHK_SpecDrift_Xcoord

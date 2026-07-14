@@ -1,7 +1,12 @@
+# Runtime dependencies (kept in sync with pyproject.toml), plus notebook extras.
 matplotlib
 numpy
 scipy
 xarray>=2023.7.0
-hvplot
-jupyter_bokeh
+holoviews>=1.17.0
+hvplot>=0.8.4
+bokeh>=3.2.2
+panel>=1.2.1
 selenium>=4.6
+# for interactive plots in Jupyter notebooks
+jupyter_bokeh
