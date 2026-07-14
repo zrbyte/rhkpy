@@ -1,6 +1,16 @@
 """Construction of the `spectra` xarray Dataset for each (datatype, spectype).
 
-Moved verbatim from rhkpy_loader.py (refactor phase 2).
+One parametrized builder per measurement geometry (map / line / single spec),
+driven by the per-spectype configuration in ``_SPECTYPE_CONFIG``. The
+``_xr_*`` wrappers keep the historical function names.
+
+To support a new spectroscopy type, add an entry to ``_SPECTYPE_CONFIG`` and
+register it in ``rhkpy.builders._BUILDER_REGISTRY``.
+
+.. note::
+	The builders reproduce the historical output of rhkpy <= 1.3 bit-for-bit
+	(verified by the golden-master characterization tests), including a few
+	quirks that are called out in comments below.
 """
 
 import numpy as np
@@ -8,509 +18,258 @@ import xarray as xr
 
 from .detect import _get_filename
 
+# attribute blocks reused across builders
+_PA_ATTRS = {'units': 'pA', 'long units': 'picoampere'}
+_NM_ATTRS = {'units': 'nm', 'long units': 'nanometer'}
+_BIAS_ATTRS = {'units': 'V', 'long units': 'Volt'}
+
+#: Per-spectype configuration used by the geometry builders.
+#: channels: (data_var name, spym page name) - the FIRST channel is the
+#: "primary" page, whose attributes provide the tip position coordinates
+#: and whose array determines the map/line size.
+_SPECTYPE_CONFIG = {
+	'iv': dict(
+		channels = [('lia', 'LIA_Current'), ('current', 'Current')],
+		sweep_dim = 'bias',
+		sweep_coord = 'LIA_Current_x',
+		sweep_scale = 1,             # bias stays in V
+		sweep_attrs = _BIAS_ATTRS,
+		scandir_dim = 'biasscandir',
+		scandir_labels = ['left', 'right'],
+		# historical quirk: dI/dV maps use (y, x) ordered position dims
+		map_pos_dims = ('specpos_y', 'specpos_x'),
+	),
+	'iz': dict(
+		channels = [('current', 'Current')],
+		sweep_dim = 'z',
+		sweep_coord = 'Current_x',
+		sweep_scale = 10**9,         # z is converted to nm
+		sweep_attrs = _NM_ATTRS,
+		scandir_dim = 'zscandir',
+		scandir_labels = ['up', 'down'],
+		# historical quirk: I(z) maps use (x, y) ordered position dims
+		map_pos_dims = ('specpos_x', 'specpos_y'),
+	),
+}
+
+
+## helpers ------------------------------------------------------------
+
+def _page(stmdata_object, page_name):
+	# attribute access (not item access), so that a missing channel raises the
+	# same AttributeError as the historical code, e.g.
+	# "'Dataset' object has no attribute 'LIA_Current'"
+	return getattr(stmdata_object.spymdata, page_name)
+
+
+def _split_scandir(array, numberofspectra):
+	"""Collect all spectra measured at the same tip position into the last axis
+	and separate the alternating forward/backward sweeps by slicing.
+
+	Returns (forward, backward), each of shape (npoints, npositions, nrepetitions).
+	"""
+	temp = np.reshape(array, (array.shape[0], -1, numberofspectra), order='C')
+	return temp[:, :, 0::2], temp[:, :, 1::2]
+
+
+def _spec_positions(stmdata_object, page_name):
+	"""Tip positions of the spectra, in the order the spectra were measured."""
+	attrs = _page(stmdata_object, page_name).attrs
+	xcoo = np.array(attrs['RHK_SpecDrift_Xcoord'])
+	ycoo = np.array(attrs['RHK_SpecDrift_Ycoord'])
+	return xcoo, ycoo
+
+
+def _sweep_coord_values(stmdata_object, cfg):
+	return stmdata_object.spymdata.coords[cfg['sweep_coord']].data * cfg['sweep_scale']
+
+
+def _apply_channel_attrs(xrspec, cfg):
+	for var_name, _ in cfg['channels']:
+		xrspec[var_name].attrs.update(_PA_ATTRS)
+	xrspec['x'].attrs.update(_NM_ATTRS)
+	xrspec['y'].attrs.update(_NM_ATTRS)
+	xrspec.coords[cfg['sweep_dim']].attrs.update(cfg['sweep_attrs'])
+
+
+## geometry builders --------------------------------------------------
+
+def _build_map(stmdata_object, cfg):
+	"""Spectroscopy map: spectra on a mapsize x mapsize grid of tip positions."""
+	primary = cfg['channels'][0][1]
+
+	# total number of spectra in one position of the tip.
+	# NOTE: deliberately no int() cast; for files where the inferred number of
+	# repetitions is 0, the int/int division below raises the same
+	# ZeroDivisionError as the historical code (pinned by the tests).
+	numberofspectra = (stmdata_object.alternate + 1)*stmdata_object.repetitions
+	# size of the map in mapsize x mapsize
+	mapsize = int(np.sqrt(_page(stmdata_object, primary).data.shape[1] / numberofspectra))
+
+	# reshape each channel: separate forward/backward sweeps, arrange into the
+	# mapsize x mapsize grid, then flip the position axes so that the spectra
+	# line up with the topography image (first topo pixel = first spec pixel)
+	data_vars = {}
+	for var_name, page_name in cfg['channels']:
+		fw, bw = _split_scandir(_page(stmdata_object, page_name).data, numberofspectra)
+		gridfw = np.reshape(fw, (fw.shape[0], mapsize, mapsize, fw.shape[2]), order='C')
+		gridbw = np.reshape(bw, (bw.shape[0], mapsize, mapsize, bw.shape[2]), order='C')
+		gridfw = np.flip(gridfw, axis=(1, 2))
+		gridbw = np.flip(gridbw, axis=(1, 2))
+		dims = [cfg['sweep_dim'], *cfg['map_pos_dims'], 'repetitions', cfg['scandir_dim']]
+		# stack the forward and backward sweeps along the scandir dim; convert to pA
+		data_vars[var_name] = (dims, np.stack((gridfw, gridbw), axis=-1)*10**12)
+
+	# tip positions of the spectra, arranged on the same grid (in nm)
+	xcoo, ycoo = _spec_positions(stmdata_object, primary)
+	meshx = np.reshape(xcoo, (mapsize, mapsize, numberofspectra), order='C')[:, :, 0]
+	meshy = np.reshape(ycoo, (mapsize, mapsize, numberofspectra), order='C')[:, :, 0]
+	data_vars['x'] = (list(cfg['map_pos_dims']), meshx*10**9)
+	data_vars['y'] = (list(cfg['map_pos_dims']), meshy*10**9)
+
+	# grid coordinates for the spectra positions: pixel centers, shifted by the
+	# image offset
+	pixelsizex = stmdata_object.image.attrs['size_x'] / mapsize
+	pixelsizey = stmdata_object.image.attrs['size_y'] / mapsize
+	tempx = np.linspace(pixelsizex/2, stmdata_object.image.attrs['size_x'] - pixelsizex/2, num=mapsize) + stmdata_object.image.attrs['xoffset']
+	tempy = np.linspace(pixelsizey/2, stmdata_object.image.attrs['size_y'] - pixelsizey/2, num=mapsize) + stmdata_object.image.attrs['yoffset']
+
+	xrspec = xr.Dataset(
+		data_vars = data_vars,
+		coords = {
+			cfg['sweep_dim']: _sweep_coord_values(stmdata_object, cfg),
+			'specpos_x': tempx,
+			'specpos_y': tempy,
+			'repetitions': np.array(range(stmdata_object.repetitions)),
+			cfg['scandir_dim']: np.array(cfg['scandir_labels'], dtype = 'U'),
+			},
+		attrs = dict(filename = _get_filename(stmdata_object.filename))
+	)
+
+	_apply_channel_attrs(xrspec, cfg)
+	xrspec.coords['specpos_x'].attrs.update(_NM_ATTRS)
+	xrspec.coords['specpos_y'].attrs.update(_NM_ATTRS)
+
+	stmdata_object.spectra = xrspec
+	return stmdata_object
+
+
+def _build_line(stmdata_object, cfg):
+	"""Line spectroscopy: spectra along a line of tip positions."""
+	primary = cfg['channels'][0][1]
+
+	# total number of spectra in one position of the tip
+	numberofspectra = int((stmdata_object.alternate + 1)*stmdata_object.repetitions)
+	# size of the line: the number of different physical tip positions.
+	# NOTE: linesize is unused, but the division is kept deliberately; for
+	# files where the inferred number of repetitions is 0 it raises the same
+	# ZeroDivisionError as the historical code (pinned by the tests).
+	linesize = int(_page(stmdata_object, primary).data.shape[1] / numberofspectra)  # noqa: F841
+
+	# separate the forward/backward sweeps of each channel; convert to pA
+	data_vars = {}
+	for var_name, page_name in cfg['channels']:
+		fw, bw = _split_scandir(_page(stmdata_object, page_name).data, numberofspectra)
+		dims = [cfg['sweep_dim'], 'dist', 'repetitions', cfg['scandir_dim']]
+		data_vars[var_name] = (dims, np.stack((fw, bw), axis=-1)*10**12)
+
+	# tip positions: need only every nth coordinate, where n is the number of
+	# spectra in a tip position
+	xcoo, ycoo = _spec_positions(stmdata_object, primary)
+	tempx = xcoo[0::numberofspectra]
+	tempy = ycoo[0::numberofspectra]
+	linelength = np.sqrt((tempx[-1] - tempx[0])**2 + (tempy[-1] - tempy[0])**2)
+	# distance coordinates along the line in [nm]
+	linecoord = np.linspace(0, linelength, num=tempx.shape[0])*10**9
+	data_vars['x'] = (['dist'], tempx*10**9)
+	data_vars['y'] = (['dist'], tempy*10**9)
+
+	xrspec = xr.Dataset(
+		data_vars = data_vars,
+		coords = {
+			cfg['sweep_dim']: _sweep_coord_values(stmdata_object, cfg),
+			'dist': linecoord,
+			'repetitions': np.array(range(stmdata_object.repetitions)),
+			cfg['scandir_dim']: np.array(cfg['scandir_labels'], dtype = 'U'),
+			},
+		attrs = dict(filename = _get_filename(stmdata_object.filename))
+	)
+
+	_apply_channel_attrs(xrspec, cfg)
+	xrspec.coords['dist'].attrs.update(_NM_ATTRS)
+
+	stmdata_object.spectra = xrspec
+	return stmdata_object
+
+
+def _build_spec(stmdata_object, cfg):
+	"""Single-point spectroscopy: repeated spectra at one tip position."""
+	primary = cfg['channels'][0][1]
+
+	# separate the alternating forward/backward sweeps; convert to pA
+	data_vars = {}
+	for var_name, page_name in cfg['channels']:
+		arr = _page(stmdata_object, page_name).data
+		fw = arr[:, 0::2]
+		bw = arr[:, 1::2]
+		dims = [cfg['sweep_dim'], 'repetitions', cfg['scandir_dim']]
+		data_vars[var_name] = (dims, np.stack((fw, bw), axis=-1)*10**12)
+
+	# tip position: only the first x and y components are needed
+	xcoo, ycoo = _spec_positions(stmdata_object, primary)
+	tempx = xcoo[0]
+	tempy = ycoo[0]
+	data_vars['x'] = tempx*10**9
+	data_vars['y'] = tempy*10**9
+
+	xrspec = xr.Dataset(
+		data_vars = data_vars,
+		coords = {
+			cfg['sweep_dim']: _sweep_coord_values(stmdata_object, cfg),
+			'repetitions': np.array(range(stmdata_object.repetitions)),
+			cfg['scandir_dim']: np.array(cfg['scandir_labels'], dtype = 'U'),
+			},
+		attrs = dict(filename = _get_filename(stmdata_object.filename))
+	)
+
+	_apply_channel_attrs(xrspec, cfg)
+	# the tip position is also stored in the Dataset attributes
+	xrspec.attrs['speccoord_x'] = tempx*10**9
+	xrspec.attrs['speccoord_y'] = tempy*10**9
+	xrspec.attrs['speccoord_x units'] = 'nm'
+	xrspec.attrs['speccoord_y units'] = 'nm'
+
+	stmdata_object.spectra = xrspec
+	return stmdata_object
+
+
+## historical entry points --------------------------------------------
 
 def _xr_map_iv(stmdata_object):
-	"""
-	TODO need to change spectrum rearranging for the case where alternate is False
+	"""Create the `spectra` Dataset of a dI/dV map (LIA + Current channels)."""
+	return _build_map(stmdata_object, _SPECTYPE_CONFIG['iv'])
 
-	Create a DataSet containing the Lock-In (LIA) and Current spectroscopy data
-	Use the absolute values of the tip positions as coordinates
-
-	In spym the spectroscopy data is loaded into an array,
-	which has axis=0 the number of datapoints in the spectra
-	and axis=1 the number of spectra in total.
-
-	When rearranging, the number of repetitions within each tip position is assumed to be 1
-	and alternate scan direction is assumed to be turned on.
-	These options can be changed by the parameters, `repetitions` and `alternate`
-	"""
-
-	# extract the numpy array containing the LIA data from the spym object
-	specarray = stmdata_object.spymdata.LIA_Current.data
-	# extract the numpy array containing the Current data from the spym object
-	currentarray = stmdata_object.spymdata.Current.data
-
-	# total number of spectra in one postion of the tip
-	numberofspectra = (stmdata_object.alternate + 1)*stmdata_object.repetitions
-	# size of the map in mapsize x mapsize
-	mapsize = int(np.sqrt(specarray.shape[1] / numberofspectra))
-
-	# reshape LIA data
-	# collect all spectra measured in the same `X, Y` coordinate into an axis (last) of an array.
-	temp = np.reshape(specarray, (specarray.shape[0], -1, numberofspectra), order='C')
-	# Every other spectrum is a forward and backward scan in bias sweep. Separate the forward and backward scans into differing arrays by slicing.
-	# These are all the forward and backward bias sweep spectra, arranged along axis=1, with axis=2 being the repetitions
-	spec_fw = temp[:, :, 0::2]
-	spec_bw = temp[:, :, 1::2]
-	# reshape the forward and backward parts into a map
-	speccmap_fw = np.reshape(spec_fw, (spec_fw.shape[0], mapsize, mapsize, spec_fw.shape[2]), order='C')
-	speccmap_bw = np.reshape(spec_bw, (spec_bw.shape[0], mapsize, mapsize, spec_bw.shape[2]), order='C')
-	
-	# The last axis (in this case with length of 1) contains the repeated scans in one particular pixel.
-	# If the `repetitions` variable is set to greater than 1, this will contains the repeated spectra within an `X, Y` pixel.
-
-	# need to flip the x and y axes so that the spectra line up with the topography image.
-	# Meaning the first topo pixel in both directions is also the first spectroscopy pixel in each direction.
-	liafw = np.flip(speccmap_fw, axis=(1, 2))
-	liabw = np.flip(speccmap_bw, axis=(1, 2))
-
-	# reshape Current data
-	temp = np.reshape(currentarray, (currentarray.shape[0], -1, numberofspectra), order='C')
-	# Every other spectrum is a forward and backward scan in bias sweep. Separate the forward and backward scans into differing arrays by slicing.
-	# These are all the forward and backward bias sweep spectra, arranged along axis=1, with axis=2 being the repetitions
-	current_fw = temp[:, :, 0::2]
-	current_bw = temp[:, :, 1::2]
-	# reshape the forward and backward parts into a map
-	currentmap_fw = np.reshape(current_fw, (current_fw.shape[0], mapsize, mapsize, current_fw.shape[2]), order='C')
-	currentmap_bw = np.reshape(current_bw, (current_bw.shape[0], mapsize, mapsize, current_bw.shape[2]), order='C')
-	
-	# The last axis (in this case with length of 1) contains the repeated scans in one particular pixel.
-	# If the `repetitions` variable is set to greater than 1, this will contains the repeated spectra within an `X, Y` pixel.
-
-	# need to flip the x and y axes so that the spectra line up with the topography image.
-	# Meaning the first topo pixel in both directions is also the first spectroscopy pixel in each direction.
-	currentfw = np.flip(currentmap_fw, axis=(1, 2))
-	currentbw = np.flip(currentmap_bw, axis=(1, 2))
-
-	# Coordinates of the spectroscopy map
-	
-	# 'RHK_SpecDrift_Xcoord' are the coordinates of the spectra.
-	# This contains the coordinates in the order that the spectra are in. 
-	xcoo = np.array(stmdata_object.spymdata.LIA_Current.attrs['RHK_SpecDrift_Xcoord'])
-	ycoo = np.array(stmdata_object.spymdata.LIA_Current.attrs['RHK_SpecDrift_Ycoord'])
-	
-	# reshaping the spectra positions similarly to the spectra.
-	meshx = np.reshape(xcoo, (mapsize, mapsize, numberofspectra), order='C')[:, :, 0]
-	meshy = np.reshape(ycoo, (mapsize, mapsize, numberofspectra), order='C')[:, :, 0]
-	
-	# make coordinates for the spectra positions
-	# calculate the pixel size, distance between the neighboring spectra
-	pixelsizex = stmdata_object.image.attrs['size_x'] / mapsize
-	pixelsizey = stmdata_object.image.attrs['size_y'] / mapsize
-	# make coordinates for the spectra positions
-	tempx = np.linspace(pixelsizex/2, stmdata_object.image.attrs['size_x'] - pixelsizex/2, num=mapsize) + stmdata_object.image.attrs['xoffset']
-	tempy = np.linspace(pixelsizey/2, stmdata_object.image.attrs['size_y'] - pixelsizey/2, num=mapsize) + stmdata_object.image.attrs['yoffset']
-
-	# Constructing the xarray DataSet 
-	# stacking the forward and backward bias sweeps and using the scandir coordinate
-	# also adding specific attributes
-	xrspec = xr.Dataset(
-		data_vars = dict(
-			lia = (['bias', 'specpos_y', 'specpos_x', 'repetitions', 'biasscandir'], np.stack((liafw, liabw), axis=-1)*10**12),
-			current = (['bias', 'specpos_y', 'specpos_x', 'repetitions', 'biasscandir'], np.stack((currentfw, currentbw), axis=-1)*10**12),
-			x = (['specpos_y', 'specpos_x'], meshx*10**9),
-			y = (['specpos_y', 'specpos_x'], meshy*10**9)
-			),
-		coords = dict(
-			bias = stmdata_object.spymdata.coords['LIA_Current_x'].data,
-			specpos_x = tempx,
-			specpos_y = tempy,
-			repetitions = np.array(range(stmdata_object.repetitions)),
-			biasscandir = np.array(['left', 'right'], dtype = 'U')
-			),
-		attrs = dict(filename = _get_filename(stmdata_object.filename))
-	)
-
-	xrspec['lia'].attrs['units'] = 'pA'
-	xrspec['lia'].attrs['long units'] = 'picoampere'
-	xrspec['current'].attrs['units'] = 'pA'
-	xrspec['current'].attrs['long units'] = 'picoampere'
-	xrspec['x'].attrs['units'] = 'nm'
-	xrspec['x'].attrs['long units'] = 'nanometer'
-	xrspec['y'].attrs['units'] = 'nm'
-	xrspec['y'].attrs['long units'] = 'nanometer'
-	xrspec.coords['bias'].attrs['units'] = 'V'
-	xrspec.coords['bias'].attrs['long units'] = 'Volt'
-	xrspec.coords['specpos_x'].attrs['units'] = 'nm'
-	xrspec.coords['specpos_y'].attrs['units'] = 'nm'
-	xrspec.coords['specpos_x'].attrs['long units'] = 'nanometer'
-	xrspec.coords['specpos_y'].attrs['long units'] = 'nanometer'
-
-	stmdata_object.spectra = xrspec
-	return stmdata_object
-
-def _xr_line_iv(stmdata_object):
-	"""
-	Create a DataSet containing the Lock-In (LIA) and Current spectroscopy data
-	Use the absolute values of the tip positions as coordinates
-
-	In spym the spectroscopy data is loaded into an array,
-	which has axis=0 the number of datapoints in the spectra
-	and axis=1 the number of spectra in total.
-
-	When rearranging, the number of repetitions within each tip position is assumed to be 1
-	and alternate scan direction is assumed to be turned on.
-	These options can be changed by the parameters, `repetitions` and `alternate`
-	"""
-
-	# extract the numpy array containing the LIA data from the spym object
-	specarray = stmdata_object.spymdata.LIA_Current.data
-	# extract the numpy array containing the Current data from the spym object
-	currentarray = stmdata_object.spymdata.Current.data
-
-	# total number of spectra in one postion of the tip
-	numberofspectra = int((stmdata_object.alternate + 1)*stmdata_object.repetitions)
-	# size of the line, the number of the different physical positions of the tip
-	linesize = int(specarray.shape[1] / numberofspectra)
-
-	# reshape LIA data
-	# Every other spectrum is a forward and backward scan in bias sweep. Separate the forward and backward scans into differing arrays by slicing.
-	# These are all the forward and backward bias sweep spectra, arranged along axis=1, with axis=2 being the repetitions
-	templia = np.reshape(specarray, (specarray.shape[0], -1, numberofspectra), order='C')
-	liafw = templia[:, :, 0::2]
-	liabw = templia[:, :, 1::2]
-
-	# reshape Current data
-	tempcurr = np.reshape(currentarray, (currentarray.shape[0], -1, numberofspectra), order='C')
-	currentfw = tempcurr[:, :, 0::2]
-	currentbw = tempcurr[:, :, 1::2]
-
-	# Coordinates of the spectroscopy map
-	# 'RHK_SpecDrift_Xcoord' are the coordinates of the spectra.
-	# This contains the coordinates in the order that the spectra are in. 
-	xcoo = np.array(stmdata_object.spymdata.LIA_Current.attrs['RHK_SpecDrift_Xcoord'])
-	ycoo = np.array(stmdata_object.spymdata.LIA_Current.attrs['RHK_SpecDrift_Ycoord'])
-	# reshaping the coordinates similarly to the spectra. Need only every nth coordinate, where n is then number of spectra in a tip position
-	tempx = xcoo[0::numberofspectra]
-	tempy = ycoo[0::numberofspectra]
-	linelength = np.sqrt((tempx[-1] - tempx[0])**2 + (tempy[-1] - tempy[0])**2)
-	# distance coordinates along the line in [nm]
-	linecoord = np.linspace(0, linelength, num=tempx.shape[0])*10**9
-
-	"""
-	Constructing the xarray Dataset 
-	"""
-	# stacking the forward and backward bias sweeps and using the scandir coordinate
-	# also adding specific attributes
-	xrspec = xr.Dataset(
-		data_vars = dict(
-			lia = (['bias', 'dist', 'repetitions', 'biasscandir'], np.stack((liafw, liabw), axis=-1)*10**12),
-			current = (['bias', 'dist', 'repetitions', 'biasscandir'], np.stack((currentfw, currentbw), axis=-1)*10**12),
-			x = (['dist'], tempx*10**9),
-			y = (['dist'], tempy*10**9)
-			),
-		coords = dict(
-			bias = stmdata_object.spymdata.coords['LIA_Current_x'].data,
-			dist = linecoord,
-			repetitions = np.array(range(stmdata_object.repetitions)),
-			biasscandir = np.array(['left', 'right'], dtype = 'U')
-			),
-		attrs = dict(filename = _get_filename(stmdata_object.filename))
-	)
-
-	xrspec.coords['dist'].attrs['units'] = 'nm'
-	xrspec.coords['dist'].attrs['long units'] = 'nanometer'
-	xrspec.coords['bias'].attrs['units'] = 'V'
-	xrspec.coords['bias'].attrs['long units'] = 'Volt'
-
-	xrspec['x'].attrs['units'] = 'nm'
-	xrspec['y'].attrs['units'] = 'nm'
-	xrspec['x'].attrs['long units'] = 'nanometer'
-	xrspec['y'].attrs['long units'] = 'nanometer'
-	xrspec['lia'].attrs['units'] = 'pA'
-	xrspec['lia'].attrs['long units'] = 'picoampere'
-	xrspec['current'].attrs['units'] = 'pA'
-	xrspec['current'].attrs['long units'] = 'picoampere'
-
-	stmdata_object.spectra = xrspec
-	return stmdata_object
-
-def _xr_spec_iv(stmdata_object):
-	"""
-	Create a DataSet containing the Lock-In (LIA) and Current spectroscopy data
-	Use the absolute values of the tip positions are in the attributes
-	"""
-
-	# extract the numpy array containing the LIA data from the spym object
-	specarray = stmdata_object.spymdata.LIA_Current.data
-	# extract the numpy array containing the Current data from the spym object
-	currentarray = stmdata_object.spymdata.Current.data
-
-	# reshape LIA data
-	# Every other spectrum is a forward and backward scan in bias sweep. Separate the forward and backward scans into differing arrays by slicing.
-	liafw = specarray[:, 0::2]
-	liabw = specarray[:, 1::2]
-
-	# reshape Current data
-	currentfw = currentarray[:, 0::2]
-	currentbw = currentarray[:, 1::2]
-
-	# Coordinates of the spectroscopy map
-	# 'RHK_SpecDrift_Xcoord' are the coordinates of the spectra.
-	# This contains the coordinates in the order that the spectra are in. 
-	# Here we only need the first x and y components
-	xcoo = np.array(stmdata_object.spymdata.LIA_Current.attrs['RHK_SpecDrift_Xcoord'])
-	ycoo = np.array(stmdata_object.spymdata.LIA_Current.attrs['RHK_SpecDrift_Ycoord'])
-	# reshaping the coordinates similarly to the spectra.
-	tempx = xcoo[0]
-	tempy = ycoo[0]
-
-	# Constructing the xarray Dataset 
-	# stacking the forward and backward bias sweeps and using the scandir coordinate
-	# also adding specific attributes
-	xrspec = xr.Dataset(
-		data_vars = dict(
-			lia = (['bias', 'repetitions', 'biasscandir'], np.stack((liafw, liabw), axis=-1)*10**12),
-			current = (['bias', 'repetitions', 'biasscandir'], np.stack((currentfw, currentbw), axis=-1)*10**12),
-			x = tempx*10**9,
-			y = tempy*10**9
-			),
-		coords = dict(
-			bias = stmdata_object.spymdata.coords['LIA_Current_x'].data,
-			repetitions = np.array(range(stmdata_object.repetitions)),
-			biasscandir = np.array(['left', 'right'], dtype = 'U')
-			),
-		attrs = dict(filename = _get_filename(stmdata_object.filename))
-	)
-
-	xrspec.coords['bias'].attrs['units'] = 'V'
-	xrspec.coords['bias'].attrs['long units'] = 'Volt'
-
-	xrspec.attrs['speccoord_x'] = tempx*10**9
-	xrspec.attrs['speccoord_y'] = tempy*10**9
-	xrspec.attrs['speccoord_x units'] = 'nm'
-	xrspec.attrs['speccoord_y units'] = 'nm'
-
-	xrspec['x'].attrs['units'] = 'nm'
-	xrspec['y'].attrs['units'] = 'nm'
-	xrspec['x'].attrs['long units'] = 'nanometer'
-	xrspec['y'].attrs['long units'] = 'nanometer'
-	xrspec['lia'].attrs['units'] = 'pA'
-	xrspec['lia'].attrs['long units'] = 'picoampere'
-	xrspec['current'].attrs['units'] = 'pA'
-	xrspec['current'].attrs['long units'] = 'picoampere'
-
-	stmdata_object.spectra = xrspec
-	return stmdata_object
 
 def _xr_map_iz(stmdata_object):
-	"""
-	TODO need to change spectrum rearranging for the case where alternate is False
+	"""Create the `spectra` Dataset of an I(z) map (Current channel)."""
+	return _build_map(stmdata_object, _SPECTYPE_CONFIG['iz'])
 
-	Create a DataSet containing the Lock-In (LIA) and Current spectroscopy data
-	Use the absolute values of the tip positions as coordinates
 
-	In spym the spectroscopy data is loaded into an array,
-	which has axis=0 the number of datapoints in the spectra
-	and axis=1 the number of spectra in total.
+def _xr_line_iv(stmdata_object):
+	"""Create the `spectra` Dataset of a dI/dV line spectroscopy."""
+	return _build_line(stmdata_object, _SPECTYPE_CONFIG['iv'])
 
-	When rearranging, the number of repetitions within each tip position is assumed to be 1
-	and alternate scan direction is assumed to be turned on.
-	These options can be changed by the parameters, `repetitions` and `alternate`
-	"""
-
-	# extract the numpy array containing the Current data from the spym object
-	currentarray = stmdata_object.spymdata.Current.data
-
-	# total number of spectra in one postion of the tip
-	numberofspectra = (stmdata_object.alternate + 1)*stmdata_object.repetitions
-	# size of the map in mapsize x mapsize
-	mapsize = int(np.sqrt(currentarray.shape[1] / numberofspectra))
-
-	# reshape Current data
-	temp = np.reshape(currentarray, (currentarray.shape[0], -1, numberofspectra), order='C')
-	# Every other spectrum is a forward and backward scan in bias sweep. Separate the forward and backward scans into differing arrays by slicing.
-	# These are all the forward and backward bias sweep spectra, arranged along axis=1, with axis=2 being the repetitions
-	current_fw = temp[:, :, 0::2]
-	current_bw = temp[:, :, 1::2]
-	# reshape the forward and backward parts into a map
-	currentmap_fw = np.reshape(current_fw, (current_fw.shape[0], mapsize, mapsize, current_fw.shape[2]), order='C')
-	currentmap_bw = np.reshape(current_bw, (current_bw.shape[0], mapsize, mapsize, current_bw.shape[2]), order='C')
-	"""
-	The last axis (in this case with length of 1) contains the repeated scans in one particular pixel.
-	If the `repetitions` variable is set to greater than 1, this will contains the repeated spectra within an `X, Y` pixel.
-	"""
-	currentfw = np.flip(currentmap_fw, axis=(1, 2))
-	currentbw = np.flip(currentmap_bw, axis=(1, 2))
-
-	"""
-	Coordinates of the spectroscopy map
-	"""
-	# 'RHK_SpecDrift_Xcoord' are the coordinates of the spectra.
-	# This contains the coordinates in the order that the spectra are in. 
-	xcoo = np.array(stmdata_object.spymdata.Current.attrs['RHK_SpecDrift_Xcoord'])
-	ycoo = np.array(stmdata_object.spymdata.Current.attrs['RHK_SpecDrift_Ycoord'])
-	# reshaping the spectra positions similarly to the spectra.
-	meshx = np.reshape(xcoo, (mapsize, mapsize, numberofspectra), order='C')[:, :, 0]
-	meshy = np.reshape(ycoo, (mapsize, mapsize, numberofspectra), order='C')[:, :, 0]
-	
-	# make coordinates for the spectra positions
-	# calculate the pixel size, distance between the neighboring spectra
-	pixelsizex = stmdata_object.image.attrs['size_x'] / mapsize
-	pixelsizey = stmdata_object.image.attrs['size_y'] / mapsize
-	# make coordinates for the spectra positions
-	tempx = np.linspace(pixelsizex/2, stmdata_object.image.attrs['size_x'] - pixelsizex/2, num=mapsize) + stmdata_object.image.attrs['xoffset']
-	tempy = np.linspace(pixelsizey/2, stmdata_object.image.attrs['size_y'] - pixelsizey/2, num=mapsize) + stmdata_object.image.attrs['yoffset']
-
-	"""
-	Constructing the xarray DataSet 
-	"""
-	# stacking the forward and backward bias sweeps and using the scandir coordinate
-	# also adding specific attributes
-	xrspec = xr.Dataset(
-		data_vars = dict(
-			current = (['z', 'specpos_x', 'specpos_y', 'repetitions', 'zscandir'], np.stack((currentfw, currentbw), axis=-1)*10**12),
-			x = (['specpos_x', 'specpos_y'], meshx*10**9),
-			y = (['specpos_x', 'specpos_y'], meshy*10**9)
-			),
-		coords = dict(
-			z = stmdata_object.spymdata.coords['Current_x'].data*10**9,
-			specpos_x = tempx,
-			specpos_y = tempy,
-			repetitions = np.array(range(stmdata_object.repetitions)),
-			zscandir = np.array(['up', 'down'], dtype = 'U')
-			),
-		attrs = dict(filename = _get_filename(stmdata_object.filename))
-	)
-
-	xrspec['current'].attrs['units'] = 'pA'
-	xrspec['current'].attrs['long units'] = 'picoampere'
-	xrspec['x'].attrs['units'] = 'nm'
-	xrspec['x'].attrs['long units'] = 'nanometer'
-	xrspec['y'].attrs['units'] = 'nm'
-	xrspec['y'].attrs['long units'] = 'nanometer'
-	xrspec.coords['z'].attrs['units'] = 'nm'
-	xrspec.coords['z'].attrs['long units'] = 'nanometer'
-	xrspec.coords['specpos_x'].attrs['units'] = 'nm'
-	xrspec.coords['specpos_y'].attrs['units'] = 'nm'
-	xrspec.coords['specpos_x'].attrs['long units'] = 'nanometer'
-	xrspec.coords['specpos_y'].attrs['long units'] = 'nanometer'
-
-	stmdata_object.spectra = xrspec
-	return stmdata_object
 
 def _xr_line_iz(stmdata_object):
-	"""
-	Create a DataSet containing the Lock-In (LIA) and Current spectroscopy data
-	Use the absolute values of the tip positions as coordinates
+	"""Create the `spectra` Dataset of an I(z) line spectroscopy."""
+	return _build_line(stmdata_object, _SPECTYPE_CONFIG['iz'])
 
-	In spym the spectroscopy data is loaded into an array,
-	which has axis=0 the number of datapoints in the spectra
-	and axis=1 the number of spectra in total.
 
-	When rearranging, the number of repetitions within each tip position is assumed to be 1
-	and alternate scan direction is assumed to be turned on.
-	These options can be changed by the parameters, `repetitions` and `alternate`
-	"""
+def _xr_spec_iv(stmdata_object):
+	"""Create the `spectra` Dataset of a single-point dI/dV spectrum."""
+	return _build_spec(stmdata_object, _SPECTYPE_CONFIG['iv'])
 
-	# extract the numpy array containing the Current data from the spym object
-	currentarray = stmdata_object.spymdata.Current.data
-
-	# total number of spectra in one postion of the tip
-	numberofspectra = int((stmdata_object.alternate + 1)*stmdata_object.repetitions)
-	# size of the line, the number of the different physical positions of the tip
-	linesize = int(currentarray.shape[1] / numberofspectra)
-
-	# reshape Current data
-	tempcurr = np.reshape(currentarray, (currentarray.shape[0], -1, numberofspectra), order='C')
-	currentfw = tempcurr[:, :, 0::2]
-	currentbw = tempcurr[:, :, 1::2]
-
-	"""
-	Coordinates of the spectroscopy map
-	"""
-	# 'RHK_SpecDrift_Xcoord' are the coordinates of the spectra.
-	# This contains the coordinates in the order that the spectra are in. 
-	xcoo = np.array(stmdata_object.spymdata.Current.attrs['RHK_SpecDrift_Xcoord'])
-	ycoo = np.array(stmdata_object.spymdata.Current.attrs['RHK_SpecDrift_Ycoord'])
-	# reshaping the coordinates similarly to the spectra. Need only every nth coordinate, where n is the number of spectra in a position
-	tempx = xcoo[0::numberofspectra]
-	tempy = ycoo[0::numberofspectra]
-	linelength = np.sqrt((tempx[-1] - tempx[0])**2 + (tempy[-1] - tempy[0])**2)
-	# distance coordinates along the line in [nm]
-	linecoord = np.linspace(0, linelength, num=tempx.shape[0])*10**9
-
-	"""
-	Constructing the xarray Dataset 
-	"""
-	# stacking the forward and backward bias sweeps and using the scandir coordinate
-	# also adding specific attributes
-	xrspec = xr.Dataset(
-		data_vars = dict(
-			current = (['z', 'dist', 'repetitions', 'zscandir'], np.stack((currentfw, currentbw), axis=-1)*10**12),
-			x = (['dist'], tempx*10**9),
-			y = (['dist'], tempy*10**9)
-			),
-		coords = dict(
-			z = stmdata_object.spymdata.coords['Current_x'].data*10**9,
-			dist = linecoord,
-			repetitions = np.array(range(stmdata_object.repetitions)),
-			zscandir = np.array(['up', 'down'], dtype = 'U')
-			),
-		attrs = dict(filename = _get_filename(stmdata_object.filename))
-	)
-
-	xrspec.coords['dist'].attrs['units'] = 'nm'
-	xrspec.coords['dist'].attrs['long units'] = 'nanometer'
-	xrspec.coords['z'].attrs['units'] = 'nm'
-	xrspec.coords['z'].attrs['long units'] = 'nanometer'
-
-	xrspec['x'].attrs['units'] = 'nm'
-	xrspec['y'].attrs['units'] = 'nm'
-	xrspec['x'].attrs['long units'] = 'nanometer'
-	xrspec['y'].attrs['long units'] = 'nanometer'
-	xrspec['current'].attrs['units'] = 'pA'
-	xrspec['current'].attrs['long units'] = 'picoampere'
-
-	stmdata_object.spectra = xrspec
-	return stmdata_object
 
 def _xr_spec_iz(stmdata_object):
-	"""
-	Create a DataSet containing the Lock-In (LIA) and Current spectroscopy data
-	Use the absolute values of the tip positions are in the attributes
-	"""
-
-	# extract the numpy array containing the Current data from the spym object
-	currentarray = stmdata_object.spymdata.Current.data
-
-	# reshape Current data
-	currentfw = currentarray[:, 0::2]
-	currentbw = currentarray[:, 1::2]
-
-	"""
-	Coordinates of the spectroscopy map
-	"""
-	# 'RHK_SpecDrift_Xcoord' are the coordinates of the spectra.
-	# This contains the coordinates in the order that the spectra are in. 
-	# Here we only need the first x and y components
-	xcoo = np.array(stmdata_object.spymdata.Current.attrs['RHK_SpecDrift_Xcoord'])
-	ycoo = np.array(stmdata_object.spymdata.Current.attrs['RHK_SpecDrift_Ycoord'])
-	# reshaping the coordinates similarly to the spectra.
-	tempx = xcoo[0]
-	tempy = ycoo[0]
-
-	"""
-	Constructing the xarray Dataset 
-	"""
-	# stacking the forward and backward bias sweeps and using the scandir coordinate
-	# also adding specific attributes
-	xrspec = xr.Dataset(
-		data_vars = dict(
-			current = (['z', 'repetitions', 'zscandir'], np.stack((currentfw, currentbw), axis=-1)*10**12),
-			x = tempx*10**9,
-			y = tempy*10**9
-			),
-		coords = dict(
-			z = stmdata_object.spymdata.coords['Current_x'].data*10**9,
-			repetitions = np.array(range(stmdata_object.repetitions)),
-			zscandir = np.array(['up', 'down'], dtype = 'U')
-			),
-		attrs = dict(filename = _get_filename(stmdata_object.filename))
-	)
-
-	xrspec['x'].attrs['units'] = 'nm'
-	xrspec['y'].attrs['units'] = 'nm'
-	xrspec['x'].attrs['long units'] = 'nanometer'
-	xrspec['y'].attrs['long units'] = 'nanometer'
-	xrspec.attrs['speccoord_x'] = tempx*10**9
-	xrspec.attrs['speccoord_y'] = tempy*10**9
-	xrspec.attrs['speccoord_x units'] = 'nm'
-	xrspec.attrs['speccoord_y units'] = 'nm'
-	xrspec.coords['z'].attrs['units'] = 'nm'
-	xrspec.coords['z'].attrs['long units'] = 'nanometer'
-	xrspec['current'].attrs['units'] = 'pA'
-	xrspec['current'].attrs['long units'] = 'picoampere'
-
-	stmdata_object.spectra = xrspec
-	return stmdata_object
+	"""Create the `spectra` Dataset of a single-point I(z) spectrum."""
+	return _build_spec(stmdata_object, _SPECTYPE_CONFIG['iz'])
