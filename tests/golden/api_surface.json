@@ -3,9 +3,17 @@
   "kind": "function",
   "signature": "(image, baseline='mean', axis=1, poly_degree=2)"
  },
+ "analysis": {
+  "kind": "module",
+  "name": "rhkpy.analysis"
+ },
  "bgsubtract": {
   "kind": "function",
   "signature": "(x_data, y_data, polyorder=1, toplot=False, fitmask=None, hmin=0.5, hmax=10000, wmin=1.5, wmax=20, prom=2, exclusion_factor=3, peak_pos=None)"
+ },
+ "builders": {
+  "kind": "module",
+  "name": "rhkpy.builders"
  },
  "coord_to_absolute": {
   "kind": "function",
@@ -14,6 +22,10 @@
  "copy": {
   "kind": "module",
   "name": "copy"
+ },
+ "core": {
+  "kind": "module",
+  "name": "rhkpy.core"
  },
  "curve_fit": {
   "kind": "function",
@@ -78,6 +90,10 @@
   "kind": "module",
   "name": "hvplot"
  },
+ "io": {
+  "kind": "module",
+  "name": "rhkpy.io"
+ },
  "load": {
   "kind": "function",
   "signature": "(filename, scaling=True)"
@@ -139,6 +155,10 @@
  "plane": {
   "kind": "function",
   "signature": "(image)"
+ },
+ "plotting": {
+  "kind": "module",
+  "name": "rhkpy.plotting"
  },
  "pn": {
   "kind": "module",

@@ -1,0 +1,71 @@
+"""Detection of datatype/spectype and small filename/geometry helpers.
+
+Moved verbatim from rhkpy_loader.py (refactor phase 2).
+"""
+
+import re
+
+import numpy as np
+
+
+def _checkrepetitions(stmdata_object):
+	# make an array of x and y coordinates
+	coordlist = np.column_stack((
+		np.array(stmdata_object.spymdata.Current.attrs['RHK_SpecDrift_Xcoord']),
+		np.array(stmdata_object.spymdata.Current.attrs['RHK_SpecDrift_Ycoord'])
+	))
+	# get the number of unique pairs
+	_, counts = np.unique(coordlist, axis=0, return_counts=True)
+	reps = counts.max()
+	reps = int(reps / (stmdata_object.alternate + 1))
+	return reps
+
+def _checkdatatype(stmdata_object):
+	# check if the list of keys in the spym data contain 'Current'
+	# If yes, it is not a pure topo image
+	l = list(stmdata_object.spymdata.keys())
+	if 'Current' in l:
+		# it's a single spec, line spec or map
+		if stmdata_object.spymdata['Current'].attrs['RHK_PageType'] == 38:
+			stmdata_object.datatype = 'spec'
+			# determine if it's Iz or dI/dV
+			if stmdata_object.spymdata['Current'].attrs['RHK_LineType'] == 7:
+				stmdata_object.spectype = 'iv'
+			elif stmdata_object.spymdata['Current'].attrs['RHK_LineType'] == 8:
+				stmdata_object.spectype = 'iz'
+		elif stmdata_object.spymdata['Current'].attrs['RHK_PageType'] == 16:
+			# this can be either a line spectrum or a map
+			# decide based on the aspect ratio of the spectroscopy tip positions
+			xcoo = np.array(stmdata_object.spymdata['Current'].attrs['RHK_SpecDrift_Xcoord'])
+			ycoo = np.array(stmdata_object.spymdata['Current'].attrs['RHK_SpecDrift_Ycoord'])
+			if _aspect_ratio(xcoo, ycoo) > 10:
+				stmdata_object.datatype = 'line'
+			else:
+				stmdata_object.datatype = 'map'
+			# determine if it's Iz or dI/dV
+			if stmdata_object.spymdata['Current'].attrs['RHK_LineType'] == 7:
+				stmdata_object.spectype = 'iv'
+			elif stmdata_object.spymdata['Current'].attrs['RHK_LineType'] == 8:
+				stmdata_object.spectype = 'iz'
+	else:
+		stmdata_object.datatype = 'image'
+		stmdata_object.spectype = None
+	
+	return stmdata_object.datatype, stmdata_object.spectype
+
+def _aspect_ratio(x, y):
+    xy = np.stack((x, y), axis=0)
+    eigvals, eigvecs = np.linalg.eig(np.cov(xy))
+    center = xy.mean(axis=-1)
+    for val, vec in zip(eigvals, eigvecs.T):
+        val *= 2
+        xcov,ycov = np.vstack((center + val * vec, center, center - val * vec)).T
+    aspect = max(eigvals) / min(eigvals)
+    return aspect
+
+def _get_filename(s):
+	# If the string ends with a slash or backslash, remove it first
+    s = s.rstrip("/\\")
+    # Then, match any character other than backslash or slash until the end of the string
+    match = re.search(r'[^/\\]+$', s)
+    return match.group(0) if match else None
