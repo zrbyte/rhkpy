@@ -8,7 +8,7 @@ rhkpy <= 1.3 (verified by the golden-master characterization tests).
 """
 
 
-def _add_spectra_metadata(stmdata_object, scan_angle = True, bias_coord_units = False):
+def _add_spectra_metadata(stmdata_object, scan_angle: bool = True, bias_coord_units: bool = False):
 	"""Attach measurement metadata to the `spectra` Dataset.
 
 	:param scan_angle: include the 'scan angle' attribute (available when the

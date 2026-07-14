@@ -22,7 +22,7 @@ import panel as pn
 
 ## shared plot building blocks ----------------------------------------
 
-def _fwbw_lineplot(da, x, scandir_dim, labels):
+def _fwbw_lineplot(da, x: str, scandir_dim: str, labels: tuple[str, str]):
 	"""Overlay the forward/backward sweeps of a 1D signal.
 
 	With a single repetition, plots the two sweeps in red/blue with legend
@@ -52,7 +52,7 @@ def _fwbw_lineplot(da, x, scandir_dim, labels):
 	return plot_fw * plot_bw
 
 
-def _mean_signal_image(rhkdata_obj, signal, scandir_dim, cmap_spec, **imageopts):
+def _mean_signal_image(rhkdata_obj, signal: str, scandir_dim: str, cmap_spec: str, **imageopts):
 	"""2D density plot of a signal averaged over repetitions and sweep direction."""
 	meanmap = rhkdata_obj.spectra.mean(dim = ['repetitions', scandir_dim])
 	return meanmap[signal].hvplot.image(cmap = cmap_spec, **imageopts)

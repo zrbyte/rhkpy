@@ -55,14 +55,14 @@ _SPECTYPE_CONFIG = {
 
 ## helpers ------------------------------------------------------------
 
-def _page(stmdata_object, page_name):
+def _page(stmdata_object, page_name: str) -> xr.DataArray:
 	# attribute access (not item access), so that a missing channel raises the
 	# same AttributeError as the historical code, e.g.
 	# "'Dataset' object has no attribute 'LIA_Current'"
 	return getattr(stmdata_object.spymdata, page_name)
 
 
-def _split_scandir(array, numberofspectra):
+def _split_scandir(array: np.ndarray, numberofspectra: int) -> tuple[np.ndarray, np.ndarray]:
 	"""Collect all spectra measured at the same tip position into the last axis
 	and separate the alternating forward/backward sweeps by slicing.
 
@@ -72,7 +72,7 @@ def _split_scandir(array, numberofspectra):
 	return temp[:, :, 0::2], temp[:, :, 1::2]
 
 
-def _spec_positions(stmdata_object, page_name):
+def _spec_positions(stmdata_object, page_name: str) -> tuple[np.ndarray, np.ndarray]:
 	"""Tip positions of the spectra, in the order the spectra were measured."""
 	attrs = _page(stmdata_object, page_name).attrs
 	xcoo = np.array(attrs['RHK_SpecDrift_Xcoord'])
