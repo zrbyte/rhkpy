@@ -34,10 +34,10 @@ Documentation = "https://rhkpy.readthedocs.io"
 [project.optional-dependencies]
 test = ["pytest"]
 
-# NOTE: the vendored spym package is still shipped for now; it becomes a
-# testing-only legacy loader once the sm4 reader is reimplemented in rhkpy.io.
+# The vendored spym copy in the repository is a testing-only legacy loader
+# (cross-validation of rhkpy.io.sm4); it is deliberately NOT packaged.
 [tool.setuptools.packages.find]
-include = ["rhkpy*", "spym*"]
+include = ["rhkpy*"]
 
 [tool.setuptools.dynamic]
 version = { attr = "rhkpy.version.__version__" }

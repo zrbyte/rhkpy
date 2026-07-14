@@ -18,13 +18,12 @@ import matplotlib.pyplot as pl
 import numpy as np
 import xarray as xr
 import re, copy
-# import load from spym
-from spym.io import load
-## Using the old loader
-from spym.io import rhksm4
+# the sm4 loader (ported from spym, which used to provide these names)
+from .io.sm4 import load_dataset as load
+from .io import sm4 as rhksm4
 ## flatten and plane fitting
-from spym.process.level import align
-from spym.process.level import plane
+from .analysis.level import align
+from .analysis.level import plane
 
 # for fancy plotting
 import hvplot.xarray

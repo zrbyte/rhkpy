@@ -198,7 +198,7 @@
  },
  "rhksm4": {
   "kind": "module",
-  "name": "spym.io.rhksm4"
+  "name": "rhkpy.io.sm4"
  },
  "version": {
   "kind": "module",
