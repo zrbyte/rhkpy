@@ -1,0 +1,195 @@
+{
+ "align": {
+  "kind": "function",
+  "signature": "(image, baseline='mean', axis=1, poly_degree=2)"
+ },
+ "bgsubtract": {
+  "kind": "function",
+  "signature": "(x_data, y_data, polyorder=1, toplot=False, fitmask=None, hmin=0.5, hmax=10000, wmin=1.5, wmax=20, prom=2, exclusion_factor=3, peak_pos=None)"
+ },
+ "coord_to_absolute": {
+  "kind": "function",
+  "signature": "(xrobj)"
+ },
+ "copy": {
+  "kind": "module",
+  "name": "copy"
+ },
+ "curve_fit": {
+  "kind": "function",
+  "signature": "(f, xdata, ydata, p0=None, sigma=None, absolute_sigma=False, check_finite=None, bounds=(-inf, inf), method=None, jac=None, *, full_output=False, nan_policy=None, **kwargs)"
+ },
+ "dim": {
+  "kind": "class",
+  "methods": {
+   "__init__": "(self, obj, *args, **kwargs)",
+   "all": "(self, *args, **kwargs)",
+   "any": "(self, *args, **kwargs)",
+   "applies": "(self, dataset, strict=False)",
+   "apply": "(self, dataset, flat=False, expanded=None, ranges=None, all_values=False, keep_index=False, compute=True, strict=False)",
+   "astype": "(self, dtype)",
+   "bin": "(self, bins, labels=None)",
+   "categorize": "(self, categories, default=None)",
+   "clip": "(self, min=None, max=None)",
+   "clone": "(self, dimension=None, ops=None, dim_type=None)",
+   "cumprod": "(self, *args, **kwargs)",
+   "cumsum": "(self, *args, **kwargs)",
+   "digitize": "(self, *args, **kwargs)",
+   "interface_applies": "(self, dataset, coerce)",
+   "isin": "(self, *args, **kwargs)",
+   "log": "(self, *args, **kwargs)",
+   "log10": "(self, *args, **kwargs)",
+   "lognorm": "(self, limits=None)",
+   "max": "(self, *args, **kwargs)",
+   "mean": "(self, *args, **kwargs)",
+   "min": "(self, *args, **kwargs)",
+   "norm": "(self, limits=None)",
+   "round": "(self, decimals=0)",
+   "std": "(self, *args, **kwargs)",
+   "sum": "(self, *args, **kwargs)",
+   "var": "(self, *args, **kwargs)"
+  }
+ },
+ "find_peaks": {
+  "kind": "function",
+  "signature": "(x, height=None, threshold=None, distance=None, prominence=None, width=None, wlen=None, rel_height=0.5, plateau_size=None)"
+ },
+ "gaussian": {
+  "kind": "function",
+  "signature": "(x, x0=0, ampl=2, width=0.05, offset=0)"
+ },
+ "gaussian2": {
+  "kind": "function",
+  "signature": "(x, x01=-5, ampl1=1, width1=0.05, x02=5, ampl2=1, width2=0.05, offset=0)"
+ },
+ "genthumbs": {
+  "kind": "function",
+  "signature": "(folderpath='./', **kwargs)"
+ },
+ "glob": {
+  "kind": "module",
+  "name": "glob"
+ },
+ "hv": {
+  "kind": "module",
+  "name": "holoviews"
+ },
+ "hvplot": {
+  "kind": "module",
+  "name": "hvplot"
+ },
+ "load": {
+  "kind": "function",
+  "signature": "(filename, scaling=True)"
+ },
+ "load_rhksm4": {
+  "kind": "function",
+  "signature": "(filename)"
+ },
+ "load_spym": {
+  "kind": "function",
+  "signature": "(filename)"
+ },
+ "logconfig": {
+  "kind": "module",
+  "name": "bokeh.util.logconfig"
+ },
+ "logging": {
+  "kind": "module",
+  "name": "logging"
+ },
+ "lorentz": {
+  "kind": "function",
+  "signature": "(x, x0=0, ampl=2, width=0.05, offset=0)"
+ },
+ "mapsection": {
+  "kind": "function",
+  "signature": "(specmap, start_point, end_point)"
+ },
+ "navigation": {
+  "kind": "function",
+  "signature": "(*args, **kwargs)"
+ },
+ "ndimage": {
+  "kind": "module",
+  "name": "scipy.ndimage"
+ },
+ "np": {
+  "kind": "module",
+  "name": "numpy"
+ },
+ "opts": {
+  "kind": "class",
+  "methods": {
+   "__init__": "(*args, active_tools, aggregator, align, alpha, angle, annular_alpha, annular_color, annular_fill_alpha, annular_fill_color, annular_hover_alpha, annular_hover_color, annular_hover_fill_alpha, annular_hover_fill_color, annular_hover_line_alpha, annular_hover_line_cap, annular_hover_line_color, annular_hover_line_dash, annular_hover_line_dash_offset, annular_hover_line_join, annular_hover_line_width, annular_line_alpha, annular_line_cap, annular_line_color, annular_line_dash, annular_line_dash_offset, annular_line_join, annular_line_width, annular_muted, annular_muted_alpha, annular_muted_color, annular_muted_fill_alpha, annular_muted_fill_color, annular_muted_line_alpha, annular_muted_line_cap, annular_muted_line_color, annular_muted_line_dash, annular_muted_line_dash_offset, annular_muted_line_join, annular_muted_line_width, annular_nonselection_alpha, annular_nonselection_color, annular_nonselection_fill_alpha, annular_nonselection_fill_color, annular_nonselection_line_alpha, annular_nonselection_line_cap, annular_nonselection_line_color, annular_nonselection_line_dash, annular_nonselection_line_dash_offset, annular_nonselection_line_join, annular_nonselection_line_width, annular_selection_alpha, annular_selection_color, annular_selection_fill_alpha, annular_selection_fill_color, annular_selection_line_alpha, annular_selection_line_cap, annular_selection_line_color, annular_selection_line_dash, annular_selection_line_dash_offset, annular_selection_line_join, annular_selection_line_width, annular_visible, apply_extents, apply_hard_bounds, apply_ranges, arrow_alpha, arrow_color, arrow_fill_alpha, arrow_fill_color, arrow_heads, arrow_hover_alpha, arrow_hover_color, arrow_hover_fill_alpha, arrow_hover_fill_color, arrow_hover_line_alpha, arrow_hover_line_cap, arrow_hover_line_color, arrow_hover_line_dash, arrow_hover_line_dash_offset, arrow_hover_line_join, arrow_hover_line_width, arrow_line_alpha, arrow_line_cap, arrow_line_color, arrow_line_dash, arrow_line_dash_offset, arrow_line_join, arrow_line_width, arrow_muted_alpha, arrow_muted_color, arrow_muted_fill_alpha, arrow_muted_fill_color, arrow_muted_line_alpha, arrow_muted_line_cap, arrow_muted_line_color, arrow_muted_line_dash, arrow_muted_line_dash_offset, arrow_muted_line_join, arrow_muted_line_width, arrow_nonselection_alpha, arrow_nonselection_color, arrow_nonselection_fill_alpha, arrow_nonselection_fill_color, arrow_nonselection_line_alpha, arrow_nonselection_line_cap, arrow_nonselection_line_color, arrow_nonselection_line_dash, arrow_nonselection_line_dash_offset, arrow_nonselection_line_join, arrow_nonselection_line_width, arrow_selection_alpha, arrow_selection_color, arrow_selection_fill_alpha, arrow_selection_fill_color, arrow_selection_line_alpha, arrow_selection_line_cap, arrow_selection_line_color, arrow_selection_line_dash, arrow_selection_line_dash_offset, arrow_selection_line_join, arrow_selection_line_width, arrow_size, arrowhead_length, aspect, autohide_toolbar, autorange, axis_offset, axiswise, backend, backend_opts, background_fill_alpha, background_fill_color, background_hatch_alpha, background_hatch_color, background_hatch_extra, background_hatch_pattern, background_hatch_scale, background_hatch_weight, bandwidth, bar_width, batched, bgcolor, border, border_alpha, border_color, border_hover_alpha, border_hover_color, border_hover_line_alpha, border_hover_line_cap, border_hover_line_color, border_hover_line_dash, border_hover_line_dash_offset, border_hover_line_join, border_hover_line_width, border_line_alpha, border_line_cap, border_line_color, border_line_dash, border_line_dash_offset, border_line_join, border_line_width, border_muted_alpha, border_muted_color, border_muted_line_alpha, border_muted_line_cap, border_muted_line_color, border_muted_line_dash, border_muted_line_dash_offset, border_muted_line_join, border_muted_line_width, border_nonselection_alpha, border_nonselection_color, border_nonselection_line_alpha, border_nonselection_line_cap, border_nonselection_line_color, border_nonselection_line_dash, border_nonselection_line_dash_offset, border_nonselection_line_join, border_nonselection_line_width, border_radius, border_selection_alpha, border_selection_color, border_selection_line_alpha, border_selection_line_cap, border_selection_line_color, border_selection_line_dash, border_selection_line_dash_offset, border_selection_line_join, border_selection_line_width, box_alpha, box_cmap, box_color, box_fill_alpha, box_fill_color, box_hover_alpha, box_hover_color, box_hover_fill_alpha, box_hover_fill_color, box_hover_line_alpha, box_hover_line_cap, box_hover_line_color, box_hover_line_dash, box_hover_line_dash_offset, box_hover_line_join, box_hover_line_width, box_line_alpha, box_line_cap, box_line_color, box_line_dash, box_line_dash_offset, box_line_join, box_line_width, box_muted, box_muted_alpha, box_muted_color, box_muted_fill_alpha, box_muted_fill_color, box_muted_line_alpha, box_muted_line_cap, box_muted_line_color, box_muted_line_dash, box_muted_line_dash_offset, box_muted_line_join, box_muted_line_width, box_nonselection_alpha, box_nonselection_color, box_nonselection_fill_alpha, box_nonselection_fill_color, box_nonselection_line_alpha, box_nonselection_line_cap, box_nonselection_line_color, box_nonselection_line_dash, box_nonselection_line_dash_offset, box_nonselection_line_join, box_nonselection_line_width, box_selection_alpha, box_selection_color, box_selection_fill_alpha, box_selection_fill_color, box_selection_line_alpha, box_selection_line_cap, box_selection_line_color, box_selection_line_dash, box_selection_line_dash_offset, box_selection_line_join, box_selection_line_width, box_visible, box_width, cformatter, clabel, click_policy, clim, clim_percentile, clip, clipping_colors, cmap, cnorm, color, color_levels, colorbar, colorbar_opts, colorbar_position, cticks, cut, data_aspect, default_span, default_tools, dilate, directed, edge_alpha, edge_cmap, edge_color, edge_color_index, edge_fill_alpha, edge_fill_color, edge_hover_alpha, edge_hover_color, edge_hover_fill_alpha, edge_hover_fill_color, edge_hover_line_alpha, edge_hover_line_cap, edge_hover_line_color, edge_hover_line_dash, edge_hover_line_dash_offset, edge_hover_line_join, edge_hover_line_width, edge_line_alpha, edge_line_cap, edge_line_color, edge_line_dash, edge_line_dash_offset, edge_line_join, edge_line_width, edge_muted, edge_muted_alpha, edge_muted_color, edge_muted_fill_alpha, edge_muted_fill_color, edge_muted_line_alpha, edge_muted_line_cap, edge_muted_line_color, edge_muted_line_dash, edge_muted_line_dash_offset, edge_muted_line_join, edge_muted_line_width, edge_nonselection_alpha, edge_nonselection_color, edge_nonselection_fill_alpha, edge_nonselection_fill_color, edge_nonselection_line_alpha, edge_nonselection_line_cap, edge_nonselection_line_color, edge_nonselection_line_dash, edge_nonselection_line_dash_offset, edge_nonselection_line_join, edge_nonselection_line_width, edge_selection_alpha, edge_selection_color, edge_selection_fill_alpha, edge_selection_fill_color, edge_selection_line_alpha, edge_selection_line_cap, edge_selection_line_color, edge_selection_line_dash, edge_selection_line_dash_offset, edge_selection_line_join, edge_selection_line_width, edge_visible, editable, end_alpha, fill_alpha, fill_color, filled, fit_columns, fontscale, fontsize, frame_height, frame_width, framewise, glyph_height, glyph_width, gridsize, gridstyle, height, hit_dilation, hooks, hover_alpha, hover_color, hover_fill_alpha, hover_fill_color, hover_formatters, hover_line_alpha, hover_line_cap, hover_line_color, hover_line_dash, hover_line_dash_offset, hover_line_join, hover_line_width, hover_mode, hover_tooltips, index_position, inner, inspection_policy, interpolation, invert_axes, invert_xaxis, invert_yaxis, iterations, jitter, label_height, label_index, label_muted, label_position, label_standoff, label_text_align, label_text_alpha, label_text_baseline, label_text_color, label_text_font, label_text_font_size, label_text_font_style, label_visible, label_width, labelled, labels, legend_cols, legend_labels, legend_limit, legend_muted, legend_offset, legend_opts, legend_padding, legend_position, legend_spacing, level, levels, line_alpha, line_cap, line_color, line_dash, line_dash_offset, line_join, line_width, lod, logx, logy, logz, lower_head, magnitude, margin, marker, max_height, max_radius, max_scale, max_width, max_zoom, median_alpha, median_color, merge_tools, min_count, min_height, min_scale, min_width, min_zoom, multi_level, multi_y, multiple_legends, muted, muted_alpha, muted_color, muted_fill_alpha, muted_fill_color, muted_line_alpha, muted_line_cap, muted_line_color, muted_line_dash, muted_line_dash_offset, muted_line_join, muted_line_width, nodata, node_alpha, node_cmap, node_color, node_fill_alpha, node_fill_color, node_hover_alpha, node_hover_color, node_hover_fill_alpha, node_hover_fill_color, node_hover_line_alpha, node_hover_line_cap, node_hover_line_color, node_hover_line_dash, node_hover_line_dash_offset, node_hover_line_join, node_hover_line_width, node_line_alpha, node_line_cap, node_line_color, node_line_dash, node_line_dash_offset, node_line_join, node_line_width, node_marker, node_muted, node_muted_alpha, node_muted_color, node_muted_fill_alpha, node_muted_fill_color, node_muted_line_alpha, node_muted_line_cap, node_muted_line_color, node_muted_line_dash, node_muted_line_dash_offset, node_muted_line_join, node_muted_line_width, node_nonselection_alpha, node_nonselection_color, node_nonselection_fill_alpha, node_nonselection_fill_color, node_nonselection_line_alpha, node_nonselection_line_cap, node_nonselection_line_color, node_nonselection_line_dash, node_nonselection_line_dash_offset, node_nonselection_line_join, node_nonselection_line_width, node_padding, node_radius, node_selection_alpha, node_selection_color, node_selection_fill_alpha, node_selection_fill_color, node_selection_line_alpha, node_selection_line_cap, node_selection_line_color, node_selection_line_dash, node_selection_line_dash_offset, node_selection_line_join, node_selection_line_width, node_size, node_sort, node_visible, node_width, nodes_line_color, nonselection_alpha, nonselection_color, nonselection_fill_alpha, nonselection_fill_color, nonselection_line_alpha, nonselection_line_cap, nonselection_line_color, nonselection_line_dash, nonselection_line_dash_offset, nonselection_line_join, nonselection_line_width, normalize, num_colors, orientation, outlier_alpha, outlier_color, outlier_fill_alpha, outlier_fill_color, outlier_hover_alpha, outlier_hover_color, outlier_hover_fill_alpha, outlier_hover_fill_color, outlier_hover_line_alpha, outlier_hover_line_cap, outlier_hover_line_color, outlier_hover_line_dash, outlier_hover_line_dash_offset, outlier_hover_line_join, outlier_hover_line_width, outlier_line_alpha, outlier_line_cap, outlier_line_color, outlier_line_dash, outlier_line_dash_offset, outlier_line_join, outlier_line_width, outlier_muted_alpha, outlier_muted_color, outlier_muted_fill_alpha, outlier_muted_fill_color, outlier_muted_line_alpha, outlier_muted_line_cap, outlier_muted_line_color, outlier_muted_line_dash, outlier_muted_line_dash_offset, outlier_muted_line_join, outlier_muted_line_width, outlier_nonselection_alpha, outlier_nonselection_color, outlier_nonselection_fill_alpha, outlier_nonselection_fill_color, outlier_nonselection_line_alpha, outlier_nonselection_line_cap, outlier_nonselection_line_color, outlier_nonselection_line_dash, outlier_nonselection_line_dash_offset, outlier_nonselection_line_join, outlier_nonselection_line_width, outlier_radius, outlier_selection_alpha, outlier_selection_color, outlier_selection_fill_alpha, outlier_selection_fill_color, outlier_selection_line_alpha, outlier_selection_line_cap, outlier_selection_line_color, outlier_selection_line_dash, outlier_selection_line_dash_offset, outlier_selection_line_join, outlier_selection_line_width, outline_alpha, outline_color, outline_hover_alpha, outline_hover_color, outline_hover_line_alpha, outline_hover_line_cap, outline_hover_line_color, outline_hover_line_dash, outline_hover_line_dash_offset, outline_hover_line_join, outline_hover_line_width, outline_line_alpha, outline_line_cap, outline_line_color, outline_line_dash, outline_line_dash_offset, outline_line_join, outline_line_width, outline_muted, outline_muted_alpha, outline_muted_color, outline_muted_line_alpha, outline_muted_line_cap, outline_muted_line_color, outline_muted_line_dash, outline_muted_line_dash_offset, outline_muted_line_join, outline_muted_line_width, outline_nonselection_alpha, outline_nonselection_color, outline_nonselection_line_alpha, outline_nonselection_line_cap, outline_nonselection_line_color, outline_nonselection_line_dash, outline_nonselection_line_dash_offset, outline_nonselection_line_join, outline_nonselection_line_width, outline_selection_alpha, outline_selection_color, outline_selection_line_alpha, outline_selection_line_cap, outline_selection_line_color, outline_selection_line_dash, outline_selection_line_dash_offset, outline_selection_line_join, outline_selection_line_width, outline_visible, padding, palette, pivot, plot_size, position, projection, radial, radius, radius_dimension, radius_inner, radius_outer, render_parents, rescale_discrete_levels, rescale_lengths, responsive, row_headers, scale, scalebar, scalebar_label, scalebar_location, scalebar_opts, scalebar_range, scalebar_tool, scalebar_unit, scroll_to_selection, selectable, selected, selection_alpha, selection_color, selection_fill_alpha, selection_fill_color, selection_line_alpha, selection_line_cap, selection_line_color, selection_line_dash, selection_line_dash_offset, selection_line_join, selection_line_width, selection_policy, selector_in_hovertool, shared_axes, shared_datasource, shared_xaxis, shared_yaxis, show_frame, show_grid, show_legend, show_legends, show_title, show_values, size, sizing_mode, smoothing, sortable, spike_length, split, stacked, start_alpha, start_angle, stats_alpha, stats_color, stats_hover_alpha, stats_hover_color, stats_hover_line_alpha, stats_hover_line_cap, stats_hover_line_color, stats_hover_line_dash, stats_hover_line_dash_offset, stats_hover_line_join, stats_hover_line_width, stats_line_alpha, stats_line_cap, stats_line_color, stats_line_dash, stats_line_dash_offset, stats_line_join, stats_line_width, stats_muted, stats_muted_alpha, stats_muted_color, stats_muted_line_alpha, stats_muted_line_cap, stats_muted_line_color, stats_muted_line_dash, stats_muted_line_dash_offset, stats_muted_line_join, stats_muted_line_width, stats_nonselection_alpha, stats_nonselection_color, stats_nonselection_line_alpha, stats_nonselection_line_cap, stats_nonselection_line_color, stats_nonselection_line_dash, stats_nonselection_line_dash_offset, stats_nonselection_line_join, stats_nonselection_line_width, stats_selection_alpha, stats_selection_color, stats_selection_line_alpha, stats_selection_line_cap, stats_selection_line_color, stats_selection_line_dash, stats_selection_line_dash_offset, stats_selection_line_join, stats_selection_line_width, stats_visible, style_grouping, subcoordinate_scale, subcoordinate_y, symmetric, sync_legends, tabs, text_align, text_alpha, text_baseline, text_color, text_font, text_font_size, text_font_style, ticks_text_align, ticks_text_alpha, ticks_text_baseline, ticks_text_color, ticks_text_font, ticks_text_font_size, ticks_text_font_style, title, toolbar, tools, transpose, upper_head, violin_alpha, violin_cmap, violin_color, violin_fill_alpha, violin_fill_color, violin_hover_alpha, violin_hover_color, violin_hover_fill_alpha, violin_hover_fill_color, violin_hover_line_alpha, violin_hover_line_cap, violin_hover_line_color, violin_hover_line_dash, violin_hover_line_dash_offset, violin_hover_line_join, violin_hover_line_width, violin_line_alpha, violin_line_cap, violin_line_color, violin_line_dash, violin_line_dash_offset, violin_line_join, violin_line_width, violin_muted, violin_muted_alpha, violin_muted_color, violin_muted_fill_alpha, violin_muted_fill_color, violin_muted_line_alpha, violin_muted_line_cap, violin_muted_line_color, violin_muted_line_dash, violin_muted_line_dash_offset, violin_muted_line_join, violin_muted_line_width, violin_nonselection_alpha, violin_nonselection_color, violin_nonselection_fill_alpha, violin_nonselection_fill_color, violin_nonselection_line_alpha, violin_nonselection_line_cap, violin_nonselection_line_color, violin_nonselection_line_dash, violin_nonselection_line_dash_offset, violin_nonselection_line_join, violin_nonselection_line_width, violin_selection_alpha, violin_selection_color, violin_selection_fill_alpha, violin_selection_fill_color, violin_selection_line_alpha, violin_selection_line_cap, violin_selection_line_color, violin_selection_line_dash, violin_selection_line_dash_offset, violin_selection_line_join, violin_selection_line_width, violin_visible, violin_width, visible, whisker_alpha, whisker_color, whisker_hover_alpha, whisker_hover_color, whisker_hover_line_alpha, whisker_hover_line_cap, whisker_hover_line_color, whisker_hover_line_dash, whisker_hover_line_dash_offset, whisker_hover_line_join, whisker_hover_line_width, whisker_line_alpha, whisker_line_cap, whisker_line_color, whisker_line_dash, whisker_line_dash_offset, whisker_line_join, whisker_line_width, whisker_muted, whisker_muted_alpha, whisker_muted_color, whisker_muted_line_alpha, whisker_muted_line_cap, whisker_muted_line_color, whisker_muted_line_dash, whisker_muted_line_dash_offset, whisker_muted_line_join, whisker_muted_line_width, whisker_nonselection_alpha, whisker_nonselection_color, whisker_nonselection_line_alpha, whisker_nonselection_line_cap, whisker_nonselection_line_color, whisker_nonselection_line_dash, whisker_nonselection_line_dash_offset, whisker_nonselection_line_join, whisker_nonselection_line_width, whisker_selection_alpha, whisker_selection_color, whisker_selection_line_alpha, whisker_selection_line_cap, whisker_selection_line_color, whisker_selection_line_dash, whisker_selection_line_dash_offset, whisker_selection_line_join, whisker_selection_line_width, whisker_visible, width, xaxis, xformatter, xlabel, xlim, xmarks, xmarks_alpha, xmarks_color, xmarks_hover_alpha, xmarks_hover_color, xmarks_hover_line_alpha, xmarks_hover_line_cap, xmarks_hover_line_color, xmarks_hover_line_dash, xmarks_hover_line_dash_offset, xmarks_hover_line_join, xmarks_hover_line_width, xmarks_line_alpha, xmarks_line_cap, xmarks_line_color, xmarks_line_dash, xmarks_line_dash_offset, xmarks_line_join, xmarks_line_width, xmarks_muted, xmarks_muted_alpha, xmarks_muted_color, xmarks_muted_line_alpha, xmarks_muted_line_cap, xmarks_muted_line_color, xmarks_muted_line_dash, xmarks_muted_line_dash_offset, xmarks_muted_line_join, xmarks_muted_line_width, xmarks_nonselection_alpha, xmarks_nonselection_color, xmarks_nonselection_line_alpha, xmarks_nonselection_line_cap, xmarks_nonselection_line_color, xmarks_nonselection_line_dash, xmarks_nonselection_line_dash_offset, xmarks_nonselection_line_join, xmarks_nonselection_line_width, xmarks_selection_alpha, xmarks_selection_color, xmarks_selection_line_alpha, xmarks_selection_line_cap, xmarks_selection_line_color, xmarks_selection_line_dash, xmarks_selection_line_dash_offset, xmarks_selection_line_join, xmarks_selection_line_width, xmarks_visible, xoffset, xrotation, xticks, yaxis, yformatter, ylabel, ylim, ymarks, ymarks_alpha, ymarks_color, ymarks_hover_alpha, ymarks_hover_color, ymarks_hover_line_alpha, ymarks_hover_line_cap, ymarks_hover_line_color, ymarks_hover_line_dash, ymarks_hover_line_dash_offset, ymarks_hover_line_join, ymarks_hover_line_width, ymarks_line_alpha, ymarks_line_cap, ymarks_line_color, ymarks_line_dash, ymarks_line_dash_offset, ymarks_line_join, ymarks_line_width, ymarks_muted, ymarks_muted_alpha, ymarks_muted_color, ymarks_muted_line_alpha, ymarks_muted_line_cap, ymarks_muted_line_color, ymarks_muted_line_dash, ymarks_muted_line_dash_offset, ymarks_muted_line_join, ymarks_muted_line_width, ymarks_nonselection_alpha, ymarks_nonselection_color, ymarks_nonselection_line_alpha, ymarks_nonselection_line_cap, ymarks_nonselection_line_color, ymarks_nonselection_line_dash, ymarks_nonselection_line_dash_offset, ymarks_nonselection_line_join, ymarks_nonselection_line_width, ymarks_selection_alpha, ymarks_selection_color, ymarks_selection_line_alpha, ymarks_selection_line_cap, ymarks_selection_line_color, ymarks_selection_line_dash, ymarks_selection_line_dash_offset, ymarks_selection_line_join, ymarks_selection_line_width, ymarks_visible, yoffset, yrotation, yticks, zlim)"
+  }
+ },
+ "os": {
+  "kind": "module",
+  "name": "os"
+ },
+ "peakfit": {
+  "kind": "function",
+  "signature": "(xrobj, func=<function gaussian>, fitresult=None, stval=None, bounds=None, toplot=False, pos_x=None, pos_y=None, **kwargs)"
+ },
+ "pl": {
+  "kind": "module",
+  "name": "matplotlib.pyplot"
+ },
+ "plane": {
+  "kind": "function",
+  "signature": "(image)"
+ },
+ "pn": {
+  "kind": "module",
+  "name": "panel"
+ },
+ "polyflatten": {
+  "kind": "function",
+  "signature": "(xrobj, field_type='topography', **kwargs)"
+ },
+ "polynomial_fit": {
+  "kind": "function",
+  "signature": "(order, x_data, y_data)"
+ },
+ "re": {
+  "kind": "module",
+  "name": "re"
+ },
+ "rhkdata": {
+  "kind": "class",
+  "methods": {
+   "__init__": "(self, filename, repetitions=0, alternate=True, loadraw=False, **kwargs)",
+   "coord_to_absolute": "(self)",
+   "mrep": "(self)",
+   "msw": "(self)",
+   "polyflatten": "(self, **kwargs)",
+   "print_info": "(self)",
+   "qplot": "(self, width=None, **kwargs)"
+  }
+ },
+ "rhkpy_loader": {
+  "kind": "module",
+  "name": "rhkpy.rhkpy_loader"
+ },
+ "rhkpy_process": {
+  "kind": "module",
+  "name": "rhkpy.rhkpy_process"
+ },
+ "rhksm4": {
+  "kind": "module",
+  "name": "spym.io.rhksm4"
+ },
+ "version": {
+  "kind": "module",
+  "name": "rhkpy.version"
+ },
+ "warnings": {
+  "kind": "module",
+  "name": "warnings"
+ },
+ "xr": {
+  "kind": "module",
+  "name": "xarray"
+ }
+}

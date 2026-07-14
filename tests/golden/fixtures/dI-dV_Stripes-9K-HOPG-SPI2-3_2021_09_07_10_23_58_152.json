@@ -1,0 +1,700 @@
+{
+ "data": {
+  "alternate": true,
+  "datatype": "spec",
+  "filename": "<TESTDATA>/dI-dV_Stripes-9K-HOPG-SPI2-3_2021_09_07_10_23_58_152.sm4",
+  "loadraw": false,
+  "numberofspectra": 6,
+  "repetitions": 3,
+  "spectra": {
+   "__dataset__": {
+    "attrs": {
+     "LI amplitude": 10.0,
+     "LI amplitude unit": "mV",
+     "LI frequency": 1266.9999999999998,
+     "LI frequency unit": "Hz",
+     "LI phase": -104.9999999,
+     "bias": 0.5999999642372131,
+     "bias units": "V",
+     "datatype": "spec",
+     "filename": "dI-dV_Stripes-9K-HOPG-SPI2-3_2021_09_07_10_23_58_152.sm4",
+     "measurement date": "09/07/21",
+     "measurement time": "10:19:42",
+     "setpoint": 39.999996185302734,
+     "setpoint units": "pA",
+     "speccoord_x": -97.14440155029297,
+     "speccoord_x units": "nm",
+     "speccoord_y": -73.07891845703125,
+     "speccoord_y units": "nm",
+     "spectype": "iv"
+    },
+    "coords": {
+     "bias": {
+      "attrs": {
+       "long units": "volt",
+       "units": "V"
+      },
+      "dims": [
+       "bias"
+      ],
+      "dtype": "float64",
+      "sha256": "a2a90718022002f105514b8f29e71f5fbccde8890d089a959ae0df3120d083b8",
+      "shape": [
+       481
+      ],
+      "stats": {
+       "nanmax": 0.6000000238418579,
+       "nanmean": 3.725290298461914e-08,
+       "nanmin": -0.5999999493360519
+      }
+     },
+     "biasscandir": {
+      "attrs": {},
+      "dims": [
+       "biasscandir"
+      ],
+      "dtype": "<U5",
+      "sha256": "28352476ac1ba0cd30eb51cd0f2e094bc07508b89f1e3772bda74685f9240840",
+      "shape": [
+       2
+      ]
+     },
+     "repetitions": {
+      "attrs": {},
+      "dims": [
+       "repetitions"
+      ],
+      "dtype": "int64",
+      "sha256": "ab25350e3e65efebe24584461683ecda68725576e825e550038b90e7b1479946",
+      "shape": [
+       3
+      ],
+      "stats": {
+       "nanmax": 2.0,
+       "nanmean": 1.0,
+       "nanmin": 0.0
+      }
+     }
+    },
+    "data_vars": {
+     "current": {
+      "attrs": {
+       "bias": 0.5999999642372131,
+       "bias units": "V",
+       "long units": "picoampere",
+       "setpoint": 39.999996185302734,
+       "setpoint units": "pA",
+       "time_per_point": 9.999999747378752e-05,
+       "units": "pA"
+      },
+      "dims": [
+       "bias",
+       "repetitions",
+       "biasscandir"
+      ],
+      "dtype": "float64",
+      "sha256": "f5133a52b5ad59aefa22a9ca1c2dea277064bbfe8a7ac7c65640acc016be7ccf",
+      "shape": [
+       481,
+       3,
+       2
+      ],
+      "stats": {
+       "nanmax": 50.35568463746197,
+       "nanmean": 0.8759344568163523,
+       "nanmin": -39.91925133345792
+      }
+     },
+     "lia": {
+      "attrs": {
+       "bias": 0.5999999642372131,
+       "bias units": "V",
+       "long units": "picoampere",
+       "setpoint": 39.999996185302734,
+       "setpoint units": "pA",
+       "time_per_point": 9.999999747378752e-05,
+       "units": "pA"
+      },
+      "dims": [
+       "bias",
+       "repetitions",
+       "biasscandir"
+      ],
+      "dtype": "float64",
+      "sha256": "d25cffb4203c310fcb6fe810cf15eaf7bee083c95c23fe0746cd3ef037673bca",
+      "shape": [
+       481,
+       3,
+       2
+      ],
+      "stats": {
+       "nanmax": 2.2467737880892815,
+       "nanmean": 0.6841694005850376,
+       "nanmin": 0.006435438951481763
+      }
+     },
+     "x": {
+      "attrs": {
+       "long units": "nanometer",
+       "units": "nm"
+      },
+      "dims": [],
+      "dtype": "float32",
+      "sha256": "94993c39492ca6f47cb880f35bd8c9cf8704a210febcdcb71b5336b268bd6fb5",
+      "shape": [],
+      "stats": {
+       "nanmax": -97.14440155029297,
+       "nanmean": -97.14440155029297,
+       "nanmin": -97.14440155029297
+      }
+     },
+     "y": {
+      "attrs": {
+       "long units": "nanometer",
+       "units": "nm"
+      },
+      "dims": [],
+      "dtype": "float32",
+      "sha256": "5a0cce8f4a649e7a934890347ec83c92d97d19a3b1967626821274ce5dffc82f",
+      "shape": [],
+      "stats": {
+       "nanmax": -73.07891845703125,
+       "nanmean": -73.07891845703125,
+       "nanmin": -73.07891845703125
+      }
+     }
+    },
+    "dims": {
+     "bias": 481,
+     "biasscandir": 2,
+     "repetitions": 3
+    }
+   }
+  },
+  "spectype": "iv",
+  "spymdata": {
+   "__dataset__": {
+    "attrs": {},
+    "coords": {
+     "Current_x": {
+      "attrs": {
+       "long_name": "Voltage",
+       "offset": 0.6000000238418579,
+       "units": "V"
+      },
+      "dims": [
+       "Current_x"
+      ],
+      "dtype": "float64",
+      "sha256": "a2a90718022002f105514b8f29e71f5fbccde8890d089a959ae0df3120d083b8",
+      "shape": [
+       481
+      ],
+      "stats": {
+       "nanmax": 0.6000000238418579,
+       "nanmean": 3.725290298461914e-08,
+       "nanmin": -0.5999999493360519
+      }
+     },
+     "Current_y": {
+      "attrs": {
+       "long_name": "Trace",
+       "offset": 0.0,
+       "units": " "
+      },
+      "dims": [
+       "Current_y"
+      ],
+      "dtype": "uint32",
+      "sha256": "cd9a54ed1f18bf97db08914e280ea7349e11ca2c4885a4d8052552ceba84208d",
+      "shape": [
+       6
+      ],
+      "stats": {
+       "nanmax": 5.0,
+       "nanmean": 2.5,
+       "nanmin": 0.0
+      }
+     },
+     "LIA_Current_x": {
+      "attrs": {
+       "long_name": "Voltage",
+       "offset": 0.6000000238418579,
+       "units": "V"
+      },
+      "dims": [
+       "LIA_Current_x"
+      ],
+      "dtype": "float64",
+      "sha256": "a2a90718022002f105514b8f29e71f5fbccde8890d089a959ae0df3120d083b8",
+      "shape": [
+       481
+      ],
+      "stats": {
+       "nanmax": 0.6000000238418579,
+       "nanmean": 3.725290298461914e-08,
+       "nanmin": -0.5999999493360519
+      }
+     },
+     "LIA_Current_y": {
+      "attrs": {
+       "long_name": "Trace",
+       "offset": 0.0,
+       "units": " "
+      },
+      "dims": [
+       "LIA_Current_y"
+      ],
+      "dtype": "uint32",
+      "sha256": "cd9a54ed1f18bf97db08914e280ea7349e11ca2c4885a4d8052552ceba84208d",
+      "shape": [
+       6
+      ],
+      "stats": {
+       "nanmax": 5.0,
+       "nanmean": 2.5,
+       "nanmin": 0.0
+      }
+     }
+    },
+    "data_vars": {
+     "Current": {
+      "attrs": {
+       "RHK_Angle": 0.0,
+       "RHK_Bias": 0.5999999642372131,
+       "RHK_CH1DriveValue": 0.6,
+       "RHK_CH1DriveValueUnits": "V",
+       "RHK_CH1Drive_Amplitude": 0.01,
+       "RHK_CH1Drive_AmplitudeUnit": "V",
+       "RHK_CH1Drive_Frequency": 1266.9999999999998,
+       "RHK_CH1Drive_FrequencyUnit": "Hz",
+       "RHK_CH1Drive_HarmonicFactor": 1.0,
+       "RHK_CH1Drive_MasterOscillator": 1,
+       "RHK_CH1Drive_PhaseOffset": 0.0,
+       "RHK_CH1Drive_PhaseOffsetUnit": "deg",
+       "RHK_CH1Drive_ReservedUnit": "",
+       "RHK_CH2DriveValue": 0.0,
+       "RHK_CH2DriveValueUnits": "V",
+       "RHK_CH2Drive_Amplitude": 0.0,
+       "RHK_CH2Drive_AmplitudeUnit": "V",
+       "RHK_CH2Drive_Frequency": 0.0,
+       "RHK_CH2Drive_FrequencyUnit": "Hz",
+       "RHK_CH2Drive_HarmonicFactor": 0.0,
+       "RHK_CH2Drive_MasterOscillator": 0,
+       "RHK_CH2Drive_PhaseOffset": 0.0,
+       "RHK_CH2Drive_PhaseOffsetUnit": "deg",
+       "RHK_CH2Drive_ReservedUnit": "",
+       "RHK_CompletedLineCount": 0,
+       "RHK_Current": 3.9999996370720936e-11,
+       "RHK_DataSubSource": 0,
+       "RHK_Date": "09/07/21",
+       "RHK_DateTime": "2021-09-07T10:19:42.000",
+       "RHK_GridXsize": 0,
+       "RHK_GridYsize": 0,
+       "RHK_GroupId": 0,
+       "RHK_ImageType": 0,
+       "RHK_ImageTypeName": "RHK_IMAGE_NORMAL",
+       "RHK_Label": "Current",
+       "RHK_LineType": 7,
+       "RHK_LineTypeName": "RHK_LINE_IV_SPECTRUM",
+       "RHK_Lockin0_FilterCutoffFrequency": "40Hz Order 2",
+       "RHK_Lockin0_FreqUnit": "Hz",
+       "RHK_Lockin0_Frequency": 0.0,
+       "RHK_Lockin0_HarmonicFactor": 1.0,
+       "RHK_Lockin0_NonMasterOscillator": 1,
+       "RHK_Lockin0_PhaseOffset": -104.9999999,
+       "RHK_Lockin0_PhaseUnit": "deg",
+       "RHK_LowPassFilter1_CutoffFrequency": 2.0,
+       "RHK_LowPassFilter1_CutoffFrequencyUnits": "kHz",
+       "RHK_MaxZvalue": 0,
+       "RHK_MinZvalue": 0,
+       "RHK_MinorVer": 6,
+       "RHK_OverSamplingCount": 0,
+       "RHK_PLLProStatus": "",
+       "RHK_PRMdata": "",
+       "RHK_PageDataType": 1,
+       "RHK_PageDataTypeName": "RHK_DATA_LINE",
+       "RHK_PageID": 16090,
+       "RHK_PageSourceType": 0,
+       "RHK_PageSourceTypeName": "RHK_SOURCE_RAW",
+       "RHK_PageType": 38,
+       "RHK_PageTypeName": "RHK_PAGE_RAMP_SPECTROSCOPY_RP",
+       "RHK_Period": 9.999999747378752e-05,
+       "RHK_PiezoSensitivity_Actuator": 0.0,
+       "RHK_PiezoSensitivity_ActuatorCalibration": "",
+       "RHK_PiezoSensitivity_ActuatorUnit": "",
+       "RHK_PiezoSensitivity_ScanCalibration": "",
+       "RHK_PiezoSensitivity_ScanX": 0.0,
+       "RHK_PiezoSensitivity_ScanXUnit": "",
+       "RHK_PiezoSensitivity_ScanY": 0.0,
+       "RHK_PiezoSensitivity_ScanYUnit": "",
+       "RHK_PiezoSensitivity_ScanZ": 0.0,
+       "RHK_PiezoSensitivity_ScanZUnit": "",
+       "RHK_PiezoSensitivity_TubeCalibration": "10K",
+       "RHK_PiezoSensitivity_TubeX": 7e-09,
+       "RHK_PiezoSensitivity_TubeXUnit": "m/V",
+       "RHK_PiezoSensitivity_TubeY": 7e-09,
+       "RHK_PiezoSensitivity_TubeYUnit": "m/V",
+       "RHK_PiezoSensitivity_TubeZ": -1e-09,
+       "RHK_PiezoSensitivity_TubeZOffset": -1e-09,
+       "RHK_PiezoSensitivity_TubeZOffsetUnit": "m/V",
+       "RHK_PiezoSensitivity_TubeZUnit": "m/V",
+       "RHK_ScanProcessor_XSlopeCompensation": 1.8,
+       "RHK_ScanProcessor_XSlopeCompensationUnit": "%",
+       "RHK_ScanProcessor_YSlopeCompensation": -8.0,
+       "RHK_ScanProcessor_YSlopeCompensationUnit": "%",
+       "RHK_ScanType": 1,
+       "RHK_ScanTypeName": "RHK_SCAN_LEFT",
+       "RHK_SessionText": "",
+       "RHK_SetpointUnit": "A",
+       "RHK_Signature": "STiMage 005.004 1",
+       "RHK_SlicedVoltage": "",
+       "RHK_SpecDrift_Channel": "",
+       "RHK_SpecDrift_CumulativeX": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+       ],
+       "RHK_SpecDrift_CumulativeY": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+       ],
+       "RHK_SpecDrift_DriftOptionType": 0,
+       "RHK_SpecDrift_DriftOptionTypeName": "RHK_DRIFT_DISABLED",
+       "RHK_SpecDrift_Filetime": 0,
+       "RHK_SpecDrift_Time": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+       ],
+       "RHK_SpecDrift_Xcoord": [
+        -9.714440096786348e-08,
+        -9.714440096786348e-08,
+        -9.714440096786348e-08,
+        -9.714440096786348e-08,
+        -9.714440096786348e-08,
+        -9.714440096786348e-08
+       ],
+       "RHK_SpecDrift_Ycoord": [
+        -7.307891536356692e-08,
+        -7.307891536356692e-08,
+        -7.307891536356692e-08,
+        -7.307891536356692e-08,
+        -7.307891536356692e-08,
+        -7.307891536356692e-08
+       ],
+       "RHK_SpecDrift_dX": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+       ],
+       "RHK_SpecDrift_dY": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+       ],
+       "RHK_StatusChannelText": "",
+       "RHK_SystemText": "",
+       "RHK_Time": "10:19:42",
+       "RHK_UserText": "",
+       "RHK_XYscale": 0.0,
+       "RHK_Xcorner": 0,
+       "RHK_Xlabel": "Voltage",
+       "RHK_Xoffset": 0.6000000238418579,
+       "RHK_Xscale": -0.0024999999441206455,
+       "RHK_Xsize": 481,
+       "RHK_Xunits": "V",
+       "RHK_Ycorner": 0,
+       "RHK_Ylabel": "Current",
+       "RHK_Yoffset": 0.0,
+       "RHK_Yscale": 1.0,
+       "RHK_Ysize": 6,
+       "RHK_Yunits": " ",
+       "RHK_ZPI_FeedbackType": "Linear",
+       "RHK_ZPI_IntegralGain": 3500.0,
+       "RHK_ZPI_IntegralGainUnit": "m/As",
+       "RHK_ZPI_LowerBound": -1.5e-07,
+       "RHK_ZPI_OutputUnit": "m",
+       "RHK_ZPI_ProportionalGain": 1e-07,
+       "RHK_ZPI_ProportionalGainUnit": "m/A",
+       "RHK_ZPI_SetPoint": 3.999999698e-11,
+       "RHK_ZPI_SetPointUnit": "A",
+       "RHK_ZPI_UpperBound": 1.5e-07,
+       "RHK_Zoffset": 0.0,
+       "RHK_Zscale": 4.656612844776963e-18,
+       "RHK_Zunits": "A",
+       "bias": 0.5999999642372131,
+       "bias_units": "V",
+       "feedback_active": true,
+       "feedback_pgain": 1e-07,
+       "filename": "dI-dV_Stripes-9K-HOPG-SPI2-3_2021_09_07_10_23_58_152.sm4",
+       "interpretation": "spectrum",
+       "long_name": "Current",
+       "notes": "",
+       "offset": 0.0,
+       "scaling_factor": 1.0,
+       "scan_angle": 0.0,
+       "setpoint": 3.999999698e-11,
+       "setpoint_units": "A",
+       "start_time": "2021-09-07T10:19:42.000",
+       "time_per_point": 9.999999747378752e-05,
+       "units": "A"
+      },
+      "dims": [
+       "Current_x",
+       "Current_y"
+      ],
+      "dtype": "float64",
+      "sha256": "3c3b32e8b4116de3af2d93f9e9c7051b39a5823f118bb9efbd591f12567a5396",
+      "shape": [
+       481,
+       6
+      ],
+      "stats": {
+       "nanmax": 5.035568463746197e-11,
+       "nanmean": 8.759344568163517e-13,
+       "nanmin": -3.9919251333457925e-11
+      }
+     },
+     "LIA_Current": {
+      "attrs": {
+       "RHK_Angle": 0.0,
+       "RHK_Bias": 0.5999999642372131,
+       "RHK_CH1DriveValue": 0.6,
+       "RHK_CH1DriveValueUnits": "V",
+       "RHK_CH1Drive_Amplitude": 0.01,
+       "RHK_CH1Drive_AmplitudeUnit": "V",
+       "RHK_CH1Drive_Frequency": 1266.9999999999998,
+       "RHK_CH1Drive_FrequencyUnit": "Hz",
+       "RHK_CH1Drive_HarmonicFactor": 1.0,
+       "RHK_CH1Drive_MasterOscillator": 1,
+       "RHK_CH1Drive_PhaseOffset": 0.0,
+       "RHK_CH1Drive_PhaseOffsetUnit": "deg",
+       "RHK_CH1Drive_ReservedUnit": "",
+       "RHK_CH2DriveValue": 0.0,
+       "RHK_CH2DriveValueUnits": "V",
+       "RHK_CH2Drive_Amplitude": 0.0,
+       "RHK_CH2Drive_AmplitudeUnit": "V",
+       "RHK_CH2Drive_Frequency": 0.0,
+       "RHK_CH2Drive_FrequencyUnit": "Hz",
+       "RHK_CH2Drive_HarmonicFactor": 0.0,
+       "RHK_CH2Drive_MasterOscillator": 0,
+       "RHK_CH2Drive_PhaseOffset": 0.0,
+       "RHK_CH2Drive_PhaseOffsetUnit": "deg",
+       "RHK_CH2Drive_ReservedUnit": "",
+       "RHK_CompletedLineCount": 0,
+       "RHK_Current": 3.9999996370720936e-11,
+       "RHK_DataSubSource": 0,
+       "RHK_Date": "09/07/21",
+       "RHK_DateTime": "2021-09-07T10:19:42.000",
+       "RHK_GridXsize": 0,
+       "RHK_GridYsize": 0,
+       "RHK_GroupId": 0,
+       "RHK_ImageType": 0,
+       "RHK_ImageTypeName": "RHK_IMAGE_NORMAL",
+       "RHK_Label": "LIA Current",
+       "RHK_LineType": 7,
+       "RHK_LineTypeName": "RHK_LINE_IV_SPECTRUM",
+       "RHK_Lockin0_FilterCutoffFrequency": "40Hz Order 2",
+       "RHK_Lockin0_FreqUnit": "Hz",
+       "RHK_Lockin0_Frequency": 0.0,
+       "RHK_Lockin0_HarmonicFactor": 1.0,
+       "RHK_Lockin0_NonMasterOscillator": 1,
+       "RHK_Lockin0_PhaseOffset": -104.9999999,
+       "RHK_Lockin0_PhaseUnit": "deg",
+       "RHK_LowPassFilter1_CutoffFrequency": 2.0,
+       "RHK_LowPassFilter1_CutoffFrequencyUnits": "kHz",
+       "RHK_MaxZvalue": 0,
+       "RHK_MinZvalue": 0,
+       "RHK_MinorVer": 6,
+       "RHK_OverSamplingCount": 0,
+       "RHK_PLLProStatus": "",
+       "RHK_PRMdata": "",
+       "RHK_PageDataType": 1,
+       "RHK_PageDataTypeName": "RHK_DATA_LINE",
+       "RHK_PageID": 20492,
+       "RHK_PageSourceType": 0,
+       "RHK_PageSourceTypeName": "RHK_SOURCE_RAW",
+       "RHK_PageType": 38,
+       "RHK_PageTypeName": "RHK_PAGE_RAMP_SPECTROSCOPY_RP",
+       "RHK_Period": 9.999999747378752e-05,
+       "RHK_PiezoSensitivity_Actuator": 0.0,
+       "RHK_PiezoSensitivity_ActuatorCalibration": "",
+       "RHK_PiezoSensitivity_ActuatorUnit": "",
+       "RHK_PiezoSensitivity_ScanCalibration": "",
+       "RHK_PiezoSensitivity_ScanX": 0.0,
+       "RHK_PiezoSensitivity_ScanXUnit": "",
+       "RHK_PiezoSensitivity_ScanY": 0.0,
+       "RHK_PiezoSensitivity_ScanYUnit": "",
+       "RHK_PiezoSensitivity_ScanZ": 0.0,
+       "RHK_PiezoSensitivity_ScanZUnit": "",
+       "RHK_PiezoSensitivity_TubeCalibration": "10K",
+       "RHK_PiezoSensitivity_TubeX": 7e-09,
+       "RHK_PiezoSensitivity_TubeXUnit": "m/V",
+       "RHK_PiezoSensitivity_TubeY": 7e-09,
+       "RHK_PiezoSensitivity_TubeYUnit": "m/V",
+       "RHK_PiezoSensitivity_TubeZ": -1e-09,
+       "RHK_PiezoSensitivity_TubeZOffset": -1e-09,
+       "RHK_PiezoSensitivity_TubeZOffsetUnit": "m/V",
+       "RHK_PiezoSensitivity_TubeZUnit": "m/V",
+       "RHK_ScanProcessor_XSlopeCompensation": 1.8,
+       "RHK_ScanProcessor_XSlopeCompensationUnit": "%",
+       "RHK_ScanProcessor_YSlopeCompensation": -8.0,
+       "RHK_ScanProcessor_YSlopeCompensationUnit": "%",
+       "RHK_ScanType": 1,
+       "RHK_ScanTypeName": "RHK_SCAN_LEFT",
+       "RHK_SessionText": "",
+       "RHK_SetpointUnit": "A",
+       "RHK_Signature": "STiMage 005.004 1",
+       "RHK_SlicedVoltage": "",
+       "RHK_SpecDrift_Channel": "",
+       "RHK_SpecDrift_CumulativeX": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+       ],
+       "RHK_SpecDrift_CumulativeY": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+       ],
+       "RHK_SpecDrift_DriftOptionType": 0,
+       "RHK_SpecDrift_DriftOptionTypeName": "RHK_DRIFT_DISABLED",
+       "RHK_SpecDrift_Filetime": 0,
+       "RHK_SpecDrift_Time": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+       ],
+       "RHK_SpecDrift_Xcoord": [
+        -9.714440096786348e-08,
+        -9.714440096786348e-08,
+        -9.714440096786348e-08,
+        -9.714440096786348e-08,
+        -9.714440096786348e-08,
+        -9.714440096786348e-08
+       ],
+       "RHK_SpecDrift_Ycoord": [
+        -7.307891536356692e-08,
+        -7.307891536356692e-08,
+        -7.307891536356692e-08,
+        -7.307891536356692e-08,
+        -7.307891536356692e-08,
+        -7.307891536356692e-08
+       ],
+       "RHK_SpecDrift_dX": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+       ],
+       "RHK_SpecDrift_dY": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+       ],
+       "RHK_StatusChannelText": "",
+       "RHK_SystemText": "",
+       "RHK_Time": "10:19:42",
+       "RHK_UserText": "",
+       "RHK_XYscale": 0.0,
+       "RHK_Xcorner": 0,
+       "RHK_Xlabel": "Voltage",
+       "RHK_Xoffset": 0.6000000238418579,
+       "RHK_Xscale": -0.0024999999441206455,
+       "RHK_Xsize": 481,
+       "RHK_Xunits": "V",
+       "RHK_Ycorner": 0,
+       "RHK_Ylabel": "LIA Current",
+       "RHK_Yoffset": 0.0,
+       "RHK_Yscale": 1.0,
+       "RHK_Ysize": 6,
+       "RHK_Yunits": " ",
+       "RHK_ZPI_FeedbackType": "Linear",
+       "RHK_ZPI_IntegralGain": 3500.0,
+       "RHK_ZPI_IntegralGainUnit": "m/As",
+       "RHK_ZPI_LowerBound": -1.5e-07,
+       "RHK_ZPI_OutputUnit": "m",
+       "RHK_ZPI_ProportionalGain": 1e-07,
+       "RHK_ZPI_ProportionalGainUnit": "m/A",
+       "RHK_ZPI_SetPoint": 3.999999698e-11,
+       "RHK_ZPI_SetPointUnit": "A",
+       "RHK_ZPI_UpperBound": 1.5e-07,
+       "RHK_Zoffset": 0.0,
+       "RHK_Zscale": 4.656612844776963e-18,
+       "RHK_Zunits": "A",
+       "bias": 0.5999999642372131,
+       "bias_units": "V",
+       "feedback_active": true,
+       "feedback_pgain": 1e-07,
+       "filename": "dI-dV_Stripes-9K-HOPG-SPI2-3_2021_09_07_10_23_58_152.sm4",
+       "interpretation": "spectrum",
+       "long_name": "LIA Current",
+       "notes": "",
+       "offset": 0.0,
+       "scaling_factor": 1.0,
+       "scan_angle": 0.0,
+       "setpoint": 3.999999698e-11,
+       "setpoint_units": "A",
+       "start_time": "2021-09-07T10:19:42.000",
+       "time_per_point": 9.999999747378752e-05,
+       "units": "A"
+      },
+      "dims": [
+       "LIA_Current_x",
+       "LIA_Current_y"
+      ],
+      "dtype": "float64",
+      "sha256": "56fb22f4893fe92b32271f6fe233ee4505f0451e577143fe8ad0853b1aaadfe4",
+      "shape": [
+       481,
+       6
+      ],
+      "stats": {
+       "nanmax": 2.2467737880892817e-12,
+       "nanmean": 6.841694005850376e-13,
+       "nanmin": 6.435438951481763e-15
+      }
+     }
+    },
+    "dims": {
+     "Current_x": 481,
+     "Current_y": 6,
+     "LIA_Current_x": 481,
+     "LIA_Current_y": 6
+    }
+   }
+  }
+ },
+ "load": "ok"
+}

@@ -1,0 +1,7 @@
+{
+ "error": {
+  "exception": "ZeroDivisionError",
+  "message": "division by zero"
+ },
+ "load": "error"
+}
