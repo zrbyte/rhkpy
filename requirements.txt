@@ -4,3 +4,4 @@ scipy
 xarray>=2023.7.0
 hvplot
 jupyter_bokeh
+selenium>=4.6
