@@ -132,3 +132,6 @@ dmypy.json
 .pyre/
 .cursorignore
 testing.ipynb
+
+# macOS
+.DS_Store
