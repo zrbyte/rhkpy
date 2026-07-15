@@ -18,8 +18,18 @@ HERE = pathlib.Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))          # for snapshot_utils / conftest helpers
 sys.path.insert(0, str(HERE.parent))   # for the local rhkpy package
 
-from conftest import GOLDEN_DIR, normalize_path, sm4_fixture_paths  # noqa: E402
+from conftest import GOLDEN_DIR, VARIANT_CASES, normalize_path, sm4_fixture_paths, variant_id  # noqa: E402
 from snapshot_utils import api_surface_snapshot, exception_snapshot, rhkdata_snapshot  # noqa: E402
+
+
+def snapshot_load(rhkdata_cls, path, **kwargs):
+	"""Load ``path`` with rhkdata(**kwargs) and snapshot the result, treating
+	load failures as characterized behavior."""
+	try:
+		data = rhkdata_cls(str(path), **kwargs)
+		return {'load': 'ok', 'data': rhkdata_snapshot(data, norm=normalize_path)}
+	except Exception as exc:  # noqa: BLE001 - load failures are characterized behavior
+		return {'load': 'error', 'error': exception_snapshot(exc, norm=normalize_path)}
 
 
 def write_json(path, data):
@@ -42,12 +52,16 @@ def main():
 	if not fixtures:
 		sys.exit('No .sm4 files found in test/ - cannot generate golden data.')
 	for path in fixtures:
-		try:
-			data = rhkpy.rhkdata(str(path))
-			snap = {'load': 'ok', 'data': rhkdata_snapshot(data, norm=normalize_path)}
-		except Exception as exc:  # noqa: BLE001 - load failures are characterized behavior
-			snap = {'load': 'error', 'error': exception_snapshot(exc, norm=normalize_path)}
+		snap = snapshot_load(rhkpy.rhkdata, path)
 		out = GOLDEN_DIR / 'fixtures' / (path.stem + '.json')
+		write_json(out, snap)
+		print(f'{out.name}: load={snap["load"]}')
+
+	# 3. non-default rhkdata() argument variants
+	by_name = {p.name: p for p in fixtures}
+	for sm4name, kwargs in VARIANT_CASES:
+		snap = snapshot_load(rhkpy.rhkdata, by_name[sm4name], **kwargs)
+		out = GOLDEN_DIR / 'variants' / (variant_id(sm4name, kwargs) + '.json')
 		write_json(out, snap)
 		print(f'{out.name}: load={snap["load"]}')
 

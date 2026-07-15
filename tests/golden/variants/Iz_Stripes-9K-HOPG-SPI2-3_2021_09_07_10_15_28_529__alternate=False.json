@@ -1,0 +1,7 @@
+{
+ "error": {
+  "exception": "ValueError",
+  "message": "conflicting sizes for dimension 'repetitions': length 20 on 'repetitions' and length 10 on {'z': 'current', 'repetitions': 'current', 'zscandir': 'current'}"
+ },
+ "load": "error"
+}

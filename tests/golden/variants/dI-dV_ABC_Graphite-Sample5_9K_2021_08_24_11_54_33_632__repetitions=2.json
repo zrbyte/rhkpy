@@ -1,0 +1,7 @@
+{
+ "error": {
+  "exception": "ValueError",
+  "message": "cannot reshape array of size 513024 into shape (501,22,22,2)"
+ },
+ "load": "error"
+}

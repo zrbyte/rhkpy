@@ -41,6 +41,9 @@ reviewed behavior change):
 python tests/make_golden.py
 ```
 
-Note: only default `rhkdata()` constructor arguments are characterized so
-far; non-default options (`repetitions`, `alternate`, `loadraw`) are not yet
-pinned.
+Non-default `rhkdata()` arguments (`repetitions`, `alternate`, `loadraw`)
+are pinned by the variant goldens in `tests/golden/variants/`
+(`test_characterization_variants.py`); the cases live in
+`conftest.VARIANT_CASES`. Note that `alternate=False` currently *errors* on
+the tested files - that is pre-existing (pre-refactor) behavior, verified
+against the phase-0 baseline, and is pinned as such.
