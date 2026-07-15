@@ -1,0 +1,21 @@
+#!/bin/sh
+# Run the FULL test suite (including the slow, browser-based genthumbs test)
+# before pushing to the remote.
+# Bypass in an emergency with: git push --no-verify
+
+PYTHON="${RHKPY_TEST_PYTHON:-}"
+if [ -z "$PYTHON" ]; then
+	if [ -x /opt/anaconda3/envs/datadigger/bin/python ]; then
+		PYTHON=/opt/anaconda3/envs/datadigger/bin/python
+	else
+		PYTHON=python3
+	fi
+fi
+
+echo "pre-push: running full test suite ..."
+"$PYTHON" -m pytest -q || {
+	echo ""
+	echo "pre-push: TESTS FAILED - push aborted."
+	echo "          (bypass with 'git push --no-verify' if you must)"
+	exit 1
+}

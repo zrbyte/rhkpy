@@ -53,7 +53,8 @@ def test_genthumbs(loaded_fixtures, tmp_path):
 		if src.is_file():
 			shutil.copy(src, tmp_path / name)
 	copied = list(tmp_path.glob('*.sm4'))
-	assert copied, 'no fixture files available to copy'
+	if not copied:
+		pytest.skip('no .sm4 fixtures present in test/ (local-only, proprietary data)')
 	rhkpy.genthumbs(str(tmp_path))
 	pngs = list(tmp_path.glob('*.png'))
 	assert len(pngs) == len(copied)

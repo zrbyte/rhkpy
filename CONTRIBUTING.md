@@ -8,14 +8,36 @@ cd rhkpy
 pip install -e . pytest
 ```
 
-The test suite needs the `.sm4` measurement files in the (gitignored) `test/`
-directory at the repo root; the suite is designed to run locally where that
-data is present.
+The full test suite needs the `.sm4` measurement files in the (gitignored)
+`test/` directory at the repo root. These files are proprietary and live only
+on the maintainer's machine, so the complete suite runs locally.
 
 ```bash
 python -m pytest                  # full suite
 python -m pytest -m "not slow"    # skip the headless-browser thumbnail test
 ```
+
+### Run tests automatically on every change
+
+Enable the versioned git hooks once per clone:
+
+```bash
+git config core.hooksPath .githooks
+```
+
+After that, every `git commit` runs the fast suite (`-m "not slow"`, ~10 s)
+and every `git push` runs the full suite; both abort on failure
+(`--no-verify` bypasses in an emergency). If your Python is not the default
+conda env, point the hooks at it with `export RHKPY_TEST_PYTHON=/path/to/python`.
+
+### Continuous integration
+
+`.github/workflows/tests.yml` runs the **data-free tier** on GitHub Actions
+(package install on Python 3.10/3.13, import, the API-surface pin, the
+synthetic-data analysis tests, and the docs build). Tests that need the
+`.sm4` files skip themselves cleanly when `test/` is absent, so CI stays
+green without the proprietary data — the golden-master characterization runs
+are the responsibility of the local hooks.
 
 ## Architecture
 

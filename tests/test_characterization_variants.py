@@ -20,6 +20,8 @@ from snapshot_utils import diff_snapshots
 	ids=[variant_id(n, k) for n, k in VARIANT_CASES],
 )
 def test_variant_matches_golden(sm4name, kwargs):
+	if not (TESTDATA_DIR / sm4name).is_file():
+		pytest.skip(f'{sm4name} not present in test/ (local-only, proprietary data)')
 	golden_file = GOLDEN_DIR / 'variants' / (variant_id(sm4name, kwargs) + '.json')
 	if not golden_file.is_file():
 		pytest.fail(f'No golden snapshot for this variant. Run: python tests/make_golden.py')
