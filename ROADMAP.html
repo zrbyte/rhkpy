@@ -105,7 +105,8 @@
 	<div class="empty" id="empty">Nothing matches the current filter.</div>
 
 	<footer>
-		Generated 2026-07-15 from the refactor session notes. Source of truth for architecture:
+		Generated 2026-07-15 from the refactor session notes; completed items are recorded in the
+		file itself (last update 2026-07-15). Source of truth for architecture:
 		<code>CONTRIBUTING.md</code>; for pinned behavior: <code>tests/golden/</code>.
 	</footer>
 </div>
@@ -123,16 +124,19 @@ const ITEMS = [
 	why: 'The current message gives users no clue that the fix is one keyword argument. Behavior change → regenerate the two fixture goldens.' },
 { id: 'missing-lia', tier: 'now', cat: 'robustness', effort: 'S',
 	title: 'Graceful handling of I(V) files without a LIA channel',
-	details: 'Fixture <code>Iz_gold_9K…</code> is classified as spectype iv but has no <code>LIA_Current</code> page → <code>AttributeError</code>. Either fall back to a current-only iv config (registry entry without the lia channel) or raise a clear error naming the missing channel.',
-	why: 'Files recorded without a lock-in are valid measurements; today they are unreadable.' },
+	details: 'Fixture <code>Iz_gold_9K…</code> was classified as spectype iv but has no <code>LIA_Current</code> page → <code>AttributeError</code>.',
+	why: 'Files recorded without a lock-in are valid measurements; they were unreadable.',
+	done: 'Resolved 2026-07-15 (commit 5cc04b4) at the true root cause: the file is an I(z) mislabeled as IV_SPECTRUM by RHK Rev &lt; 6. For files with RHK_MinorVer &lt; 6 the spectype is now cross-checked against the sweep axis units (\'m\' → iz, \'V\' → iv); Iz_gold loads as (spec, iz) and its golden was regenerated.' },
 { id: 'ci', tier: 'now', cat: 'infrastructure', effort: 'M',
 	title: 'CI: run the test suite on GitHub Actions',
-	details: 'The suite currently runs only locally because the .sm4 fixtures in <code>test/</code> are gitignored. Options: commit the small fixtures (10 KB–1.5 MB each, ~5 MB total) directly, use git-lfs, or attach them to a GitHub release and download in the workflow. Then: matrix over Python 3.10–3.13, <code>pytest -m "not slow"</code> (the browser test stays local).',
-	why: 'The golden-master safety net only protects branches it actually runs on. This is the highest-leverage infrastructure item.' },
+	details: 'The suite runs locally because the .sm4 fixtures in <code>test/</code> are proprietary and gitignored.',
+	why: 'The golden-master safety net only protects branches it actually runs on.',
+	done: 'Resolved 2026-07-15 (commit 8ccf9ba), adapted to the proprietary-data constraint: the data never leaves the maintainer&#39;s machine. Locally, versioned git hooks (<code>.githooks/</code>) run the fast suite on every commit and the full suite on every push; GitHub Actions (<code>tests.yml</code>) runs the data-free tier (Python 3.10/3.13 install, API-surface pin, synthetic tests, docs build) — data-dependent tests skip cleanly there.' },
 { id: 'docs-ci', tier: 'now', cat: 'infrastructure', effort: 'S',
 	title: 'Build and publish docs in CI',
-	details: 'A <code>gh-pages</code> branch already exists. Add a workflow job: <code>sphinx -b html docs</code> (treat new warnings as errors, ignoring the known <code>_static</code> one) and publish. Add <code>sphinx</code> + <code>sphinx_rtd_theme</code> as a <code>docs</code> extra in pyproject.',
-	why: 'The docs silently rendered an empty API page after the restructure until manually checked — CI would have caught it.' },
+	details: 'A <code>gh-pages</code> branch already exists; the docs build needed to run on every push, not only at release time.',
+	why: 'The docs silently rendered an empty API page after the restructure until manually checked — CI would have caught it.',
+	done: 'Resolved 2026-07-15 (commit 8ccf9ba): docs build job in <code>tests.yml</code> on every push/PR; the gh-pages publish workflow was modernized and its <code>sphinx-apidoc</code> step (which fought the curated rst files) removed.' },
 // ------------------------------------------------------------- NEXT
 { id: 'mpl-thumbs', tier: 'next', cat: 'feature', effort: 'L',
 	title: 'matplotlib backend for genthumbs (no browser needed)',
@@ -148,11 +152,12 @@ const ITEMS = [
 	why: 'navigation() plots of line spectra rely on spectra positions only; the image outline is missing.' },
 { id: 'xarray-deprecations', tier: 'next', cat: 'robustness', effort: 'S',
 	title: 'Fix xarray deprecation warnings',
-	details: 'navigation() uses <code>Dataset.drop(…)</code> (deprecated → <code>drop_vars</code>/<code>drop_sel</code>), visible as DeprecationWarnings in every test run. Also check <code>Dataset.dims</code> mapping access (FutureWarning).',
-	why: 'These will become hard errors in a future xarray; fixing them now is cheap, later it is an outage.' },
+	details: 'navigation() used <code>Dataset.drop(…)</code> (deprecated → <code>drop_vars</code>), visible as DeprecationWarnings in every test run.',
+	why: 'These will become hard errors in a future xarray; fixing them now is cheap, later it is an outage.',
+	done: 'Resolved 2026-07-15 (commit 708a677): all 8 <code>.drop()</code> call sites switched to <code>.drop_vars()</code>; verified over all 7 datatype/spectype combinations with DeprecationWarning promoted to an error. The test suite is now warning-free.' },
 { id: 'coverage', tier: 'next', cat: 'infrastructure', effort: 'S',
 	title: 'Coverage measurement in the test suite',
-	details: 'Add <code>pytest-cov</code>; the characterization suite exercises the load path thoroughly, but coverage will show which analysis/plotting branches (e.g. peakfit toplot=True, bgsubtract peak_pos=…) are never touched.',
+	details: 'Add <code>pytest-cov</code> and inspect the report. Partial progress 2026-07-15 (commit bc14228): every public function now has a behavior test (mrep/msw, align/plane, load_rhksm4, full navigation branch coverage, strengthened asserts). Remaining: actual coverage measurement, which will show untouched branches like <code>peakfit(toplot=True)</code> and <code>bgsubtract(peak_pos=…)</code>.',
 	why: 'Directs the next round of test-writing to the actual blind spots.' },
 { id: 'new-types', tier: 'next', cat: 'feature', effort: 'M',
 	title: 'Support more RHK measurement types via the registry',
@@ -181,7 +186,7 @@ const ITEMS = [
 	why: 'Speculative until someone actually has files this large — measure first.' },
 { id: 'pypi', tier: 'later', cat: 'infrastructure', effort: 'S',
 	title: 'Automated releases to PyPI',
-	details: 'pyproject.toml is release-ready and the version is single-sourced. Add a tag-triggered workflow: build sdist/wheel, run the suite, publish via trusted publishing. Tag v1.3.x from master.',
+	details: 'pyproject.toml is release-ready and the version is single-sourced. Partial progress 2026-07-15 (commit 8ccf9ba): the existing release-triggered workflow was repaired (it still called the removed <code>setup.py</code>; now <code>python -m build</code>). Remaining: switch from the API-token secret to trusted publishing, and consider running the data-free test job before upload.',
 	why: 'Removes the manual upload step and keeps versions honest.' },
 ];
 
@@ -194,7 +199,8 @@ let tier = 'all', cats = new Set(), query = '';
 function render() {
 	const list = document.getElementById('list');
 	list.innerHTML = '';
-	const done = store.get();
+	const checked = store.get();
+	const isDone = i => !!i.done || !!checked[i.id];
 	let shown = 0;
 	for (const t of ['now', 'next', 'later']) {
 		if (tier !== 'all' && tier !== t) continue;
@@ -209,10 +215,11 @@ function render() {
 		for (const i of items) {
 			shown++;
 			const card = document.createElement('div');
-			card.className = 'card' + (done[i.id] ? ' done' : '');
+			card.className = 'card' + (isDone(i) ? ' done' : '');
+			const doneNote = i.done ? `<div class="why"><b>Done:</b> ${i.done}</div>` : '';
 			card.innerHTML = `
 				<div class="row">
-					<input type="checkbox" ${done[i.id] ? 'checked' : ''} aria-label="done">
+					<input type="checkbox" ${isDone(i) ? 'checked' : ''} ${i.done ? 'disabled title="completed (recorded in this file)"' : ''} aria-label="done">
 					<span class="title">${i.title}</span>
 					<span class="badges">
 						<span class="badge">${i.cat}</span>
@@ -220,17 +227,19 @@ function render() {
 					</span>
 					<span class="caret">&#9656;</span>
 				</div>
-				<div class="details"><div>${i.details}</div><div class="why"><b>Why:</b> ${i.why}</div></div>`;
-			card.querySelector('input').addEventListener('click', e => {
-				e.stopPropagation();
-				const d = store.get(); d[i.id] = e.target.checked; store.set(d); render();
-			});
+				<div class="details"><div>${i.details}</div><div class="why"><b>Why:</b> ${i.why}</div>${doneNote}</div>`;
+			if (!i.done) {
+				card.querySelector('input').addEventListener('click', e => {
+					e.stopPropagation();
+					const d = store.get(); d[i.id] = e.target.checked; store.set(d); render();
+				});
+			}
 			card.querySelector('.row').addEventListener('click', () => card.classList.toggle('open'));
 			list.appendChild(card);
 		}
 	}
 	document.getElementById('empty').style.display = shown ? 'none' : 'block';
-	const total = ITEMS.length, n = ITEMS.filter(i => done[i.id]).length;
+	const total = ITEMS.length, n = ITEMS.filter(isDone).length;
 	document.getElementById('bar').style.width = (100 * n / total) + '%';
 	document.getElementById('progress-label').textContent = `${n} of ${total} items done`;
 }
