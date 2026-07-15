@@ -3,9 +3,15 @@
 Moved verbatim from rhkpy_loader.py (refactor phase 2).
 """
 
+import logging
 import re
 
 import numpy as np
+
+_logger = logging.getLogger('rhkpy')
+
+# spectype implied by the units of the sweep axis of the spectra
+_SPECTYPE_FROM_XUNITS = {'V': 'iv', 'm': 'iz'}
 
 
 def _checkrepetitions(stmdata_object):
@@ -22,12 +28,39 @@ def _checkrepetitions(stmdata_object):
 	reps = int(reps / (stmdata_object.alternate + 1))
 	return reps
 
+def _fix_spectype_from_units(stmdata_object, spectype):
+	"""Cross-check the spectype declared by RHK_LineType against the sweep
+	axis units, for files written by old RHK Rev versions (RHK_MinorVer < 6).
+
+	Old Rev versions can stamp ramp spectroscopy pages with the wrong
+	RHK_LineType (e.g. IV_SPECTRUM for an I(z) ramp). The sweep axis units are
+	reliable even in these files: 'V' (bias sweep) means dI/dV, 'm' (tip
+	height sweep) means I(z).
+	"""
+	current = stmdata_object.spymdata['Current']
+	if current.attrs['RHK_MinorVer'] >= 6:
+		return spectype
+	units_spectype = _SPECTYPE_FROM_XUNITS.get(current.attrs['RHK_Xunits'])
+	if units_spectype is not None and units_spectype != spectype:
+		_logger.warning(
+			'%s: file declares %s, but the sweep axis units are %r; '
+			'treating the spectra as %r (file written by RHK Rev version < 6).',
+			current.attrs['filename'], current.attrs['RHK_LineTypeName'],
+			current.attrs['RHK_Xunits'], units_spectype,
+		)
+		return units_spectype
+	return spectype
+
+
 def _checkdatatype(stmdata_object):
 	"""Classify the file into (datatype, spectype).
 
 	datatype: 'image', 'map', 'line' or 'spec', based on the RHK page type and
 	the aspect ratio of the spectroscopy tip positions.
 	spectype: 'iv' or 'iz' based on the RHK line type, `None` for images.
+	For files written by old RHK Rev versions (RHK_MinorVer < 6), the spectype
+	is cross-checked against the sweep axis units, since the RHK line type is
+	unreliable there (see :func:`_fix_spectype_from_units`).
 	"""
 	# check if the list of keys in the spym data contain 'Current'
 	# If yes, it is not a pure topo image
@@ -58,7 +91,12 @@ def _checkdatatype(stmdata_object):
 	else:
 		stmdata_object.datatype = 'image'
 		stmdata_object.spectype = None
-	
+
+	# old RHK Rev versions can declare the wrong line type; trust the sweep
+	# axis units instead for those files
+	if stmdata_object.spectype is not None:
+		stmdata_object.spectype = _fix_spectype_from_units(stmdata_object, stmdata_object.spectype)
+
 	return stmdata_object.datatype, stmdata_object.spectype
 
 def _aspect_ratio(x, y):
