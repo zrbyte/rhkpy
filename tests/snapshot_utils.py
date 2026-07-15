@@ -141,23 +141,46 @@ def _describe_callable(obj):
 
 def api_surface_snapshot(module):
 	"""Snapshot of the public API surface of a module: every public name with
-	its kind and, for callables, its signature. For classes, all public methods
-	(plus __init__) with their signatures."""
+	its kind and, for callables defined in the module's own package, their
+	signatures (for classes: all public methods plus __init__).
+
+	Objects that rhkpy merely re-exports from third-party packages (e.g. the
+	holoviews ``dim``/``opts`` classes, scipy's ``find_peaks``) are pinned by
+	name and origin module only - their signatures belong to the dependency
+	and vary with its version, which would make the snapshot depend on the
+	environment instead of on rhkpy's API.
+	"""
+	package = module.__name__.split('.')[0]
+
+	def _origin(obj):
+		# top-level package only: private module paths inside dependencies
+		# (e.g. scipy.optimize._minpack_py) move between versions
+		return (getattr(obj, '__module__', None) or '').split('.')[0]
+
+	def _is_own(obj):
+		return _origin(obj) == package
+
 	surface = {}
 	for name in sorted(dir(module)):
 		if name.startswith('_'):
 			continue
 		obj = getattr(module, name)
 		if inspect.isclass(obj):
-			methods = {}
-			for mname, member in sorted(vars(obj).items()):
-				if mname.startswith('_') and mname != '__init__':
-					continue
-				if callable(member):
-					methods[mname] = _describe_callable(member)
-			surface[name] = {'kind': 'class', 'methods': methods}
+			if _is_own(obj):
+				methods = {}
+				for mname, member in sorted(vars(obj).items()):
+					if mname.startswith('_') and mname != '__init__':
+						continue
+					if callable(member):
+						methods[mname] = _describe_callable(member)
+				surface[name] = {'kind': 'class', 'methods': methods}
+			else:
+				surface[name] = {'kind': 'class', 'origin': _origin(obj)}
 		elif inspect.isroutine(obj):
-			surface[name] = {'kind': 'function', 'signature': _describe_callable(obj)}
+			if _is_own(obj):
+				surface[name] = {'kind': 'function', 'signature': _describe_callable(obj)}
+			else:
+				surface[name] = {'kind': 'function', 'origin': _origin(obj)}
 		elif isinstance(obj, types.ModuleType):
 			surface[name] = {'kind': 'module', 'name': obj.__name__}
 		else:
