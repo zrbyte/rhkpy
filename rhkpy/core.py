@@ -285,34 +285,45 @@ class rhkdata:
 	## plotting functions for qplot, delegating to rhkpy.plotting.quickplot
 
 	def _qplot_topo(self, cmap_topo = 'fire', **kwargs):
+		"""See :func:`rhkpy.plotting.quickplot.plot_topo`."""
 		return _quickplot.plot_topo(self, cmap_topo = cmap_topo, **kwargs)
 
 	def _qplot_lia(self, cmap_spec = 'viridis', **kwargs):
+		"""See :func:`rhkpy.plotting.quickplot.plot_lia`."""
 		return _quickplot.plot_lia(self, cmap_spec = cmap_spec, **kwargs)
 
 	def _qplot_map_iv(self, cmap_spec = 'viridis', **kwargs):
+		"""See :func:`rhkpy.plotting.quickplot.plot_map_iv`."""
 		return _quickplot.plot_map_iv(self, cmap_spec = cmap_spec, **kwargs)
 
 	def _qplot_map_iz(self, cmap_spec = 'viridis', **kwargs):
+		"""See :func:`rhkpy.plotting.quickplot.plot_map_iz`."""
 		return _quickplot.plot_map_iz(self, cmap_spec = cmap_spec, **kwargs)
 
 	def _qplot_line_iv(self, cmap_spec = 'viridis', **kwargs):
+		"""See :func:`rhkpy.plotting.quickplot.plot_line_iv`."""
 		return _quickplot.plot_line_iv(self, cmap_spec = cmap_spec, **kwargs)
 
 	def _qplot_line_spec_iv(self, **kwargs):
+		"""See :func:`rhkpy.plotting.quickplot.plot_line_spec_iv`."""
 		return _quickplot.plot_line_spec_iv(self, **kwargs)
 
 	def _qplot_line_iz(self, cmap_spec = 'viridis', **kwargs):
+		"""See :func:`rhkpy.plotting.quickplot.plot_line_iz`."""
 		return _quickplot.plot_line_iz(self, cmap_spec = cmap_spec, **kwargs)
 
 	def _qplot_line_spec_iz(self, **kwargs):
+		"""See :func:`rhkpy.plotting.quickplot.plot_line_spec_iz`."""
 		return _quickplot.plot_line_spec_iz(self, **kwargs)
 
 	def _qplot_spec_iv_lia(self, **kwargs):
+		"""See :func:`rhkpy.plotting.quickplot.plot_spec_iv_lia`."""
 		return _quickplot.plot_spec_iv_lia(self, **kwargs)
 
 	def _qplot_spec_iv_curr(self, **kwargs):
+		"""See :func:`rhkpy.plotting.quickplot.plot_spec_iv_curr`."""
 		return _quickplot.plot_spec_iv_curr(self, **kwargs)
 
 	def _qplot_spec_iz(self, **kwargs):
+		"""See :func:`rhkpy.plotting.quickplot.plot_spec_iz`."""
 		return _quickplot.plot_spec_iz(self, **kwargs)

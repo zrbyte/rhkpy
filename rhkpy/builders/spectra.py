@@ -56,6 +56,7 @@ _SPECTYPE_CONFIG = {
 ## helpers ------------------------------------------------------------
 
 def _page(stmdata_object, page_name: str) -> xr.DataArray:
+	"""The raw DataArray of one page (channel) of the sm4 file."""
 	# attribute access (not item access), so that a missing channel raises the
 	# same AttributeError as the historical code, e.g.
 	# "'Dataset' object has no attribute 'LIA_Current'"
@@ -81,10 +82,12 @@ def _spec_positions(stmdata_object, page_name: str) -> tuple[np.ndarray, np.ndar
 
 
 def _sweep_coord_values(stmdata_object, cfg):
+	"""Values of the sweep coordinate (bias in V, or z converted to nm)."""
 	return stmdata_object.spymdata.coords[cfg['sweep_coord']].data * cfg['sweep_scale']
 
 
 def _apply_channel_attrs(xrspec, cfg):
+	"""Set the units attributes on the channels, positions and sweep coordinate."""
 	for var_name, _ in cfg['channels']:
 		xrspec[var_name].attrs.update(_PA_ATTRS)
 	xrspec['x'].attrs.update(_NM_ATTRS)

@@ -12,12 +12,21 @@ import numpy as np
 def plane(image):
     '''Corrects for image tilting by subtraction of a plane.
 
-    Args:
-        image: 2d numpy array.
+    :param image: image data
+    :type image: 2D :py:mod:`numpy` array
 
-    Returns:
-        flattened image as 2d numpy array.
+    :return: flattened image ``planned`` and the subtracted background ``bkg``
+    :rtype: tuple: (2D :py:mod:`numpy` array, 2D :py:mod:`numpy` array)
 
+    :Example:
+
+        .. code-block:: python
+
+            import rhkpy
+
+            topo = rhkpy.rhkdata('topography.sm4', loadraw = True)
+            # plane-fit the forward scan of the raw topography
+            flattened, background = rhkpy.plane(topo.image.topography.sel(scandir = 'forward').data)
     '''
 
     bkg_x = _poly_bkg(image.mean(axis=0), 1)
@@ -33,17 +42,19 @@ def plane(image):
 
 
 def align(image, baseline='mean', axis=1, poly_degree=2):
-    '''Align rows.
+    '''Align the rows (scan lines) of an image by subtracting a baseline from each.
 
-    Args:
-        image: 2d numpy array.
-        baseline: defines how baselines are estimated; 'mean' (default), 'median', 'poly'.
-        axis: axis along wich calculate the baselines.
-        poly_degree: polnomial degree if baseline='poly'.
+    :param image: image data
+    :type image: 2D :py:mod:`numpy` array
+    :param baseline: how the baselines are estimated: 'mean', 'median' or 'poly', defaults to 'mean'
+    :type baseline: str, optional
+    :param axis: axis along which the baselines are calculated, defaults to 1
+    :type axis: int, optional
+    :param poly_degree: polynomial degree if ``baseline`` = 'poly', defaults to 2
+    :type poly_degree: int, optional
 
-    Returns:
-        corrected 2d numpy array.
-
+    :return: corrected image ``aligned`` and the subtracted background ``bkg``
+    :rtype: tuple: (2D :py:mod:`numpy` array, 2D :py:mod:`numpy` array)
     '''
 
     if baseline == 'mean':

@@ -59,18 +59,22 @@ def _add_spectra_metadata(stmdata_object, scan_angle: bool = True, bias_coord_un
 ## historical entry points --------------------------------------------
 
 def _add_map_metadata(stmdata_object):
+	"""Metadata for spectroscopy maps (includes the scan angle of the image)."""
 	return _add_spectra_metadata(stmdata_object, scan_angle = True)
 
 
 def _add_line_metadata(stmdata_object):
+	"""Metadata for line spectroscopy (includes the scan angle of the image)."""
 	return _add_spectra_metadata(stmdata_object, scan_angle = True)
 
 
 def _add_spec_metadata(stmdata_object):
+	"""Metadata for single-point spectra (no scan angle; bias coordinate units set)."""
 	return _add_spectra_metadata(stmdata_object, scan_angle = False, bias_coord_units = True)
 
 
 def _add_image_metadata(stmdata_object):
+	"""Attach measurement metadata (bias, setpoint, date, scan angle) to the `image` Dataset."""
 	stmdata_object.image.attrs['bias'] = stmdata_object.spymdata.Topography_Forward.attrs['RHK_Bias']
 	stmdata_object.image.attrs['bias units'] = 'V'
 	stmdata_object.image.attrs['setpoint'] = stmdata_object.spymdata.Topography_Forward.attrs['RHK_Current']*10**12

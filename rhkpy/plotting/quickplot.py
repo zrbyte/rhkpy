@@ -53,7 +53,20 @@ def _fwbw_lineplot(da, x: str, scandir_dim: str, labels: tuple[str, str]):
 
 
 def _mean_signal_image(rhkdata_obj, signal: str, scandir_dim: str, cmap_spec: str, **imageopts):
-	"""2D density plot of a signal averaged over repetitions and sweep direction."""
+	"""2D density plot of a signal averaged over repetitions and sweep direction.
+
+	:param rhkdata_obj: the :class:`~rhkpy.rhkpy_loader.rhkdata` instance to plot
+	:param signal: name of the data variable in ``spectra`` ('lia' or 'current')
+	:type signal: str
+	:param scandir_dim: name of the sweep direction dim ('biasscandir' or 'zscandir')
+	:type scandir_dim: str
+	:param cmap_spec: colorscale of the density plot
+	:type cmap_spec: str
+	:param imageopts: further options passed to :py:mod:`hvplot` (x, y, groupby, title, ...)
+
+	:return: :py:mod:`holoviews` plot
+	:rtype: :py:mod:`holoviews`
+	"""
 	meanmap = rhkdata_obj.spectra.mean(dim = ['repetitions', scandir_dim])
 	return meanmap[signal].hvplot.image(cmap = cmap_spec, **imageopts)
 
@@ -86,59 +99,140 @@ def plot_lia(rhkdata_obj, cmap_spec = 'viridis', **kwargs):
 
 
 def plot_map_iv(rhkdata_obj, cmap_spec = 'viridis', **kwargs):
-	"""dI/dV map: density plot of the mean (repetitions, biasscandir) lia signal."""
+	"""Plotting dI/dV map data using :py:mod:`hvplot`.
+	The mean values (biasscandir and repetitions) of the dI/dV signal are plotted on the density plot.
+
+	:param rhkdata_obj: the :class:`~rhkpy.rhkpy_loader.rhkdata` instance to plot
+	:type rhkdata_obj: :class:`~rhkpy.rhkpy_loader.rhkdata`
+	:param cmap_spec: colorscale used for dI/dV data, defaults to 'viridis'
+	:type cmap_spec: str, optional
+
+	:return: :py:mod:`holoviews` plot
+	:rtype: :py:mod:`holoviews`
+	"""
 	return _mean_signal_image(rhkdata_obj, 'lia', 'biasscandir', cmap_spec,
 		x = 'specpos_x', y = 'specpos_y', groupby = 'bias', title = 'dI/dV map')
 
 
 def plot_map_iz(rhkdata_obj, cmap_spec = 'viridis', **kwargs):
-	"""I(z) map: density plot of the mean (repetitions, zscandir) current signal."""
+	"""Plotting I(z) map data using :py:mod:`hvplot`.
+	The mean values (zscandir and repetitions) of the I(z) signal are plotted on the density plot.
+
+	:param rhkdata_obj: the :class:`~rhkpy.rhkpy_loader.rhkdata` instance to plot
+	:type rhkdata_obj: :class:`~rhkpy.rhkpy_loader.rhkdata`
+	:param cmap_spec: colorscale used for I(z) data, defaults to 'viridis'
+	:type cmap_spec: str, optional
+
+	:return: :py:mod:`holoviews` plot
+	:rtype: :py:mod:`holoviews`
+	"""
 	return _mean_signal_image(rhkdata_obj, 'current', 'zscandir', cmap_spec,
 		x = 'specpos_x', y = 'specpos_y', groupby = 'z', title = 'I(z) map')
 
 
 def plot_line_iv(rhkdata_obj, cmap_spec = 'viridis', **kwargs):
-	"""dI/dV line: density plot (bias vs distance) of the mean lia signal."""
+	"""Plotting dI/dV line data on a density plot (bias vs distance), using :py:mod:`hvplot`.
+	The mean values of the dI/dV signal are plotted on the density plot.
+
+	:param rhkdata_obj: the :class:`~rhkpy.rhkpy_loader.rhkdata` instance to plot
+	:type rhkdata_obj: :class:`~rhkpy.rhkpy_loader.rhkdata`
+	:param cmap_spec: colorscale used for dI/dV data, defaults to 'viridis'
+	:type cmap_spec: str, optional
+
+	:return: :py:mod:`holoviews` plot
+	:rtype: :py:mod:`holoviews`
+	"""
 	return _mean_signal_image(rhkdata_obj, 'lia', 'biasscandir', cmap_spec,
 		x = 'bias', y = 'dist', title = 'dI/dV line spectra', aspect = 1)
 
 
 def plot_line_iz(rhkdata_obj, cmap_spec = 'viridis', **kwargs):
-	"""I(z) line: density plot (tip height vs distance) of the mean current signal."""
+	"""Plotting I(z) line data on a density plot (tip height vs distance), using :py:mod:`hvplot`.
+	The mean values of the I(z) signal are plotted.
+
+	:param rhkdata_obj: the :class:`~rhkpy.rhkpy_loader.rhkdata` instance to plot
+	:type rhkdata_obj: :class:`~rhkpy.rhkpy_loader.rhkdata`
+	:param cmap_spec: colorscale used for I(z) data, defaults to 'viridis'
+	:type cmap_spec: str, optional
+
+	:return: :py:mod:`holoviews` plot
+	:rtype: :py:mod:`holoviews`
+	"""
 	return _mean_signal_image(rhkdata_obj, 'current', 'zscandir', cmap_spec,
 		x = 'z', y = 'dist', title = 'I(z) line spectra', aspect = 1)
 
 
 def plot_line_spec_iv(rhkdata_obj, **kwargs):
-	"""dI/dV spectra of a line spectroscopy instance (fw/bw sweep overlay)."""
+	"""Plotting dI/dV spectra of a line spectroscopy instance, using :py:mod:`hvplot`.
+	All repetitions are shown as dotted lines, with the repetition average in bold.
+
+	:param rhkdata_obj: the :class:`~rhkpy.rhkpy_loader.rhkdata` instance to plot
+	:type rhkdata_obj: :class:`~rhkpy.rhkpy_loader.rhkdata`
+
+	:return: :py:mod:`holoviews` plot
+	:rtype: :py:mod:`holoviews`
+	"""
 	return _fwbw_lineplot(rhkdata_obj.spectra.lia, 'bias', 'biasscandir', ('left', 'right'))
 
 
 def plot_line_spec_iz(rhkdata_obj, **kwargs):
-	"""I(z) spectra of a line spectroscopy instance (fw/bw sweep overlay)."""
+	"""Plotting I(z) spectra of a line spectroscopy instance, using :py:mod:`hvplot`.
+	All repetitions are shown as dotted lines, with the repetition average in bold.
+
+	:param rhkdata_obj: the :class:`~rhkpy.rhkpy_loader.rhkdata` instance to plot
+	:type rhkdata_obj: :class:`~rhkpy.rhkpy_loader.rhkdata`
+
+	:return: :py:mod:`holoviews` plot
+	:rtype: :py:mod:`holoviews`
+	"""
 	return _fwbw_lineplot(rhkdata_obj.spectra.current, 'z', 'zscandir', ('up', 'down'))
 
 
 def plot_spec_iv_lia(rhkdata_obj, **kwargs):
-	"""dI/dV signal of a single spectrum instance (fw/bw sweep overlay)."""
+	"""Plotting the dI/dV signal of a single spectrum instance, using :py:mod:`hvplot`.
+	All repetitions are shown as dotted lines, with the repetition average in bold.
+
+	:param rhkdata_obj: the :class:`~rhkpy.rhkpy_loader.rhkdata` instance to plot
+	:type rhkdata_obj: :class:`~rhkpy.rhkpy_loader.rhkdata`
+
+	:return: :py:mod:`holoviews` plot
+	:rtype: :py:mod:`holoviews`
+	"""
 	overlay = _fwbw_lineplot(rhkdata_obj.spectra.lia, 'bias', 'biasscandir', ('left', 'right'))
 	return overlay.opts(width = 400, title = 'dI/dV')
 
 
 def plot_spec_iv_curr(rhkdata_obj, **kwargs):
-	"""Current signal of a single spectrum instance (fw/bw sweep overlay)."""
+	"""Plotting the current signal of a single spectrum instance, using :py:mod:`hvplot`.
+	All repetitions are shown as dotted lines, with the repetition average in bold.
+
+	:param rhkdata_obj: the :class:`~rhkpy.rhkpy_loader.rhkdata` instance to plot
+	:type rhkdata_obj: :class:`~rhkpy.rhkpy_loader.rhkdata`
+
+	:return: :py:mod:`holoviews` plot
+	:rtype: :py:mod:`holoviews`
+	"""
 	overlay = _fwbw_lineplot(rhkdata_obj.spectra.current, 'bias', 'biasscandir', ('left', 'right'))
 	return overlay.opts(width = 400, title = 'current')
 
 
 def plot_spec_iz(rhkdata_obj, **kwargs):
-	"""I(z) single spectrum instance (fw/bw sweep overlay)."""
+	"""Plotting an I(z) single spectrum instance, using :py:mod:`hvplot`.
+	All repetitions are shown as dotted lines, with the repetition average in bold.
+
+	:param rhkdata_obj: the :class:`~rhkpy.rhkpy_loader.rhkdata` instance to plot
+	:type rhkdata_obj: :class:`~rhkpy.rhkpy_loader.rhkdata`
+
+	:return: :py:mod:`holoviews` plot
+	:rtype: :py:mod:`holoviews`
+	"""
 	return _fwbw_lineplot(rhkdata_obj.spectra.current, 'z', 'zscandir', ('up', 'down'))
 
 
 ## qplot layouts per (datatype, spectype) ------------------------------
 
 def _layout_image(rhkdata_obj, width, **kwargs):
+	"""Topography and dI/dV image side by side."""
 	topo_plot = plot_topo(rhkdata_obj, **kwargs)
 	lia_plot = plot_lia(rhkdata_obj, **kwargs)
 	return pn.Row(pn.panel(topo_plot), pn.panel(lia_plot))
@@ -186,12 +280,14 @@ def _layout_line(plot2d, plotspec):
 
 
 def _layout_spec_iv(rhkdata_obj, width, **kwargs):
+	"""dI/dV and current signal of a single spectrum side by side."""
 	leftpanel = plot_spec_iv_lia(rhkdata_obj, **kwargs)
 	rightpanel = plot_spec_iv_curr(rhkdata_obj, **kwargs)
 	return pn.Row(pn.panel(leftpanel), pn.panel(rightpanel))
 
 
 def _layout_spec_iz(rhkdata_obj, width, **kwargs):
+	"""Single panel with the I(z) sweep overlay."""
 	combined = plot_spec_iz(rhkdata_obj, **kwargs)
 	return pn.panel(combined.opts(width = 400, title = 'current'))
 

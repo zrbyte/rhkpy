@@ -9,6 +9,8 @@ import numpy as np
 
 
 def _checkrepetitions(stmdata_object):
+	"""Infer the number of repeated spectra per tip position from the number of
+	identical tip coordinates in the RHK_SpecDrift attributes."""
 	# make an array of x and y coordinates
 	coordlist = np.column_stack((
 		np.array(stmdata_object.spymdata.Current.attrs['RHK_SpecDrift_Xcoord']),
@@ -21,6 +23,12 @@ def _checkrepetitions(stmdata_object):
 	return reps
 
 def _checkdatatype(stmdata_object):
+	"""Classify the file into (datatype, spectype).
+
+	datatype: 'image', 'map', 'line' or 'spec', based on the RHK page type and
+	the aspect ratio of the spectroscopy tip positions.
+	spectype: 'iv' or 'iz' based on the RHK line type, `None` for images.
+	"""
 	# check if the list of keys in the spym data contain 'Current'
 	# If yes, it is not a pure topo image
 	l = list(stmdata_object.spymdata.keys())
@@ -54,6 +62,8 @@ def _checkdatatype(stmdata_object):
 	return stmdata_object.datatype, stmdata_object.spectype
 
 def _aspect_ratio(x, y):
+    """Aspect ratio of a point cloud (ratio of covariance eigenvalues), used to
+    tell a line of tip positions (large ratio) from a 2D grid (ratio near 1)."""
     xy = np.stack((x, y), axis=0)
     eigvals, eigvecs = np.linalg.eig(np.cov(xy))
     center = xy.mean(axis=-1)
@@ -64,8 +74,10 @@ def _aspect_ratio(x, y):
     return aspect
 
 def _get_filename(s):
+	"""Return the last path component of ``s`` (the bare filename), handling
+	both forward slashes and backslashes."""
 	# If the string ends with a slash or backslash, remove it first
-    s = s.rstrip("/\\")
-    # Then, match any character other than backslash or slash until the end of the string
-    match = re.search(r'[^/\\]+$', s)
-    return match.group(0) if match else None
+	s = s.rstrip("/\\")
+	# Then, match any character other than backslash or slash until the end of the string
+	match = re.search(r'[^/\\]+$', s)
+	return match.group(0) if match else None

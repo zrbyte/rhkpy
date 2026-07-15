@@ -1222,33 +1222,39 @@ class RHKPage(RHKObjectContainer):
 def load(sm4file):
     '''Load data and metadata from an RHK .sm4 file.
 
-    Args:
-        sm4file: the name of the .sm4 file to be loaded
+    :param sm4file: path and filename of the "sm4" file to be loaded
+    :type sm4file: str
 
-    Returns:
-        a container for the pages in the .sm4 file with their data and metadata
+    :return: container of the pages in the .sm4 file, with their raw data and metadata
+    :rtype: :class:`RHKsm4`
 
-    Examples:
-        f = rhksm4.load('/path/to/file.sm4') # load the file
+    :Example:
 
-        p0 = f[0] # assign first page in the file
-        p0.label # returns page label name
-        p0.data # returns page data as a numpy array
-        p0.attrs # returns page metadata as a dictionary
+        .. code-block:: python
+
+            from rhkpy.io import sm4
+
+            f = sm4.load('/path/to/file.sm4') # load the file
+
+            p0 = f[0]  # assign first page in the file
+            p0.label   # returns page label name
+            p0.data    # returns page data as a numpy array
+            p0.attrs   # returns page metadata as a dictionary
     '''
 
     return RHKsm4(sm4file)
 
 def to_dataset(sm4file, scaling=True):
-    '''Load an RHK .sm4 file into an xarray Dataset.
+    '''Load an RHK .sm4 file into an :py:mod:`xarray` Dataset, with one
+    DataArray per page of the file.
 
-    Args:
-        sm4file: the name of the .sm4 file to be loaded
-        scaling: if True convert data to physical units (default),
-            if False keep data in ADC units
+    :param sm4file: path and filename of the "sm4" file to be loaded
+    :type sm4file: str
+    :param scaling: if `True` convert the data to physical units, if `False` keep the raw ADC values, defaults to True
+    :type scaling: bool, optional
 
-    Returns:
-        an xarray Dataset
+    :return: Dataset with one DataArray per page
+    :rtype: :py:mod:`xarray` Dataset
     '''
 
     f = load(sm4file)
@@ -1260,18 +1266,21 @@ def to_dataset(sm4file, scaling=True):
     return ds
 
 def load_dataset(filename, scaling=True):
-    '''Load an RHK .sm4 file into an xarray Dataset, with the `filename`
-    attribute of every DataArray set to the file basename.
+    '''Load an RHK .sm4 file into an :py:mod:`xarray` Dataset, with the
+    ``filename`` attribute of every DataArray set to the file basename.
+    This is what :class:`~rhkpy.rhkpy_loader.rhkdata` uses to fill its
+    ``spymdata`` variable.
 
-    This reproduces the behavior of the historical `spym.io.load()` for .sm4
-    files: on a read error, an error message is printed and None is returned.
+    This reproduces the behavior of the historical ``spym.io.load()`` for .sm4
+    files: on a read error, an error message is printed and `None` is returned.
 
-    Args:
-        filename: path to the .sm4 file.
-        scaling: if True convert data to physical units (default), if False keep raw data.
+    :param filename: path and filename of the "sm4" file to be loaded
+    :type filename: str
+    :param scaling: if `True` convert the data to physical units, if `False` keep the raw ADC values, defaults to True
+    :type scaling: bool, optional
 
-    Returns:
-        xarray Dataset with data and metadata, or None if the file is not valid.
+    :return: Dataset with data and metadata, or `None` if the file is not valid
+    :rtype: :py:mod:`xarray` Dataset
     '''
 
     if not filename.lower().endswith('.sm4'):

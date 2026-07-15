@@ -10,6 +10,8 @@ from .detect import _get_filename
 
 
 def _xr_image(stmdata_object):
+	"""Create the `image` Dataset (topography, current, lia; forward/backward)
+	of an image or map measurement, with coordinates in nm."""
 	# topography
 	topofw = stmdata_object.spymdata.Topography_Forward
 	topobw = stmdata_object.spymdata.Topography_Backward
@@ -102,6 +104,8 @@ def _xr_image(stmdata_object):
 	return stmdata_object
 
 def _xr_image_line(stmdata_object):
+	"""Create the `image` Dataset of a line spectroscopy measurement, where the
+	"image" is the repeated topography line scan."""
 	# topography
 	topofw = stmdata_object.spymdata.Topography_Forward
 	topobw = stmdata_object.spymdata.Topography_Backward

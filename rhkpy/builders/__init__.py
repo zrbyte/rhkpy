@@ -42,6 +42,7 @@ def _build_spectra(stmdata_object):
 
 
 def _load_specmap(stmdata_object):
+	"""Populate an rhkdata instance of datatype 'map': image plus spectra grid."""
 	# total number of spectra in one postion of the tip
 	stmdata_object.numberofspectra = int((stmdata_object.alternate + 1)*stmdata_object.repetitions)
 	# load the image
@@ -51,6 +52,7 @@ def _load_specmap(stmdata_object):
 
 
 def _load_line(stmdata_object):
+	"""Populate an rhkdata instance of datatype 'line': image plus spectra along a line."""
 	# total number of spectra in one postion of the tip
 	stmdata_object.numberofspectra = int((stmdata_object.alternate + 1)*stmdata_object.repetitions)
 	# load the image data
@@ -60,6 +62,7 @@ def _load_line(stmdata_object):
 
 
 def _load_spec(stmdata_object):
+	"""Populate an rhkdata instance of datatype 'spec': repeated spectra at one position."""
 	# in this case the total number of spectra can be inferred
 	# total number of spectra in one postion of the tip
 	stmdata_object.repetitions = int(stmdata_object.spymdata.Current.data.shape[1] / (stmdata_object.alternate + 1))
@@ -69,6 +72,8 @@ def _load_spec(stmdata_object):
 
 
 def _load_image(stmdata_object):
+	"""Build the `image` Dataset with metadata; unless loadraw is set, flatten
+	the topography with a first order polynomial background subtraction."""
 	# load the image data
 	if stmdata_object.datatype == 'image' or stmdata_object.datatype == 'map':
 		stmdata_object = _xr_image(stmdata_object)

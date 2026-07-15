@@ -86,7 +86,14 @@ def genthumbs(folderpath = './', **kwargs):
 
 		If you use backslashes to separate folder names, remember to append "r" to the beginning of the path to escape backslashes. For example: ``folderpath = r"c:\\users\\averagejoe\\data"``.
 		Paths can be copied directly from Windows explorer, if you append an "r".
-	"""	
+
+	.. note::
+
+		Exporting png images uses the Bokeh png export, which requires a headless browser.
+		:func:`genthumbs` starts one automatically (trying Chrome, Edge, then Firefox in this order) and the matching driver is downloaded by Selenium Manager, so no manual driver setup is needed.
+		One of these browsers needs to be installed on the machine.
+		Files that fail to load, plot or save are skipped with a printed message; the rest of the batch is still processed.
+	"""
 	# import some dependencies (lazy, to avoid a circular import with rhkpy.core)
 	from ..core import rhkdata
 	from ..builders.detect import _get_filename

@@ -1,3 +1,13 @@
+"""rhkpy: processing of Scanning Tunneling Microscopy (STM) data from RHK
+Technology .sm4 files, built on :py:mod:`xarray`.
+
+Load a measurement with :class:`~rhkpy.rhkpy_loader.rhkdata`, take a quick
+look with its ``qplot()`` method, and use the analysis functions (
+:func:`~rhkpy.rhkpy_process.peakfit`, :func:`~rhkpy.rhkpy_process.bgsubtract`,
+:func:`~rhkpy.rhkpy_process.polyflatten`, ...) on the underlying Datasets.
+See the tutorial notebook and https://rhkpy.readthedocs.io for examples.
+"""
+
 from .version import __version__
 from .rhkpy_loader import *
 from .rhkpy_process import *
