@@ -72,26 +72,26 @@ def navigation(*args, **kwargs):
 
 	# we need a function to plot a bounding box around the topo data
 	def bounding_box(rhkdata_obj, c):
-		l_top = rhkdata_obj.image.topography.drop('scandir')[-1, :].hvplot.line(x = 'x', y = 'y', color = c, label = rhkdata_obj.image.attrs['filename']) # label = rhkdata_obj.image.attrs['filename']
-		l_bottom = rhkdata_obj.image.topography.drop('scandir')[0, :].hvplot.line(x = 'x', y = 'y', color = c, label = rhkdata_obj.image.attrs['filename'])
-		l_left = rhkdata_obj.image.topography.drop('scandir')[:, 0].hvplot.line(x = 'x', y = 'y', color = c, label = rhkdata_obj.image.attrs['filename'])
-		l_right = rhkdata_obj.image.topography.drop('scandir')[:, -1].hvplot.line(x = 'x', y = 'y', color = c, label = rhkdata_obj.image.attrs['filename'])
+		l_top = rhkdata_obj.image.topography.drop_vars('scandir')[-1, :].hvplot.line(x = 'x', y = 'y', color = c, label = rhkdata_obj.image.attrs['filename']) # label = rhkdata_obj.image.attrs['filename']
+		l_bottom = rhkdata_obj.image.topography.drop_vars('scandir')[0, :].hvplot.line(x = 'x', y = 'y', color = c, label = rhkdata_obj.image.attrs['filename'])
+		l_left = rhkdata_obj.image.topography.drop_vars('scandir')[:, 0].hvplot.line(x = 'x', y = 'y', color = c, label = rhkdata_obj.image.attrs['filename'])
+		l_right = rhkdata_obj.image.topography.drop_vars('scandir')[:, -1].hvplot.line(x = 'x', y = 'y', color = c, label = rhkdata_obj.image.attrs['filename'])
 		return l_bottom * l_left * l_right * l_top
 
 	def plot_spec_positions(rhkdata_obj, c):
 		if rhkdata_obj.datatype == 'map':
 			if rhkdata_obj.spectype == 'iv':
-				_ = rhkdata_obj.spectra.drop(['bias', 'repetitions', 'biasscandir']).drop_vars(['lia', 'current'])
+				_ = rhkdata_obj.spectra.drop_vars(['bias', 'repetitions', 'biasscandir']).drop_vars(['lia', 'current'])
 				specplot = _.hvplot.scatter(x = 'x', y = 'y', groupby = [], marker = 'x', color = c, label = 'spec pos: ' + rhkdata_obj.image.attrs['filename'])
 			elif rhkdata_obj.spectype == 'iz':
-				_ = rhkdata_obj.spectra.drop(['z', 'repetitions', 'zscandir']).drop_vars(['current'])
+				_ = rhkdata_obj.spectra.drop_vars(['z', 'repetitions', 'zscandir']).drop_vars(['current'])
 				specplot = _.hvplot.scatter(x = 'x', y = 'y', groupby = [], marker = 'x', color = c, label = 'spec pos: ' + rhkdata_obj.image.attrs['filename'])
 		elif rhkdata_obj.datatype == 'line':
 			if rhkdata_obj.spectype == 'iv':
-				_ = rhkdata_obj.spectra.drop_vars(['lia', 'current']).drop(['biasscandir', 'repetitions', 'bias'])
+				_ = rhkdata_obj.spectra.drop_vars(['lia', 'current']).drop_vars(['biasscandir', 'repetitions', 'bias'])
 				specplot = _.hvplot.scatter(x = 'x', y = 'y', groupby = [], marker = 'x', color = c, label = 'spec pos: ' + rhkdata_obj.spectra.attrs['filename'])
 			elif rhkdata_obj.spectype == 'iz':
-				_ = rhkdata_obj.spectra.drop_vars(['current']).drop(['zscandir', 'repetitions', 'z'])
+				_ = rhkdata_obj.spectra.drop_vars(['current']).drop_vars(['zscandir', 'repetitions', 'z'])
 				specplot = _.hvplot.scatter(x = 'x', y = 'y', groupby = [], marker = 'x', color = c, label = 'spec pos: ' + rhkdata_obj.spectra.attrs['filename'])
 		elif rhkdata_obj.datatype == 'spec':
 			# specplot = rhkdata_obj.spectra.hvplot.scatter(x = 'x', y = 'y', groupby = [], marker = 'x', color = c, size = 200, line_width = 3, label = 'spec pos: ' + rhkdata_obj.spectra.attrs['filename'])
