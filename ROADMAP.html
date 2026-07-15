@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>rhkpy — improvement roadmap</title>
+<style>
+	:root {
+		--bg: #f6f7f9; --card: #ffffff; --ink: #1a2233; --muted: #5b6575;
+		--line: #dde2ea; --accent: #2563eb; --accent-ink: #ffffff;
+		--now: #dc2626; --next: #d97706; --later: #059669;
+		--chip-bg: #eef1f6; --done: #9aa3b2; --code: #eef1f6;
+	}
+	@media (prefers-color-scheme: dark) {
+		:root {
+			--bg: #12151c; --card: #1a1f29; --ink: #e6eaf2; --muted: #97a0b0;
+			--line: #2a3140; --accent: #5b8cff; --accent-ink: #0d1117;
+			--now: #f87171; --next: #fbbf24; --later: #34d399;
+			--chip-bg: #232a37; --done: #5b6575; --code: #232a37;
+		}
+	}
+	* { box-sizing: border-box; margin: 0; }
+	body {
+		background: var(--bg); color: var(--ink);
+		font: 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+		padding: 2rem 1rem 4rem;
+	}
+	.wrap { max-width: 880px; margin: 0 auto; }
+	header h1 { font-size: 1.7rem; letter-spacing: -0.02em; }
+	header p.sub { color: var(--muted); margin-top: .3rem; max-width: 60ch; }
+	.progress { margin: 1.2rem 0 0.4rem; }
+	.bar { height: 8px; background: var(--chip-bg); border-radius: 5px; overflow: hidden; }
+	.bar > div { height: 100%; width: 0%; background: var(--accent); border-radius: 5px; transition: width .3s; }
+	.progress .label { font-size: .8rem; color: var(--muted); margin-top: .3rem; }
+	.controls { display: flex; flex-wrap: wrap; gap: .5rem; margin: 1.2rem 0 1.4rem; align-items: center; }
+	.tabs { display: flex; gap: .25rem; background: var(--chip-bg); padding: .2rem; border-radius: 9px; }
+	.tabs button {
+		border: 0; background: transparent; color: var(--muted); padding: .35rem .8rem;
+		border-radius: 7px; cursor: pointer; font: inherit; font-size: .85rem; font-weight: 600;
+	}
+	.tabs button.active { background: var(--card); color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,.15); }
+	.chip {
+		border: 1px solid var(--line); background: var(--card); color: var(--muted);
+		padding: .3rem .7rem; border-radius: 999px; cursor: pointer; font: inherit; font-size: .8rem;
+	}
+	.chip.active { border-color: var(--accent); color: var(--accent); font-weight: 600; }
+	input[type=search] {
+		flex: 1; min-width: 140px; border: 1px solid var(--line); border-radius: 8px;
+		background: var(--card); color: var(--ink); padding: .45rem .7rem; font: inherit; font-size: .85rem;
+	}
+	.tier-head { margin: 1.6rem 0 .6rem; font-size: .8rem; font-weight: 700; letter-spacing: .08em;
+		text-transform: uppercase; color: var(--muted); display: flex; align-items: center; gap: .5rem; }
+	.tier-head .dot { width: 9px; height: 9px; border-radius: 50%; }
+	.card {
+		background: var(--card); border: 1px solid var(--line); border-radius: 10px;
+		margin-bottom: .6rem; overflow: hidden;
+	}
+	.card.done .title { text-decoration: line-through; color: var(--done); }
+	.row { display: flex; align-items: center; gap: .7rem; padding: .7rem .9rem; cursor: pointer; }
+	.row input[type=checkbox] { width: 17px; height: 17px; accent-color: var(--accent); cursor: pointer; flex-shrink: 0; }
+	.title { font-weight: 600; flex: 1; }
+	.badges { display: flex; gap: .35rem; flex-shrink: 0; }
+	.badge { font-size: .7rem; font-weight: 700; padding: .1rem .5rem; border-radius: 999px; background: var(--chip-bg); color: var(--muted); white-space: nowrap; }
+	.badge.effort-S { color: var(--later); } .badge.effort-M { color: var(--next); } .badge.effort-L { color: var(--now); }
+	.caret { color: var(--muted); transition: transform .2s; font-size: .8rem; }
+	.card.open .caret { transform: rotate(90deg); }
+	.details { display: none; padding: 0 .9rem .9rem 3.1rem; color: var(--muted); font-size: .9rem; }
+	.card.open .details { display: block; }
+	.details code { background: var(--code); padding: .05rem .35rem; border-radius: 4px; font-size: .85em; }
+	.details .why { margin-top: .4rem; }
+	.details .why b { color: var(--ink); font-weight: 600; }
+	.empty { color: var(--muted); text-align: center; padding: 2rem 0; display: none; }
+	footer { margin-top: 2.5rem; color: var(--muted); font-size: .8rem; border-top: 1px solid var(--line); padding-top: 1rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+	<header>
+		<h1>rhkpy — improvement roadmap</h1>
+		<p class="sub">Follow-up plan after the 2026-07 refactor (phases 0–5 on <code>devel</code>).
+		Check items off as they land — progress is saved in your browser. Every behavior change
+		must go through the golden-master workflow: change, regenerate goldens, review the diff.</p>
+		<div class="progress">
+			<div class="bar"><div id="bar"></div></div>
+			<div class="label" id="progress-label"></div>
+		</div>
+	</header>
+
+	<div class="controls">
+		<div class="tabs" id="tier-tabs">
+			<button data-tier="all" class="active">All</button>
+			<button data-tier="now">Now</button>
+			<button data-tier="next">Next</button>
+			<button data-tier="later">Later</button>
+		</div>
+		<button class="chip" data-cat="robustness">robustness</button>
+		<button class="chip" data-cat="feature">feature</button>
+		<button class="chip" data-cat="infrastructure">infrastructure</button>
+		<button class="chip" data-cat="api">api</button>
+		<button class="chip" data-cat="performance">performance</button>
+		<input type="search" id="search" placeholder="filter…">
+	</div>
+
+	<div id="list"></div>
+	<div class="empty" id="empty">Nothing matches the current filter.</div>
+
+	<footer>
+		Generated 2026-07-15 from the refactor session notes. Source of truth for architecture:
+		<code>CONTRIBUTING.md</code>; for pinned behavior: <code>tests/golden/</code>.
+	</footer>
+</div>
+
+<script>
+const ITEMS = [
+// ------------------------------------------------------------- NOW
+{ id: 'alternate-false', tier: 'now', cat: 'robustness', effort: 'M',
+	title: 'Fix loading with alternate=False',
+	details: 'Pinned by the variant goldens as <b>erroring on every tested file</b> — a pre-existing gap (the historical code carries a TODO for exactly this). The sweep rearrangement in <code>builders/spectra.py:_split_scandir</code> assumes alternating forward/backward spectra; single-direction sweeps need their own layout (one scandir label, no 0::2/1::2 slicing).',
+	why: 'Users measuring without alternate scan directions currently cannot load their files at all. Regenerate the variant goldens as part of the fix — the diff is the review.' },
+{ id: 'repetitions-error', tier: 'now', cat: 'robustness', effort: 'S',
+	title: 'Clear error when repetitions cannot be inferred',
+	details: 'Fixtures <code>dI-dV_9K_ABC6…</code> and <code>line_hopg_300k…</code> die with a bare <code>ZeroDivisionError: division by zero</code> deep in the builders when <code>_checkrepetitions</code> infers 0. Replace the (deliberately preserved) int/int division sites with an explicit check raising e.g. <code>ValueError("could not infer the number of repetitions — pass repetitions= and/or alternate= explicitly")</code>.',
+	why: 'The current message gives users no clue that the fix is one keyword argument. Behavior change → regenerate the two fixture goldens.' },
+{ id: 'missing-lia', tier: 'now', cat: 'robustness', effort: 'S',
+	title: 'Graceful handling of I(V) files without a LIA channel',
+	details: 'Fixture <code>Iz_gold_9K…</code> is classified as spectype iv but has no <code>LIA_Current</code> page → <code>AttributeError</code>. Either fall back to a current-only iv config (registry entry without the lia channel) or raise a clear error naming the missing channel.',
+	why: 'Files recorded without a lock-in are valid measurements; today they are unreadable.' },
+{ id: 'ci', tier: 'now', cat: 'infrastructure', effort: 'M',
+	title: 'CI: run the test suite on GitHub Actions',
+	details: 'The suite currently runs only locally because the .sm4 fixtures in <code>test/</code> are gitignored. Options: commit the small fixtures (10 KB–1.5 MB each, ~5 MB total) directly, use git-lfs, or attach them to a GitHub release and download in the workflow. Then: matrix over Python 3.10–3.13, <code>pytest -m "not slow"</code> (the browser test stays local).',
+	why: 'The golden-master safety net only protects branches it actually runs on. This is the highest-leverage infrastructure item.' },
+{ id: 'docs-ci', tier: 'now', cat: 'infrastructure', effort: 'S',
+	title: 'Build and publish docs in CI',
+	details: 'A <code>gh-pages</code> branch already exists. Add a workflow job: <code>sphinx -b html docs</code> (treat new warnings as errors, ignoring the known <code>_static</code> one) and publish. Add <code>sphinx</code> + <code>sphinx_rtd_theme</code> as a <code>docs</code> extra in pyproject.',
+	why: 'The docs silently rendered an empty API page after the restructure until manually checked — CI would have caught it.' },
+// ------------------------------------------------------------- NEXT
+{ id: 'mpl-thumbs', tier: 'next', cat: 'feature', effort: 'L',
+	title: 'matplotlib backend for genthumbs (no browser needed)',
+	details: 'Bokeh→png always needs a headless browser; a <code>backend="mpl"</code> option rendering via Agg would work on any headless machine with zero extra dependencies. Cost analysis from the session: it is a parallel rendering path (the Panel layouts have no matplotlib equivalent), thumbnails will not look identical to interactive qplot, and map/line widgets need a representative-frame decision.',
+	why: 'Removes the only awkward dependency (browser + webdriver) for batch workflows on servers/CI.' },
+{ id: 'peakfit-docs', tier: 'next', cat: 'feature', effort: 'S',
+	title: 'peakfit: real example + investigate bounds slowdown',
+	details: 'The docstring still says “example coming soon”; add a worked example on a fixture-like dataset (mind curve_fit conditioning — narrow peaks need good starting values, as the smoke test discovered). Separately, profile why passing <code>bounds</code> to <code>xarray.curvefit</code> is dramatically slower (noted in the historical docstring).',
+	why: 'peakfit is the most complex public analysis function and currently the least documented.' },
+{ id: 'coord-abs-line', tier: 'next', cat: 'feature', effort: 'M',
+	title: 'coord_to_absolute for line spectra',
+	details: 'Currently prints “Sorry, linespectra are not supportet yet.” and returns None. The spectra x/y tip positions are already stored; the image counterpart (<code>_xr_image_line</code>) needs the rotation/offset treatment that images get.',
+	why: 'navigation() plots of line spectra rely on spectra positions only; the image outline is missing.' },
+{ id: 'xarray-deprecations', tier: 'next', cat: 'robustness', effort: 'S',
+	title: 'Fix xarray deprecation warnings',
+	details: 'navigation() uses <code>Dataset.drop(…)</code> (deprecated → <code>drop_vars</code>/<code>drop_sel</code>), visible as DeprecationWarnings in every test run. Also check <code>Dataset.dims</code> mapping access (FutureWarning).',
+	why: 'These will become hard errors in a future xarray; fixing them now is cheap, later it is an outage.' },
+{ id: 'coverage', tier: 'next', cat: 'infrastructure', effort: 'S',
+	title: 'Coverage measurement in the test suite',
+	details: 'Add <code>pytest-cov</code>; the characterization suite exercises the load path thoroughly, but coverage will show which analysis/plotting branches (e.g. peakfit toplot=True, bgsubtract peak_pos=…) are never touched.',
+	why: 'Directs the next round of test-writing to the actual blind spots.' },
+{ id: 'new-types', tier: 'next', cat: 'feature', effort: 'M',
+	title: 'Support more RHK measurement types via the registry',
+	details: 'The sm4 enums already recognize e.g. <code>RHK_LINE_TIME_SPECTROSCOPY</code> and frequency sweeps. Each new type is now: a detect rule, a <code>_SPECTYPE_CONFIG</code> entry (or new geometry builder), a registry pair, a qplot layout, one fixture + golden (the CONTRIBUTING.md walkthrough).',
+	why: 'This was the point of the registry refactor — each type is an afternoon, not a rewrite.' },
+// ------------------------------------------------------------- LATER
+{ id: 'exceptions', tier: 'later', cat: 'api', effort: 'M',
+	title: 'Exceptions instead of print + return None',
+	details: 'Invalid files print “Error: the file does not appear to be valid.” and leave a half-initialized rhkdata (only <code>spymdata=None</code> set). Methods print and return None on wrong datatypes. A future major version should raise typed exceptions (<code>RhkpyLoadError</code>, …) — with deprecation warnings first.',
+	why: 'Silent Nones make user scripts fail far from the cause; exceptions carry the context.' },
+{ id: 'v2-api', tier: 'later', cat: 'api', effort: 'L',
+	title: 'rhkpy 2.0: retire shims and accidental exports',
+	details: 'The pinned surface includes accidental names (<code>np</code>, <code>xr</code>, <code>os</code>, <code>pl</code>, …) exported by star-imports since the beginning. A 2.0 release can define <code>__all__</code>, emit DeprecationWarnings from the shims for a release cycle, then remove them. The api_surface golden regen then documents the entire break deliberately.',
+	why: 'The 1.x contract is frozen by the goldens; cleanup needs a major version and a written deprecation policy.' },
+{ id: 'type-hints-public', tier: 'later', cat: 'api', effort: 'M',
+	title: 'Type hints on the public API',
+	details: 'Deferred during the refactor because annotations change <code>inspect.signature</code> strings and thus the api golden. Do it as one deliberate pass: annotate, regenerate the golden, review that every diff is annotation-only. Consider running mypy in CI afterwards.',
+	why: 'IDE navigation and correctness checking; the internal helpers are already annotated.' },
+{ id: 'drop-spym', tier: 'later', cat: 'infrastructure', effort: 'S',
+	title: 'Remove the vendored spym copy',
+	details: 'Kept only for cross-validation of <code>rhkpy.io.sm4</code>. Once the port has survived a few releases (and CI runs the characterization goldens, which pin the same output), <code>spym/</code> and <code>tests/test_sm4_loader.py</code> can be deleted — the goldens remain the reference.',
+	why: '~2400 lines of dead weight in the repo once confidence is established.' },
+{ id: 'lazy-loading', tier: 'later', cat: 'performance', effort: 'L',
+	title: 'Lazy / chunked loading for large maps',
+	details: 'Loading currently materializes every channel eagerly (fine at the fixture sizes, ~seconds for large maps). If users hit multi-100-MB grid maps, a dask-backed xarray path in <code>io/sm4.py</code> would let qplot/mean pipelines stream.',
+	why: 'Speculative until someone actually has files this large — measure first.' },
+{ id: 'pypi', tier: 'later', cat: 'infrastructure', effort: 'S',
+	title: 'Automated releases to PyPI',
+	details: 'pyproject.toml is release-ready and the version is single-sourced. Add a tag-triggered workflow: build sdist/wheel, run the suite, publish via trusted publishing. Tag v1.3.x from master.',
+	why: 'Removes the manual upload step and keeps versions honest.' },
+];
+
+const TIER_META = { now: ['Now', 'var(--now)'], next: ['Next', 'var(--next)'], later: ['Later', 'var(--later)'] };
+const store = { get() { try { return JSON.parse(localStorage.getItem('rhkpy-roadmap') || '{}'); } catch { return {}; } },
+	set(v) { localStorage.setItem('rhkpy-roadmap', JSON.stringify(v)); } };
+
+let tier = 'all', cats = new Set(), query = '';
+
+function render() {
+	const list = document.getElementById('list');
+	list.innerHTML = '';
+	const done = store.get();
+	let shown = 0;
+	for (const t of ['now', 'next', 'later']) {
+		if (tier !== 'all' && tier !== t) continue;
+		const items = ITEMS.filter(i => i.tier === t)
+			.filter(i => !cats.size || cats.has(i.cat))
+			.filter(i => !query || (i.title + i.details + i.why + i.cat).toLowerCase().includes(query));
+		if (!items.length) continue;
+		const head = document.createElement('div');
+		head.className = 'tier-head';
+		head.innerHTML = `<span class="dot" style="background:${TIER_META[t][1]}"></span>${TIER_META[t][0]}`;
+		list.appendChild(head);
+		for (const i of items) {
+			shown++;
+			const card = document.createElement('div');
+			card.className = 'card' + (done[i.id] ? ' done' : '');
+			card.innerHTML = `
+				<div class="row">
+					<input type="checkbox" ${done[i.id] ? 'checked' : ''} aria-label="done">
+					<span class="title">${i.title}</span>
+					<span class="badges">
+						<span class="badge">${i.cat}</span>
+						<span class="badge effort-${i.effort}">effort ${i.effort}</span>
+					</span>
+					<span class="caret">&#9656;</span>
+				</div>
+				<div class="details"><div>${i.details}</div><div class="why"><b>Why:</b> ${i.why}</div></div>`;
+			card.querySelector('input').addEventListener('click', e => {
+				e.stopPropagation();
+				const d = store.get(); d[i.id] = e.target.checked; store.set(d); render();
+			});
+			card.querySelector('.row').addEventListener('click', () => card.classList.toggle('open'));
+			list.appendChild(card);
+		}
+	}
+	document.getElementById('empty').style.display = shown ? 'none' : 'block';
+	const total = ITEMS.length, n = ITEMS.filter(i => done[i.id]).length;
+	document.getElementById('bar').style.width = (100 * n / total) + '%';
+	document.getElementById('progress-label').textContent = `${n} of ${total} items done`;
+}
+
+document.getElementById('tier-tabs').addEventListener('click', e => {
+	if (e.target.tagName !== 'BUTTON') return;
+	document.querySelectorAll('#tier-tabs button').forEach(b => b.classList.remove('active'));
+	e.target.classList.add('active');
+	tier = e.target.dataset.tier; render();
+});
+document.querySelectorAll('.chip').forEach(chip => chip.addEventListener('click', () => {
+	const c = chip.dataset.cat;
+	chip.classList.toggle('active');
+	cats.has(c) ? cats.delete(c) : cats.add(c);
+	render();
+}));
+document.getElementById('search').addEventListener('input', e => { query = e.target.value.toLowerCase(); render(); });
+render();
+</script>
+</body>
+</html>
